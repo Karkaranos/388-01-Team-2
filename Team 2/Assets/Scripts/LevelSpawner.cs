@@ -55,7 +55,15 @@ public class LevelSpawner : MonoBehaviour
         //if it has no last spawned level, it stores a refrence to the hubroom
         if (LastSpawnedLevel == null)
         {
-            LastSpawnedLevel = hubRoom;
+            if (hubRoom != null)
+            {
+                LastSpawnedLevel = hubRoom;
+            }
+            else
+            {
+                LastSpawnedLevel = Instantiate(PossibleSpawns[Random.Range(0, PossibleSpawns.Count)], new Vector3(0, 0, 0), Quaternion.identity);
+            }
+            
         }
 
         //goes through hoops to get the last spawned levels' tilemap
