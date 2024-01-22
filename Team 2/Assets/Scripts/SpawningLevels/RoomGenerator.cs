@@ -1,5 +1,3 @@
-//https://www.youtube.com/watch?v=gHU5RQWbmWE
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
