@@ -109,14 +109,40 @@ public class TouchJoystick : MonoBehaviour
             startPos.y = Screen.height - joystickSize.y / 2;
         }
 
+        startPos = new Vector2(100, 50);
+
         return startPos;
     }
 
     private void MovePlayer()
     {
-        Vector2 newPos = new Vector2(player.transform.position.x + movementAmt.x, player.transform.position.y + movementAmt.y) * playerSpeed; ;
+        //Vector2 newPos = new Vector2(player.transform.position.x + movementAmt.x, player.transform.position.y + movementAmt.y) * playerSpeed; ;
         
-        player.transform.position = newPos; 
+        player.GetComponent<Rigidbody2D>().AddForce(movementAmt);
+        //player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        ClampPlayer(player.transform.position);
+    }
+
+    private void ClampPlayer(Vector2 playerPos)
+    {
+        if (playerPos.x > Screen.height)
+        {
+            playerPos.x = Screen.height;
+        }
+        else if (playerPos.x < 0)
+        {
+            playerPos.x = 0;
+        }
+        if (playerPos.y > Screen.width)
+        {
+            playerPos.y = Screen.width;
+        }
+        else if (playerPos.x < 0)
+        {
+            playerPos.y = 0;
+        }
+        player.transform.position = playerPos;
+
     }
 
 
