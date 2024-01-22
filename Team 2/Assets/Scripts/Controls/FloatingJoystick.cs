@@ -1,4 +1,13 @@
-//Code from Llam Academy on Youtube
+/*****************************************************************************
+// File Name :         FloatingJoystick.cs
+// Author :            Cade R. Naylor
+// Code by :           LlamAcademy on YouTube
+// Link to Video :      https://www.youtube.com/watch?v=MKnLPA5hnPA&t=222s
+// Creation Date :     January 21, 2024
+//
+// Brief Description : Creates floating Joystick functionality
+
+*****************************************************************************/
 using UnityEngine;
 
 [RequireComponent(typeof(RectTransform))]
