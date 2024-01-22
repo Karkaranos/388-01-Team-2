@@ -378,6 +378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992e71691abb4284fabe8de5d3145b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  directionText: {fileID: 0}
   joystick: {fileID: 0}
   joystickSize: {x: 300, y: 300}
   playerSpeed: 0
@@ -561,9 +562,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992e71691abb4284fabe8de5d3145b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  directionText: {fileID: 821121747}
   joystick: {fileID: 2060690175}
   joystickSize: {x: 100, y: 100}
-  playerSpeed: 0.5
+  playerSpeed: 0.8
   player: {fileID: 1853811372}
 --- !u!4 &411985300
 Transform:
@@ -665,7 +667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &821121746
 RectTransform:
   m_ObjectHideFlags: 0

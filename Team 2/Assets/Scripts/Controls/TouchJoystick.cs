@@ -8,7 +8,8 @@ using System;
 
 public class TouchJoystick : MonoBehaviour
 {
-    /*public TMP_Text directionText;
+    public TMP_Text directionText;
+    /*
     private Touch playerInput;
     private Vector2 touchStartPos;
     private Vector2 touchEndPos;
@@ -17,6 +18,9 @@ public class TouchJoystick : MonoBehaviour
 
     private string dir;
     */
+    private int maxWorldHeight = 4;
+    private int maxWorldWidth = 10;
+
     [SerializeField]
     private FloatingJoystick joystick;
     [SerializeField]
@@ -35,6 +39,7 @@ public class TouchJoystick : MonoBehaviour
         ETouch.Touch.onFingerDown += Touch_onFingerDown;
         ETouch.Touch.onFingerUp += Touch_onFingerUp;
         ETouch.Touch.onFingerMove += Touch_onFingerMove;
+        directionText.text = "Width: " + Screen.width/20 + "\nHeight: " + Screen.height/20;
     }
     private void OnDisable()
     {
@@ -79,6 +84,7 @@ public class TouchJoystick : MonoBehaviour
             joystick.Knob.anchoredPosition = Vector2.zero;
             joystick.gameObject.SetActive(false);
             movementAmt = Vector2.zero;
+            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
     }
 
@@ -118,30 +124,33 @@ public class TouchJoystick : MonoBehaviour
     {
         //Vector2 newPos = new Vector2(player.transform.position.x + movementAmt.x, player.transform.position.y + movementAmt.y) * playerSpeed; ;
         
-        player.GetComponent<Rigidbody2D>().AddForce(movementAmt);
+        player.GetComponent<Rigidbody2D>().AddForce(movementAmt * playerSpeed);
         //player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        //Vector3 playerPos = Camera.main.ScreenToWorldPoint(player.transform.position);
         ClampPlayer(player.transform.position);
     }
 
     private void ClampPlayer(Vector2 playerPos)
     {
-        if (playerPos.x > Screen.height)
+        
+        if (playerPos.x > maxWorldWidth)
         {
-            playerPos.x = Screen.height;
+            playerPos.x = maxWorldWidth;
         }
-        else if (playerPos.x < 0)
+        else if (playerPos.x < -maxWorldWidth)
         {
-            playerPos.x = 0;
+            playerPos.x = -maxWorldWidth;
         }
-        if (playerPos.y > Screen.width)
+        if (playerPos.y > maxWorldHeight)
         {
-            playerPos.y = Screen.width;
+            playerPos.y = maxWorldHeight;
         }
-        else if (playerPos.x < 0)
+        else if (playerPos.x < -maxWorldHeight)
         {
-            playerPos.y = 0;
+            playerPos.y = -maxWorldHeight;
         }
         player.transform.position = playerPos;
+        directionText.text = player.transform.position + "";
 
     }
 
