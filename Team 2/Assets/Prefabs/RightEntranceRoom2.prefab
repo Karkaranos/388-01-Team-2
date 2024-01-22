@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1036186943859598256}
   m_Layer: 0
   m_Name: SideWalls
-  m_TagString: Untagged
+  m_TagString: SideWalls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -995,7 +995,7 @@ Tilemap:
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -16, y: -10, z: 0}
-  m_Size: {x: 33, y: 20, z: 1}
+  m_Size: {x: 32, y: 20, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -1378,9 +1378,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2496014379351964929}
   - component: {fileID: 5877570750793927316}
-  m_Layer: 0
+  - component: {fileID: 5570982429110111363}
+  m_Layer: 6
   m_Name: RightEntranceRoom2
-  m_TagString: Untagged
+  m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1414,3 +1415,16 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!114 &5570982429110111363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746164630461464865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62babb91a7aa16448aba2a8d7560ab37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entranceLocations: 0200000003000000

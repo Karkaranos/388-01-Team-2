@@ -16,16 +16,21 @@ public class LevelSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> LevelPrefabs;
 
     //Temporary list - holds the levels that can spawn off another, taking into account doorheight
-    private List<GameObject> PossibleSpawns = new List<GameObject>();
+    private List<PossibleSpawnTempHolder> PossibleSpawns = new List<PossibleSpawnTempHolder>();
 
     //holds the level that it previously spawned
     public GameObject LastSpawnedLevel;
+    
+    private LevelBehavior lastBehav;
+
+    private GameObject lastTriedLevel;
 
     //holds the distance between levels so they spawn seamlessly
     public float xSpawnOffset;
+    public float ySpawnOffset;
 
     //stores the tilemap of the last level spawned
-    private Tilemap lastLevelGroundTilemap;
+    private Tilemap lastLevelWallsTilemap;
 
     //holds a list of all currently spawned levels
     [SerializeField] private List<GameObject> currentSpawnedRooms = new List<GameObject>();
@@ -61,15 +66,53 @@ public class LevelSpawner : MonoBehaviour
             }
             else
             {
-                LastSpawnedLevel = Instantiate(PossibleSpawns[Random.Range(0, PossibleSpawns.Count)], new Vector3(0, 0, 0), Quaternion.identity);
+                LastSpawnedLevel = Instantiate(PossibleSpawns[Random.Range(0, PossibleSpawns.Count)].level, new Vector3(0, 0, 0), Quaternion.identity);
             }
             
         }
 
         //goes through hoops to get the last spawned levels' tilemap
-        GameObject lastLevelGroundGrid = LastSpawnedLevel.FindChildWithTag("GroundGrid");
-        GameObject lastLevelGround = lastLevelGroundGrid.FindChildWithTag("Ground");
-        lastLevelGroundTilemap = lastLevelGround.FindComponentInChildWithTag<Tilemap>("Ground");
+        GameObject lastLevelWalls = LastSpawnedLevel.FindChildWithTag("SideWalls");
+        lastLevelWallsTilemap = lastLevelWalls.GetComponent<Tilemap>();
+
+        
+    }
+
+    public List<PossibleSpawnTempHolder> GetPossibleSpawns()
+    {
+        List<PossibleSpawnTempHolder> returnList = new List<PossibleSpawnTempHolder>();
+        //if the list of possible spawns has anything in it, this clears the list
+        if (PossibleSpawns != null)
+        {
+            PossibleSpawns.Clear();
+        }
+
+        //stores a refrence to the LevelBehavior of the last spawned level
+        lastBehav = LastSpawnedLevel.GetComponent<LevelBehavior>();
+
+        //adds all possible spawn levels to the possible spawn list
+        foreach (GameObject p in LevelPrefabs)
+        {
+            //stores each prefab in a temp levelbehavior var
+            LevelBehavior levelBehav = p.GetComponent<LevelBehavior>();
+
+            //compares the prefab's starting height with the last spawned level's ending height
+            foreach (LevelScriptable.EntranceLocations e in levelBehav.entranceLocations)
+            {
+                foreach (LevelScriptable.EntranceLocations l in lastBehav.entranceLocations)
+                {
+                    if ((e == LevelScriptable.EntranceLocations.Up && l == LevelScriptable.EntranceLocations.Down) ||
+                        (e == LevelScriptable.EntranceLocations.Down && l == LevelScriptable.EntranceLocations.Up) ||
+                        (e == LevelScriptable.EntranceLocations.Left && l == LevelScriptable.EntranceLocations.Right) ||
+                        (e == LevelScriptable.EntranceLocations.Right && l == LevelScriptable.EntranceLocations.Left))
+                    {
+                        returnList.Add(new PossibleSpawnTempHolder(p, l));
+                    }
+                }
+            }
+        }
+
+        return returnList;
     }
 
     /// <summary>
@@ -81,58 +124,28 @@ public class LevelSpawner : MonoBehaviour
         //repeats the number of times the game will spawn
         for (int i = 0; i < numberOfTimes; i++)
         {
-            //if the list of possible spawns has anything in it, this clears the list
-            if (PossibleSpawns != null)
+            
+            do
             {
-                PossibleSpawns.Clear();
-            }
-
-            //stores a refrence to the LevelBehavior of the last spawned level
-            LevelBehavior lastBehav = LastSpawnedLevel.GetComponent<LevelBehavior>();
-
-            //adds all possible spawn levels to the possible spawn list
-            foreach (GameObject p in LevelPrefabs)
-            {
-                //stores each prefab in a temp levelbehavior var
-                LevelBehavior levelBehav = p.GetComponent<LevelBehavior>();
-
-                //compares the prefab's starting height with the last spawned level's ending height
-                if (levelBehav.startHeight == lastBehav.endHeight)
+                if (lastTriedLevel != null)
                 {
-                    //if they match, adds the prefab to the list of possible spawns
-                    PossibleSpawns.Add(p);
+                    Destroy(lastTriedLevel);
                 }
+                TryToSpawnLevel();
             }
-
-            //gets a random level from the list of possible spawns
-            GameObject objToSpawn = PossibleSpawns[Random.Range(0, PossibleSpawns.Count)];
-
-            //sets the spawning offset to the last spawned level's width
-            xSpawnOffset = lastLevelGroundTilemap.localBounds.size.x / 2;
-
-            //instantiates the level to be spawned - sets it to be the last spawned level
-            LastSpawnedLevel = Instantiate(objToSpawn,
-                new Vector3(LastSpawnedLevel.transform.position.x + xSpawnOffset,
-                LastSpawnedLevel.transform.position.y, LastSpawnedLevel.transform.position.z),
-                Quaternion.identity);
-
-            //gets a refrence to the newly spawned level's levelbehavior
-            LevelBehavior newBehav = LastSpawnedLevel.GetComponent<LevelBehavior>();
-
-            //gets a refrence to the ground tilemap of the new spawned level
-            GameObject toSpawnGroundGrid = LastSpawnedLevel.FindChildWithTag("GroundGrid");
-            GameObject actualSpawnGround = toSpawnGroundGrid.FindChildWithTag("Ground");
-            lastLevelGroundTilemap = actualSpawnGround.GetComponent<Tilemap>();
-
-            //adds the newly spawned level's offset
-            newBehav.Offset(lastLevelGroundTilemap.localBounds.size.x / 2);
-
+            while (!CanStillSpawn());
+            LastSpawnedLevel = lastTriedLevel;
+            lastTriedLevel = null;
+            
             //adds the current spawned room to the list of spawned rooms
             currentSpawnedRooms.Add(LastSpawnedLevel);
 
             //runs the function to delete the farthest room
             DeleteFarthestRoom();
+            
+            
         }
+        
 
     }
 
@@ -148,5 +161,61 @@ public class LevelSpawner : MonoBehaviour
             Destroy(currentSpawnedRooms[0]);
             currentSpawnedRooms.RemoveAt(0);
         }
+    }
+
+    private bool CanStillSpawn()
+    {
+        lastBehav.DeleteCommonEntrances();
+        if (lastBehav.entranceLocations == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void TryToSpawnLevel()
+    {
+        Debug.Log("level tried");
+        lastTriedLevel = LastSpawnedLevel;
+        //gets a random level from the list of possible spawns
+        PossibleSpawnTempHolder chosenLevel = GetPossibleSpawns()[Random.Range(0, PossibleSpawns.Count)];
+
+        GameObject objToSpawn = chosenLevel.level;
+
+
+        //sets the spawning offset to the last spawned level's width
+
+        switch (chosenLevel.commonLocation)
+        {
+            case LevelScriptable.EntranceLocations.Left:
+                xSpawnOffset = -(lastLevelWallsTilemap.localBounds.size.x);
+                ySpawnOffset = 0;
+                break;
+            case LevelScriptable.EntranceLocations.Right:
+                xSpawnOffset = lastLevelWallsTilemap.localBounds.size.x;
+                ySpawnOffset = 0;
+                break;
+            case LevelScriptable.EntranceLocations.Up:
+                ySpawnOffset = lastLevelWallsTilemap.localBounds.size.y;
+                xSpawnOffset = 0;
+                break;
+            case LevelScriptable.EntranceLocations.Down:
+                ySpawnOffset = -(lastLevelWallsTilemap.localBounds.size.y);
+                xSpawnOffset = 0;
+                break;
+            default:
+                Debug.Log("Something fucked up with the enum for the common location");
+                break;
+        }
+
+
+        //instantiates the level to be spawned - sets it to be the last spawned level
+        lastTriedLevel = Instantiate(objToSpawn,
+            new Vector3(LastSpawnedLevel.transform.position.x + xSpawnOffset,
+            LastSpawnedLevel.transform.position.y + ySpawnOffset, LastSpawnedLevel.transform.position.z),
+            Quaternion.identity);
+
+        lastBehav = lastTriedLevel.GetComponent<LevelBehavior>();
+        lastBehav.InitializeVars();
     }
 }

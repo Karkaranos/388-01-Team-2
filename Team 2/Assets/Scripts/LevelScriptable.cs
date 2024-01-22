@@ -5,19 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "LevelScriptable", menuName = "LevelScriptable")]
 public class LevelScriptable : ScriptableObject
 {
-    public enum DoorHeight
+    public enum EntranceLocations
     {
-        High,
-        Low,
-        Medium
+        Up,
+        Down,
+        Left,
+        Right
     }
 
-    public DoorHeight startHeight;
-    public DoorHeight endHeight;
-    public LevelScriptable(DoorHeight startHeight, DoorHeight endHeight)
-    {
-        this.startHeight = startHeight;
-        this.endHeight = endHeight;
+    public List<EntranceLocations> entranceLocations;
 
+    public LevelScriptable(List<EntranceLocations> entranceLocations)
+    {
+        this.entranceLocations = entranceLocations;
     }
 }
