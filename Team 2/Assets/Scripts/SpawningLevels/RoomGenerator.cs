@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour
 {
-    public Vector2 gridSize;
-    public int startPos = 0;
-    public GameObject room;
-    public Vector2 offset;
-    public List<Cell> board;
+    [SerializeField] private Vector2 gridSize;
+    [SerializeField] private int startPos = 0;
+    [SerializeField] private GameObject room;
+    [SerializeField] private Vector2 offset;
+    [SerializeField] private List<Cell> board;
+    [SerializeField] private bool GridStyle;
 
     // Start is called before the first frame update
     void Start()
@@ -28,11 +29,16 @@ public class RoomGenerator : MonoBehaviour
         {
             for (int j = 0; j < gridSize.y; j++)
             {
-                GameObject newRoom = Instantiate(room, new Vector3 (i * offset.x, - j * offset.y, 0), Quaternion.identity, transform);
-                RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
-                roomBehav.UpdateRooms(board[Mathf.FloorToInt(i + j * gridSize.x)].status);
+                Cell currentCell = board[Mathf.FloorToInt(i + j * gridSize.x)];
 
-                newRoom.name += " " + i + "-" + j; 
+                if (GridStyle || currentCell.hasBeenVisited) {
+
+                    GameObject newRoom = Instantiate(room, new Vector3(i * offset.x, -j * offset.y, 0), Quaternion.identity, transform);
+                    RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
+                    roomBehav.UpdateRooms(currentCell.status);
+
+                    newRoom.name += " " + i + "-" + j;
+                }
             }
         }
     }
@@ -59,6 +65,11 @@ public class RoomGenerator : MonoBehaviour
         {
             k++;
             board[currentCell].hasBeenVisited = true;
+            
+            if (!GridStyle && currentCell == board.Count - 1)
+            {
+                break;
+            }
 
             //now we check the cell's neighbors
             List<int> neighbors = CheckNeighbors(currentCell);

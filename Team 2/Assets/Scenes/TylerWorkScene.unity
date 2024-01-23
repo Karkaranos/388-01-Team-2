@@ -259,7 +259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4ad5741ede2cb47ba9532a693dc889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 2, y: 4}
+  gridSize: {x: 10, y: 10}
   startPos: 0
   room: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
   offset: {x: 17.3, y: 9}
+  GridStyle: 0
