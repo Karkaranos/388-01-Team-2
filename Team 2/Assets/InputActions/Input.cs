@@ -90,6 +90,98 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Controller"",
+            ""id"": ""a18d16e9-5229-41b6-8820-fab77002f79f"",
+            ""actions"": [
+                {
+                    ""name"": ""AimLasso"",
+                    ""type"": ""Value"",
+                    ""id"": ""ba4ac16a-c152-4b5b-a439-49f5bddad09a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""07bf09a9-8be0-4950-ad0b-93510d502d2c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""cd4aa39f-746c-4cfd-96b9-5ad315cedb05"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimLasso"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""488d4024-b2cb-47ce-a692-322c4b5e610a"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimLasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""9dfaf459-73d0-4227-84cf-faf7b176bae5"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimLasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2583fc3d-a2f5-4a04-ab14-1c363aebcbcb"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimLasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""6bfb2ae9-cfec-4b4f-b298-a04c909b0bf1"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimLasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42441bb9-9400-4dcb-ae71-4c73aaaafa82"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -99,6 +191,10 @@ public partial class @Input: IInputActionCollection2, IDisposable
         m_Touch_TouchInput = m_Touch.FindAction("TouchInput", throwIfNotFound: true);
         m_Touch_Tap = m_Touch.FindAction("Tap", throwIfNotFound: true);
         m_Touch_TouchPosition = m_Touch.FindAction("TouchPosition", throwIfNotFound: true);
+        // Controller
+        m_Controller = asset.FindActionMap("Controller", throwIfNotFound: true);
+        m_Controller_AimLasso = m_Controller.FindAction("AimLasso", throwIfNotFound: true);
+        m_Controller_Throw = m_Controller.FindAction("Throw", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -218,10 +314,69 @@ public partial class @Input: IInputActionCollection2, IDisposable
         }
     }
     public TouchActions @Touch => new TouchActions(this);
+
+    // Controller
+    private readonly InputActionMap m_Controller;
+    private List<IControllerActions> m_ControllerActionsCallbackInterfaces = new List<IControllerActions>();
+    private readonly InputAction m_Controller_AimLasso;
+    private readonly InputAction m_Controller_Throw;
+    public struct ControllerActions
+    {
+        private @Input m_Wrapper;
+        public ControllerActions(@Input wrapper) { m_Wrapper = wrapper; }
+        public InputAction @AimLasso => m_Wrapper.m_Controller_AimLasso;
+        public InputAction @Throw => m_Wrapper.m_Controller_Throw;
+        public InputActionMap Get() { return m_Wrapper.m_Controller; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ControllerActions set) { return set.Get(); }
+        public void AddCallbacks(IControllerActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ControllerActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ControllerActionsCallbackInterfaces.Add(instance);
+            @AimLasso.started += instance.OnAimLasso;
+            @AimLasso.performed += instance.OnAimLasso;
+            @AimLasso.canceled += instance.OnAimLasso;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
+        }
+
+        private void UnregisterCallbacks(IControllerActions instance)
+        {
+            @AimLasso.started -= instance.OnAimLasso;
+            @AimLasso.performed -= instance.OnAimLasso;
+            @AimLasso.canceled -= instance.OnAimLasso;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
+        }
+
+        public void RemoveCallbacks(IControllerActions instance)
+        {
+            if (m_Wrapper.m_ControllerActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IControllerActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ControllerActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ControllerActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ControllerActions @Controller => new ControllerActions(this);
     public interface ITouchActions
     {
         void OnTouchInput(InputAction.CallbackContext context);
         void OnTap(InputAction.CallbackContext context);
         void OnTouchPosition(InputAction.CallbackContext context);
+    }
+    public interface IControllerActions
+    {
+        void OnAimLasso(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
     }
 }
