@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SideWalls
   - Room
+  - Door
   layers:
   - Default
   - TransparentFX

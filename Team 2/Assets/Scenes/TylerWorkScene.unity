@@ -164,10 +164,12 @@ MonoBehaviour:
   isMoving: 0
   movement: {x: 0, y: 0}
   aiming: {x: 0, y: 0}
+  positionInRoom: {x: 0, y: 0}
   lassoThrown: 0
   Throwing: 0
   Lasso: {fileID: 1174515314}
   ThrowingArm: {fileID: 1400078335}
+  cameraBehav: {fileID: 1541089343}
 --- !u!58 &212624774
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -909,6 +911,7 @@ GameObject:
   - component: {fileID: 1541089342}
   - component: {fileID: 1541089341}
   - component: {fileID: 1541089340}
+  - component: {fileID: 1541089343}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -990,6 +993,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1541089343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541089339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0313265c6da96945b975094a0305754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generator: {fileID: 1774356172}
 --- !u!1 &1713590008
 GameObject:
   m_ObjectHideFlags: 0

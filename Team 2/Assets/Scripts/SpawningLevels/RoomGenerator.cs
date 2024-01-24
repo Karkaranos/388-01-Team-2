@@ -7,7 +7,7 @@ public class RoomGenerator : MonoBehaviour
     [SerializeField] private Vector2 gridSize;
     [SerializeField] private int startPos = 0;
     [SerializeField] private GameObject room;
-    [SerializeField] private Vector2 offset;
+    [SerializeField] public Vector2 offset;
     [SerializeField] private List<Cell> board;
     [SerializeField] private bool GridStyle;
 
@@ -36,7 +36,7 @@ public class RoomGenerator : MonoBehaviour
                     GameObject newRoom = Instantiate(room, new Vector3(i * offset.x, -j * offset.y, 0), Quaternion.identity, transform);
                     RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
                     roomBehav.UpdateRooms(currentCell.status);
-
+                    roomBehav.gridPosition = new Vector2(i, j);
                     newRoom.name += " " + i + "-" + j;
                 }
             }

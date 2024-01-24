@@ -26,7 +26,7 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private Vector2 movement;
     public Vector2 aiming;
 
-    private Vector3 playerVelocity;
+    public Vector2 positionInRoom;
 
 
     public bool lassoThrown;
@@ -34,6 +34,7 @@ public class PlayerBehavior : MonoBehaviour
     private GameObject currentObject;
     [SerializeField] private LassoBehavior Lasso;
     [SerializeField] private ThrowingArmBehavior ThrowingArm;
+    [SerializeField] private CameraBehavior cameraBehav;
 
 
     public void Awake()
@@ -126,7 +127,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void HandleRotation()
     {
-        //&& !Lasso.isGrappling
+        
         if ((Mathf.Abs(aiming.x) > controllerDeadzone || Mathf.Abs(aiming.y) > controllerDeadzone) )
         {
             Vector2 playerDirection = new Vector2(aiming.x, aiming.y);
@@ -138,4 +139,13 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Door")
+        {
+            RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
+            positionInRoom = roomBehav.gridPosition;
+            cameraBehav.UpdateLocation(positionInRoom);
+        }
+    }
 }
