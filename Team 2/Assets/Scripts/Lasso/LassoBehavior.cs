@@ -9,13 +9,13 @@ public class LassoBehavior : MonoBehaviour
     public LineRenderer m_lineRenderer;
 
     [Header("General Settings:")]
-    [SerializeField] private int percision = 40;
+    [SerializeField] private int precision = 40;
     [Range(0, 20)][SerializeField] private float straightenLineSpeed = 5;
 
     [Header("Rope Animation Settings:")]
     public AnimationCurve ropeAnimationCurve;
     [Range(0.01f, 4)][SerializeField] private float StartWaveSize = 2;
-    float waveSize = 0;
+    [SerializeField] float waveSize = 0;
 
     [Header("Rope Progression:")]
     public AnimationCurve ropeProgressionCurve;
@@ -23,14 +23,17 @@ public class LassoBehavior : MonoBehaviour
 
     float moveTime = 0;
 
-    [HideInInspector] public bool isGrappling = true;
+    [SerializeField] private PlayerBehavior pBehav;
 
-    bool strightLine = true;
+    [HideInInspector] public bool Missed = true;
+
+    [SerializeField] bool strightLine = true;
+
 
     private void OnEnable()
     {
         moveTime = 0;
-        m_lineRenderer.positionCount = percision;
+        m_lineRenderer.positionCount = precision;
         waveSize = StartWaveSize;
         strightLine = false;
 
@@ -42,12 +45,11 @@ public class LassoBehavior : MonoBehaviour
     private void OnDisable()
     {
         m_lineRenderer.enabled = false;
-        isGrappling = false;
     }
 
     private void LinePointsToFirePoint()
     {
-        for (int i = 0; i < percision; i++)
+        for (int i = 0; i < precision; i++)
         {
             m_lineRenderer.SetPosition(i, ThrowingArm.FirePoint.position);
         }
@@ -63,7 +65,8 @@ public class LassoBehavior : MonoBehaviour
     {
         if (!strightLine)
         {
-            if (m_lineRenderer.GetPosition(percision - 1).x == ThrowingArm.LassoPoint.x)
+            if ((m_lineRenderer.GetPosition(precision - 1).x >= ThrowingArm.LassoPoint.x && m_lineRenderer.GetPosition(precision - 1).x < ThrowingArm.LassoPoint.x + 0.01f) ||
+                (m_lineRenderer.GetPosition(precision - 1).x <= ThrowingArm.LassoPoint.x && m_lineRenderer.GetPosition(precision - 1).x > ThrowingArm.LassoPoint.x - 0.01f))
             {
                 strightLine = true;
             }
@@ -74,11 +77,6 @@ public class LassoBehavior : MonoBehaviour
         }
         else
         {
-            if (!isGrappling)
-            {
-                //ThrowingArm.Grapple();
-                isGrappling = true;
-            }
             if (waveSize > 0)
             {
                 waveSize -= Time.deltaTime * straightenLineSpeed;
@@ -97,9 +95,9 @@ public class LassoBehavior : MonoBehaviour
 
     void DrawRopeWaves()
     {
-        for (int i = 0; i < percision; i++)
+        for (int i = 0; i < precision; i++)
         {
-            float delta = (float)i / ((float)percision - 1f);
+            float delta = (float)i / ((float)precision - 1f);
             Vector2 offset = Vector2.Perpendicular(ThrowingArm.LassoDistanceVector).normalized * ropeAnimationCurve.Evaluate(delta) * waveSize;
             Vector2 targetPosition = Vector2.Lerp(ThrowingArm.FirePoint.position, ThrowingArm.LassoPoint, delta) + offset;
             Vector2 currentPosition = Vector2.Lerp(ThrowingArm.FirePoint.position, targetPosition, ropeProgressionCurve.Evaluate(moveTime) * ropeProgressionSpeed);
@@ -112,5 +110,6 @@ public class LassoBehavior : MonoBehaviour
     {
         m_lineRenderer.SetPosition(0, ThrowingArm.FirePoint.position);
         m_lineRenderer.SetPosition(1, ThrowingArm.LassoPoint);
+        pBehav.Throwing = false;
     }
 }

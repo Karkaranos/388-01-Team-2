@@ -58,6 +58,28 @@
                 },
                 {
                     "name": "",
+                    "id": "03748f1e-6317-4c98-9860-bf398ba40ced",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e66596b1-7d4d-42bf-94c1-f2d7c81fbca7",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "40ce1f99-a475-4b4a-a509-5c7c728531fc",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",

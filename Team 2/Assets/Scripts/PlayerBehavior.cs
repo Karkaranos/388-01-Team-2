@@ -15,6 +15,8 @@ public class PlayerBehavior : MonoBehaviour
     private InputAction aim;
     private InputAction throwLasso;
 
+    public GameObject currentlyLassoed;
+
     private PlayerControls playerControls;
 
     private Rigidbody2D rb2D;
@@ -28,8 +30,10 @@ public class PlayerBehavior : MonoBehaviour
 
 
     public bool lassoThrown;
+    public bool Throwing;
     private GameObject currentObject;
     [SerializeField] private LassoBehavior Lasso;
+    [SerializeField] private ThrowingArmBehavior ThrowingArm;
 
 
     public void Awake()
@@ -67,7 +71,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void ThrowLasso_canceled(InputAction.CallbackContext obj)
     {
-        lassoThrown = false;
+        
     }
 
     private void ThrowLasso_started(InputAction.CallbackContext obj)
@@ -75,6 +79,21 @@ public class PlayerBehavior : MonoBehaviour
         if (!lassoThrown)
         {
             lassoThrown = true;
+            if (ThrowingArm.canShoot)
+            {
+                ThrowingArm.SetLassoPoint();
+            }
+            
+        }
+        else
+        {
+            if (!Throwing)
+            {
+                lassoThrown = false;
+                Lasso.enabled = false;
+                currentlyLassoed = null;
+            }
+            
         }
     }
 
