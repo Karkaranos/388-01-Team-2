@@ -14,8 +14,11 @@ public class EnemyBehavior : Throwable
     [SerializeField]
     private CharacterStats stats;
     private GameObject player;
+    public BoxCollider2D bc2D;
 
     public CharacterStats Stats { get => stats; set => stats = value; }
+
+    private bool canMove = true;
 
     /// <summary>
     /// Start is called on the first frame update. It gets a reference to the player
@@ -23,7 +26,10 @@ public class EnemyBehavior : Throwable
     /// </summary>
     private void Start()
     {
-        base.DamageDealt = stats.DamageDealt;
+        //base.DamageDealt = stats.DamageDealt;
+        base.obStat = stats;
+        bc2D = GetComponent<BoxCollider2D>();
+        bc2D.sharedMaterial = base.Bouncy;
 
         //player = 
 
@@ -41,22 +47,58 @@ public class EnemyBehavior : Throwable
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //If the object collided with is a throwable
-        if(collision.gameObject.GetComponent<Throwable>()!=null)
+        if (collision.gameObject.GetComponent<Throwable>()!=null)
         {
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
            
-            //If the other object was thrown
-            if (collidedWith.thrown)
+            //If the other object was thrown or both are enemies
+            if(isBouncing)
             {
-                print("Enemy collided with thrown item");
-                Stats.TakeDamage(collidedWith.DamageDealt);
+                print("hdskfjsfdhkjshkdjkhsj");
+                bc2D.sharedMaterial = base.BounceCount();
+                //print(isBouncing);
+                Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
                 print("New health: " + Stats.Health);
+                if (Stats.Health == 0)
+                {
+                    Destroy(gameObject);
+                }
+                isBouncing = false;
+            }
+            else if (!isBouncing&&(collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
+            {
+                Stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_ENEMY));
+                print("New health: " + Stats.Health);
+                if(Stats.Health == 0)
+                {
+                    Destroy(gameObject);
+                }
+                isBouncing = true;
+                bc2D.sharedMaterial = base.BounceCount();
             }
             //If this object was thrown
             else
             {
-                print("Enemy collided with item");
+                //Maybe do something here later
             }
+        }
+        //If the object collided with is the player
+        else if (collision.gameObject.GetComponent<PlayerBehavior>()!=null)
+        {
+            StartCoroutine(Freeze());
+        }
+        else if (collision.gameObject.tag == "Wall")
+        {
+            Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
+            print("New health: " + Stats.Health);
+            if (Stats.Health == 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            bc2D.sharedMaterial = base.BounceCount();
         }
     }
 
@@ -68,7 +110,7 @@ public class EnemyBehavior : Throwable
     {
         for(; ; )
         {
-            if(!pickedUp)
+            if(!pickedUp && canMove)
             {
                 Vector2 targetPos = player.transform.position;
                 Vector2 difference;
@@ -96,6 +138,17 @@ public class EnemyBehavior : Throwable
             }
             yield return new WaitForSeconds(Time.deltaTime);
         }
+    }
+
+    /// <summary>
+    /// Temporarily freezes the enemy
+    /// </summary>
+    /// <returns>The amount of time frozen for</returns>
+    public IEnumerator Freeze()
+    {
+        canMove = false;
+        yield return new WaitForSeconds(Stats.FreezeTime);
+        canMove = true;
     }
 
 

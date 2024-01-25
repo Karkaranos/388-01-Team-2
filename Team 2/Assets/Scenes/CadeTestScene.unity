@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 92802477}
   - component: {fileID: 92802476}
   m_Layer: 0
-  m_Name: EnemyTest
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,14 +155,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5ddbf3b53dea245b47a10b5e900b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Thrown: 0
-  damageDealt: 0
-  stats:
-    _health: 10
-    _maxHealth: 0
-    _speed: 0
-    _dmgDealt: 0
+  thrown: 0
+  pickedUp: 0
+  obStat:
+    _baseDmgDealt: 0
     _dmgCap: 0
+    _dmgToPlayer: 0
+    _bounceDamage: 0
+    _dmgToEnemy: 0
+  notBouncy: {fileID: 6200000, guid: 7505eb491522b524481bec2c337d2c60, type: 2}
+  bouncy: {fileID: 6200000, guid: 886bbf57f5ac1e94497f93a2f47024e6, type: 2}
+  maxBounceCount: 5
+  isBouncing: 0
+  stats:
+    _baseDmgDealt: 10
+    _dmgCap: 50
+    _dmgToPlayer: 20
+    _bounceDamage: 15
+    _dmgToEnemy: 50
+    _health: 100
+    _maxHealth: 100
+    _speed: 1
+    _freezeTime: 2
+    _invincTime: 0
+  bc2D: {fileID: 0}
 --- !u!61 &92802477
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -295,7 +311,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92802475}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -3.63, z: 0}
+  m_LocalPosition: {x: -0.11, y: 0.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -446,7 +462,7 @@ GameObject:
   - component: {fileID: 1838242783}
   - component: {fileID: 1838242787}
   m_Layer: 0
-  m_Name: EnemyTest (1)
+  m_Name: Throwable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,7 +528,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -603,11 +619,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5860005dbaef41c49ab79b6c8fcf3c37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Thrown: 1
-  damageDealt: 1
-  stats:
-    _dmgDealt: 5
+  thrown: 1
+  pickedUp: 0
+  obStat:
+    _baseDmgDealt: 0
     _dmgCap: 0
+    _dmgToPlayer: 0
+    _bounceDamage: 0
+    _dmgToEnemy: 0
+  notBouncy: {fileID: 0}
+  bouncy: {fileID: 0}
+  maxBounceCount: 1
+  isBouncing: 0
+  stats:
+    _baseDmgDealt: 0
+    _dmgCap: 0
+    _dmgToPlayer: 0
+    _bounceDamage: 20
+    _dmgToEnemy: 50
 --- !u!1 &1882933478
 GameObject:
   m_ObjectHideFlags: 0

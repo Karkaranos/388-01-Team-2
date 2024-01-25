@@ -21,7 +21,8 @@ public class ObjectBehavior : Throwable
     /// </summary>
     private void Start()
     {
-        base.DamageDealt = stats.DamageDealt;
+        //base.DamageDealt = stats.DamageDealt;
+        base.obStat = stats;
     }
 
     /// <summary>
@@ -35,11 +36,9 @@ public class ObjectBehavior : Throwable
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
             if (collidedWith.thrown)
             {
-                print("Object collided with thrown item");
             }
             else
             {
-                print("Object collided with item");
                 
             }
         }

@@ -12,10 +12,25 @@ using UnityEngine;
 [System.Serializable]
 public class ObjectStats 
 {
+    [Header("Damage:")]
     [SerializeField]
-    private float _dmgDealt;
+    private float _baseDmgDealt;
     [SerializeField]
     private float _dmgCap;
-    public float DamageDealt { get => _dmgDealt; }
+    [SerializeField]
+    private float _dmgToPlayer;
+    [SerializeField]
+    private float _bounceDamage;
+    [SerializeField]
+    private float _dmgToEnemy;
+    public float BaseDamageDealt { get => _baseDmgDealt; }
+    public float DMGToPlayer { get => _dmgToPlayer; }
+    public float DMGToEnemy { get => _dmgToEnemy; }
+    public float BounceDMG { get => _bounceDamage; }
+
+    public enum DamageTypes
+    {
+        TO_PLAYER, TO_ENEMY, ON_BOUNCE, FROM_WALL
+    }
 
 }

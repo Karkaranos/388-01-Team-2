@@ -33,6 +33,10 @@ public class PlayerBehavior : MonoBehaviour
     private InputAction aim;
     private InputAction throwLasso;
 
+    [Header("Player Information:")]
+    [SerializeField] private CharacterStats stats;
+    private bool _invincible;
+
     //storing location
     [HideInInspector] public Vector2 roomIAmIn;
 
@@ -154,5 +158,39 @@ public class PlayerBehavior : MonoBehaviour
             roomIAmIn = roomBehav.gridPosition;
             cameraBehav.UpdateLocation(roomIAmIn);
         }
+    }
+
+    /// <summary>
+    /// Occurs when the player collides with another object. 
+    /// Handles damage taken.
+    /// </summary>
+    /// <param name="collision">The object collided with</param>
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //If the object collided with is a throwable
+        if (collision.gameObject.GetComponent<Throwable>() != null)
+        {
+            Throwable collidedWith = collision.gameObject.GetComponent<EnemyBehavior>();
+
+            //If the enemy was not thrown
+            if (!collidedWith.thrown && !_invincible)
+            {
+                print("Player attacked by Enemy");
+                stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_PLAYER));
+                print("New health: " + stats.Health);
+                StartCoroutine(Invincible());
+            }
+        }
+    }
+
+    /// <summary>
+    /// Temporarily makes the player invincible
+    /// </summary>
+    /// <returns>The amount of time the player is invincible for</returns>
+    IEnumerator Invincible()
+    {
+        _invincible = true;
+        yield return new WaitForSeconds(stats.InvincibilityTime);
+        _invincible = false;
     }
 }

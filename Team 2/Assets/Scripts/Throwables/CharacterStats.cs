@@ -10,8 +10,9 @@
 using UnityEngine;
 
 [System.Serializable]
-public class CharacterStats
+public class CharacterStats : ObjectStats
 {
+    [Header("Basic Stats:")]
     [SerializeField]
     private float _health;
     [SerializeField]
@@ -19,15 +20,23 @@ public class CharacterStats
     [SerializeField]
     private float _speed;
     private float _originalSpeed;
+
+
+    [Header("Effects:")]
     [SerializeField]
-    private float _dmgDealt;
+    private float _freezeTime;
     [SerializeField]
-    private float _dmgCap;
+    private float _invincTime;
+
+
 
 
     public float Health { get => _health; set => _health = value; }
     public float Speed { get => _speed; set => _speed = value; }
-    public float DamageDealt { get => _dmgDealt; }
+    //public float DamageDealt { get => _baseDmgDealt; }
+    public float FreezeTime { get => _freezeTime; }
+    public float InvincibilityTime { get => _invincTime; set => _invincTime = value; }
+    
 
     /// <summary>
     /// Reduces the health the current character has and returns the result
