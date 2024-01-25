@@ -4,7 +4,7 @@
 // Creation Date :     January 23, 2024
 //
 // Brief Description : Creates a serializable class that stores and adjusts 
-                        stats for a character
+                        stats for a character. Inherits from ObjectStats
 
 *****************************************************************************/
 using UnityEngine;
@@ -12,6 +12,7 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterStats : ObjectStats
 {
+    #region Variables
     [Header("Basic Stats:")]
     [SerializeField]
     private float _health;
@@ -36,8 +37,10 @@ public class CharacterStats : ObjectStats
     //public float DamageDealt { get => _baseDmgDealt; }
     public float FreezeTime { get => _freezeTime; }
     public float InvincibilityTime { get => _invincTime; set => _invincTime = value; }
-    
 
+    #endregion
+
+    #region Functions
     /// <summary>
     /// Reduces the health the current character has and returns the result
     /// </summary>
@@ -78,7 +81,7 @@ public class CharacterStats : ObjectStats
         return Health;
     }
 
-
+    #endregion
 
 
 }

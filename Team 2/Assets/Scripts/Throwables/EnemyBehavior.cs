@@ -15,6 +15,12 @@ public class EnemyBehavior : Throwable
     private CharacterStats stats;
     private GameObject player;
     public BoxCollider2D bc2D;
+    [SerializeField][Range(0,2)]
+    private float flashTime;
+    [SerializeField]
+    [Range(0, .5f)]
+    private float timeBetweenFlashes;
+    bool isFlashing = false;
 
     public CharacterStats Stats { get => stats; set => stats = value; }
 
@@ -30,13 +36,17 @@ public class EnemyBehavior : Throwable
         base.obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
         bc2D.sharedMaterial = base.Bouncy;
-
-        //player = 
-
-        if(player!=null)
+        GetComponent<Renderer>().material.color = Color.red;
+        try
         {
+            player = FindObjectOfType<PlayerBehavior>().gameObject;
             StartCoroutine(TrackPlayer());
         }
+        catch
+        {
+            print("Player not found");
+        }
+
 
     }
 
@@ -54,10 +64,11 @@ public class EnemyBehavior : Throwable
             //If the other object was thrown or both are enemies
             if(isBouncing)
             {
-                print("hdskfjsfdhkjshkdjkhsj");
                 bc2D.sharedMaterial = base.BounceCount();
                 //print(isBouncing);
                 Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
+
+                StartCoroutine(DamageFlash());
                 print("New health: " + Stats.Health);
                 if (Stats.Health == 0)
                 {
@@ -69,7 +80,9 @@ public class EnemyBehavior : Throwable
             {
                 Stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_ENEMY));
                 print("New health: " + Stats.Health);
-                if(Stats.Health == 0)
+
+                StartCoroutine(DamageFlash());
+                if (Stats.Health == 0)
                 {
                     Destroy(gameObject);
                 }
@@ -90,6 +103,7 @@ public class EnemyBehavior : Throwable
         else if (collision.gameObject.tag == "Wall")
         {
             Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
+            StartCoroutine(DamageFlash());
             print("New health: " + Stats.Health);
             if (Stats.Health == 0)
             {
@@ -149,6 +163,34 @@ public class EnemyBehavior : Throwable
         canMove = false;
         yield return new WaitForSeconds(Stats.FreezeTime);
         canMove = true;
+    }
+
+    /// <summary>
+    /// Changes the enemy's color to show taking damage
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator DamageFlash()
+    {
+        if(!isFlashing)
+        {
+            isFlashing = true;
+            float flashedFor = 0;
+            while (flashedFor < flashTime)
+            {
+                if (GetComponent<Renderer>().material.color == Color.white)
+                {
+                    GetComponent<Renderer>().material.color = Color.red;
+                }
+                else
+                {
+                    GetComponent<Renderer>().material.color = Color.white;
+                }
+                flashedFor += timeBetweenFlashes;
+                yield return new WaitForSeconds(timeBetweenFlashes);
+            }
+            isFlashing = false;
+        
+        }
     }
 
 

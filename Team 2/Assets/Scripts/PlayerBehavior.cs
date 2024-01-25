@@ -95,6 +95,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 lassoThrown = false;
                 Lasso.enabled = false;
+                currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
                 currentlyLassoed = null;
             }
             
