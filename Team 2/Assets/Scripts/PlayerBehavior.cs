@@ -11,8 +11,10 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private LassoBehavior Lasso;
     [SerializeField] private ThrowingArmBehavior ThrowingArm;
     [SerializeField] private CameraBehavior cameraBehav;
+    [SerializeField] private RoomGenerator roomGenerator;
     private PlayerControls playerControls;
     private Rigidbody2D rb2D;
+    
 
     [Header("Movement Settings:")]
     [SerializeField] private float MovementSpeed;
@@ -158,6 +160,11 @@ public class PlayerBehavior : MonoBehaviour
             RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
             roomIAmIn = roomBehav.gridPosition;
             cameraBehav.UpdateLocation(roomIAmIn);
+
+            if (roomIAmIn == roomGenerator.bottomRightRoom)
+            {
+                roomGenerator.ReachedTheEnd();
+            }
         }
     }
 

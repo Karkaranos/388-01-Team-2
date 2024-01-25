@@ -19,7 +19,8 @@ public class RoomGenerator : MonoBehaviour
     [SerializeField] private List<RoomList> rooms;
 
     [Header("Debug Information:")]
-    [SerializeField] public Vector2 offset;
+    public Vector2 offset;
+    public Vector2 bottomRightRoom;
 
     private int totalWeights;
     [SerializeField]private List<GameObject> spawnedRooms;
@@ -217,5 +218,10 @@ public class RoomGenerator : MonoBehaviour
         spawnedRooms.Clear();
         board.Clear();
         GenerateFloor();
+    }
+
+    public void ReachedTheEnd()
+    {
+
     }
 }
