@@ -1,20 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour
 {
     [SerializeField] private Vector2 gridSize;
     [SerializeField] private int startPos = 0;
-    [SerializeField] private GameObject room;
+    [SerializeField] private GameObject startRoom;
     [SerializeField] public Vector2 offset;
     [SerializeField] private List<Cell> board;
     [SerializeField] private bool GridStyle;
+    [SerializeField] private List<RoomList> rooms;
+    private int totalWeights;
 
     // Start is called before the first frame update
     void Start()
     {
+        foreach (RoomList room in rooms)
+        {
+            totalWeights += room.weight;
+        }
         GenerateFloor();
+
     }
 
     // Update is called once per frame
@@ -33,14 +41,42 @@ public class RoomGenerator : MonoBehaviour
 
                 if (GridStyle || currentCell.hasBeenVisited) {
 
-                    GameObject newRoom = Instantiate(room, new Vector3(i * offset.x, -j * offset.y, 0), Quaternion.identity, transform);
-                    RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
-                    roomBehav.UpdateRooms(currentCell.status);
-                    roomBehav.gridPosition = new Vector2(i, j);
-                    newRoom.name += " " + i + "-" + j;
+
+                    GameObject tempRoom = PickRandomRoom();
+                    if (i == 0 && j == 0)
+                    {
+                        tempRoom = startRoom;
+                    }
+                    if (tempRoom != null)
+                    {
+                        
+                        GameObject newRoom = Instantiate(tempRoom, new Vector3(i * offset.x + 0.5f, -j * offset.y, 0), Quaternion.identity, transform);
+                        RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
+                        roomBehav.UpdateRooms(currentCell.status);
+                        roomBehav.gridPosition = new Vector2(i, j);
+                        newRoom.name += " " + i + "-" + j;
+                    }
+                    else
+                    {
+                        Debug.Log("Random Room is Null");
+                    }
                 }
             }
         }
+    }
+
+    public GameObject PickRandomRoom()
+    {
+        int rand = Random.Range(0, totalWeights);
+        foreach (RoomList room in rooms)
+        {
+            rand -= room.weight;
+            if (rand <= 0)
+            {
+                return room.room;
+            }
+        }
+        return null;
     }
 
     public void GenerateFloor()
