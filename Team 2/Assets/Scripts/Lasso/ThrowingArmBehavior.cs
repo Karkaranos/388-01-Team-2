@@ -12,8 +12,7 @@ public class ThrowingArmBehavior : MonoBehaviour
     [SerializeField] private bool attachToAll = false;
     [SerializeField] private int throwableLayerNumber = 7;
     [SerializeField] private LayerMask layersToIgnore = new LayerMask();
-
-    private float raycastDistance = 1000f;
+    private float defaultRaycastDistance = 1000f;
 
     [Header("Transform Ref:")]
     public Transform Player;
@@ -24,13 +23,12 @@ public class ThrowingArmBehavior : MonoBehaviour
     [SerializeField] private bool hasMaxDistance = false;
     [SerializeField] private float maxDistance = 20;
 
-
+    [Header("Cooldown Specs")]
     [SerializeField] private float cooldownMax;
-    [SerializeField] private float timer;
-     public bool canShoot;
-    [SerializeField] public Vector2 LassoPoint;
+    [SerializeField] private float cooldownTimer;
+    public bool offCooldown;
+    [HideInInspector] public Vector2 LassoPoint;
     [HideInInspector] public Vector2 LassoDistanceVector;
-    public double LassoX;
     
     
 
@@ -39,23 +37,23 @@ public class ThrowingArmBehavior : MonoBehaviour
         Lasso.enabled = false;
         if (hasMaxDistance)
         {
-            raycastDistance = maxDistance;
+            defaultRaycastDistance = maxDistance;
         }
 
     }
 
     private void Update()
     {
-        if (!canShoot)
+        if (!offCooldown)
         {
-            if (timer < cooldownMax)
+            if (cooldownTimer < cooldownMax)
             {
-                timer += Time.deltaTime;
+                cooldownTimer += Time.deltaTime;
             }
             else
             {
-                canShoot = true;
-                timer = 0;
+                offCooldown = true;
+                cooldownTimer = 0;
             }
         }
     }
@@ -66,23 +64,22 @@ public class ThrowingArmBehavior : MonoBehaviour
     {
         
             
-            Vector2 distanceVector = new Vector3(PlayerBehav.aiming.x * 100, PlayerBehav.aiming.y * 100, 0) - ThrowingArm.position;
+            Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x * 100, PlayerBehav.aimingVector.y * 100, 0) - ThrowingArm.position;
             Debug.DrawLine(FirePoint.position, distanceVector.normalized);
             if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
             {
-                RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, raycastDistance, ~layersToIgnore);
+                RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
                 if (_hit)
                 {
                     if (_hit.transform.gameObject.layer == throwableLayerNumber || attachToAll)
                     {
                         if (Vector2.Distance(_hit.point, FirePoint.position) <= maxDistance || !hasMaxDistance)
                         {
-                            if (canShoot)
+                            if (offCooldown)
                             {
                                 PlayerBehav.Throwing = true;
-                                canShoot = false;
+                                offCooldown = false;
                                 PlayerBehav.currentlyLassoed = _hit.transform.gameObject;
-                                LassoX = _hit.point.x;
                                 LassoPoint = _hit.point;
                                 Debug.Log(LassoPoint);
                                 LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;

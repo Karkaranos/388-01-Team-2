@@ -7,6 +7,7 @@ public class LassoBehavior : MonoBehaviour
     [Header("General Refernces:")]
     public ThrowingArmBehavior ThrowingArm;
     public LineRenderer m_lineRenderer;
+    [SerializeField] private PlayerBehavior pBehav;
 
     [Header("General Settings:")]
     [SerializeField] private int precision = 40;
@@ -22,12 +23,8 @@ public class LassoBehavior : MonoBehaviour
     [SerializeField][Range(1, 50)] private float ropeProgressionSpeed = 1;
 
     float moveTime = 0;
-
-    [SerializeField] private PlayerBehavior pBehav;
-
     [HideInInspector] public bool Missed = true;
-
-    [SerializeField] bool strightLine = true;
+    private bool strightLine = true;
 
 
     private void OnEnable()

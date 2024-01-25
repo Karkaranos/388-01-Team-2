@@ -5,14 +5,22 @@ using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour
 {
+    [Header("Grid Settings:")]
     [SerializeField] private Vector2 gridSize;
     [SerializeField] private int startPos = 0;
-    [SerializeField] private GameObject startRoom;
-    [SerializeField] public Vector2 offset;
     [SerializeField] private List<Cell> board;
     [SerializeField] private bool GridStyle;
+
+    [Header("Room Settings:")]
+    [SerializeField] private GameObject startRoom;
     [SerializeField] private List<RoomList> rooms;
+
+    [Header("Debug Information:")]
+    [SerializeField] public Vector2 offset;
+
     private int totalWeights;
+
+    
 
     // Start is called before the first frame update
     void Start()

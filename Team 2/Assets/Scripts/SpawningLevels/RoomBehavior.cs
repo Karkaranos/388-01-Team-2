@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class RoomBehavior : MonoBehaviour
 {
+    [Header("Debug Information:")]
     //0 - up, 1 - down, 2 - right, 3 - left
-    public GameObject[] walls;
-    public GameObject[] doors;
-    public Vector2 gridPosition;
+     public GameObject[] walls;
+     public GameObject[] doors;
+     public Vector2 gridPosition;
 
     /// <summary>
     /// closes and opens rooms
