@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,13 +18,14 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private float MovementSpeed;
     [SerializeField] private float controllerDeadzone = 0.1f;
     [SerializeField] private float controllerRotateSmoothing = 1000f;
+    [SerializeField] private bool canMoveWhileLassoing;
 
     [Header("Debug Information:")]
     public GameObject currentlyLassoed;
     [SerializeField] private Vector2 movementVector;
     public Vector2 aimingVector;
     [SerializeField] private bool lassoThrown;
-    [SerializeField] private bool Throwing;
+    public bool Throwing;
 
     //Input refrences
     private PlayerInput pInput;
@@ -119,7 +121,15 @@ public class PlayerBehavior : MonoBehaviour
 
     private void HandleMovement()
     {
-        rb2D.velocity = movementVector * MovementSpeed;
+        if (canMoveWhileLassoing || !Lasso.enabled)
+        {
+            rb2D.velocity = movementVector * MovementSpeed;
+        }
+        else
+        {
+            rb2D.velocity = Vector2.zero;
+        }
+        
     }
 
     private void HandleRotation()

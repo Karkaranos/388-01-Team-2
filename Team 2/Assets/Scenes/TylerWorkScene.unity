@@ -156,20 +156,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161d6507a8276aa4394dcd9d4e28386f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 2.5
-  controllerDeadzone: 0.1
-  controllerRotateSmoothing: 1000
-  currentlyLassoed: {fileID: 0}
-  isAiming: 0
-  isMoving: 0
-  movement: {x: 0, y: 0}
-  aiming: {x: 0, y: 0}
-  positionInRoom: {x: 0, y: 0}
-  lassoThrown: 0
-  Throwing: 0
   Lasso: {fileID: 1174515314}
   ThrowingArm: {fileID: 1400078335}
   cameraBehav: {fileID: 1541089343}
+  MovementSpeed: 3.5
+  controllerDeadzone: 0.1
+  controllerRotateSmoothing: 1000
+  canMoveWhileLassoing: 1
+  currentlyLassoed: {fileID: 0}
+  movementVector: {x: 0, y: 0}
+  aimingVector: {x: 0, y: 0}
+  lassoThrown: 0
+  Throwing: 0
+  roomIAmIn: {x: 0, y: 0}
 --- !u!58 &212624774
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -527,6 +526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThrowingArm: {fileID: 1400078335}
   m_lineRenderer: {fileID: 1174515315}
+  pBehav: {fileID: 212624773}
   precision: 40
   straightenLineSpeed: 10
   ropeAnimationCurve:
@@ -616,9 +616,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   ropeProgressionSpeed: 6.7
-  pBehav: {fileID: 212624773}
   Missed: 1
-  strightLine: 1
 --- !u!120 &1174515315
 LineRenderer:
   serializedVersion: 2
@@ -798,11 +796,10 @@ MonoBehaviour:
   hasMaxDistance: 0
   maxDistance: 3.5
   cooldownMax: 1.5
-  timer: 0
-  canShoot: 1
+  cooldownTimer: 0
+  offCooldown: 0
   LassoPoint: {x: 0, y: 0}
   LassoDistanceVector: {x: 0, y: 0}
-  LassoX: 0
 --- !u!61 &1400078336
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1186,14 +1183,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: {x: 15, y: 15}
   startPos: 0
-  startRoom: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
-  offset: {x: 17.3, y: 9}
   GridStyle: 0
+  startRoom: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
   rooms:
   - room: {fileID: 1802137274429792719, guid: fdca16b7ca6b08646bad67cd6dbe3a56, type: 3}
     weight: 1
   - room: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
     weight: 2
+  offset: {x: 17.3, y: 9}
 --- !u!1 &2005331327
 GameObject:
   m_ObjectHideFlags: 0
