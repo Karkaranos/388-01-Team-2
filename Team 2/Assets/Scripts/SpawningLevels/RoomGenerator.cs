@@ -22,7 +22,7 @@ public class RoomGenerator : MonoBehaviour
     [SerializeField] public Vector2 offset;
 
     private int totalWeights;
-    private List<GameObject> spawnedRooms;
+    [SerializeField]private List<GameObject> spawnedRooms;
 
     
 
@@ -64,11 +64,12 @@ public class RoomGenerator : MonoBehaviour
                     {
                         
                         GameObject newRoom = Instantiate(startRoom, new Vector3(i * offset.x, -j * offset.y, 0), Quaternion.identity, transform);
+                        spawnedRooms.Add(newRoom);
                         RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
                         roomBehav.UpdateRooms(currentCell.status);
                         roomBehav.gridPosition = new Vector2(i, j);
                         newRoom.name += " " + i + "-" + j;
-                        spawnedRooms.Add(newRoom);
+                        
                     }
                     else
                     {
@@ -209,12 +210,11 @@ public class RoomGenerator : MonoBehaviour
 
     public void RespawnRooms()
     {
-        int count = spawnedRooms.Count;
-        for (int i = 0; i < spawnedRooms.Count; i++)
+        foreach (GameObject go in spawnedRooms)
         {
-            Destroy(spawnedRooms[i]);
-            spawnedRooms.RemoveAt(i);
+            Destroy(go);
         }
+        spawnedRooms.Clear();
         board.Clear();
         GenerateFloor();
     }

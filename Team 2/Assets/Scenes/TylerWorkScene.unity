@@ -1632,9 +1632,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4ad5741ede2cb47ba9532a693dc889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 5, y: 5}
+  gridSize: {x: 10, y: 10}
   startPos: 0
-  GridStyle: 1
+  GridStyle: 0
   startRoom: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
   rooms:
   - room: {fileID: 1802137274429792719, guid: fdca16b7ca6b08646bad67cd6dbe3a56, type: 3}
@@ -1642,6 +1642,7 @@ MonoBehaviour:
   - room: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
     weight: 2
   offset: {x: 17.8, y: 8.8}
+  spawnedRooms: []
 --- !u!1 &2005331327
 GameObject:
   m_ObjectHideFlags: 0
