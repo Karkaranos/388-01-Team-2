@@ -7,6 +7,7 @@ TagManager:
   - SideWalls
   - Room
   - Door
+  - Wall
   layers:
   - Default
   - TransparentFX
