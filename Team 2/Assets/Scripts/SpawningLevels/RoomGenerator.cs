@@ -22,14 +22,21 @@ public class RoomGenerator : MonoBehaviour
     public Vector2 offset;
     public Vector2 bottomRightRoom;
 
+    private GameObject bottomRightRoomGO;
+    private int newDoor;
     private int totalWeights;
     [SerializeField]private List<GameObject> spawnedRooms;
+    private bool hasReachedEnd;
+    private Vector2 calcOffset;
 
     
 
     // Start is called before the first frame update
     void Start()
     {
+        hasReachedEnd = false;
+        bottomRightRoomGO = null;
+        calcOffset = offset;
         spawnedRooms = new List<GameObject>();
         foreach (RoomList room in rooms)
         {
@@ -47,30 +54,51 @@ public class RoomGenerator : MonoBehaviour
 
     public void InsRooms()
     {
+        if (hasReachedEnd)
+        {
+            spawnedRooms.Add(bottomRightRoomGO);
+            RoomBehavior botRightBehavFirst = bottomRightRoomGO.GetComponent<RoomBehavior>();
+            botRightBehavFirst.UpdateRooms(board[0].status);
+        }
+        int count = 0;
         for (int i = 0; i < gridSize.x; i++)
         {
             for (int j = 0; j < gridSize.y; j++)
             {
+                count++;
                 Cell currentCell = board[Mathf.FloorToInt(i + j * gridSize.x)];
 
                 if (GridStyle || currentCell.hasBeenVisited) {
 
 
                     GameObject tempRoom = PickRandomRoom();
-                    if (i == 0 && j == 0)
+                    if (i == 0 && j == 0 && !hasReachedEnd)
                     {
                         tempRoom = startRoom;
                     }
                     if (tempRoom != null)
                     {
-                        
-                        GameObject newRoom = Instantiate(startRoom, new Vector3(i * offset.x, -j * offset.y, 0), Quaternion.identity, transform);
-                        spawnedRooms.Add(newRoom);
-                        RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
-                        roomBehav.UpdateRooms(currentCell.status);
-                        roomBehav.gridPosition = new Vector2(i, j);
-                        newRoom.name += " " + i + "-" + j;
-                        
+                        if ((i != 0 && j != 0) || !hasReachedEnd)
+                        {
+                            GameObject newRoom = Instantiate(startRoom, new Vector3(i * calcOffset.x, -j * calcOffset.y, 0), Quaternion.identity, transform);
+                            spawnedRooms.Add(newRoom);
+                            RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
+
+                            /*if (hasReachedEnd && i == 0 && j == 0)
+                            {
+                                if (newDoor < 1)
+                                {
+                                    currentCell.status[0] = true;
+                                }
+                                else
+                                {
+                                    currentCell.status[3] = true;
+                                }
+                            }*/
+                            roomBehav.UpdateRooms(currentCell.status);
+                            roomBehav.gridPosition = new Vector2(i, j);
+                            newRoom.name += " " + i + "-" + j;
+                        }
                     }
                     else
                     {
@@ -79,6 +107,10 @@ public class RoomGenerator : MonoBehaviour
                 }
             }
         }
+
+        bottomRightRoomGO = spawnedRooms[spawnedRooms.Count - 1];
+        RoomBehavior botRightBehav = bottomRightRoomGO.GetComponent<RoomBehavior>();
+        bottomRightRoom = botRightBehav.gridPosition;
     }
 
     public GameObject PickRandomRoom()
@@ -213,7 +245,16 @@ public class RoomGenerator : MonoBehaviour
     {
         foreach (GameObject go in spawnedRooms)
         {
-            Destroy(go);
+            
+            if (hasReachedEnd && go == bottomRightRoomGO)
+            {
+
+            }
+            else
+            {
+                Destroy(go);
+            }
+            
         }
         spawnedRooms.Clear();
         board.Clear();
@@ -222,6 +263,31 @@ public class RoomGenerator : MonoBehaviour
 
     public void ReachedTheEnd()
     {
+        Debug.Log("spawning new rooms");
+        RoomBehavior roomBehav = bottomRightRoomGO.GetComponent<RoomBehavior>();
+        bool[] status = new bool[4];
+        status[0] = false;
+        status[3] = false;
+        hasReachedEnd = true;
 
+        bottomRightRoomGO.transform.position = new Vector3(0, 0, 0);
+        roomBehav.gridPosition = new Vector2 (0, 0);
+        spawnedRooms.RemoveAt(spawnedRooms.Count - 1);
+        newDoor = Random.Range(0, 2);
+        if (newDoor < 1)
+        {
+            //right
+            status[1] = true;
+            status[2] = false;
+        }
+        else
+        {
+            status[1] = false;
+            status[2] = true;
+        }
+        roomBehav.UpdateRooms(status);
+        
+
+        RespawnRooms();
     }
 }
