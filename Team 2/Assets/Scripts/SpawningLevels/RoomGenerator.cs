@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour
@@ -19,12 +22,14 @@ public class RoomGenerator : MonoBehaviour
     [SerializeField] public Vector2 offset;
 
     private int totalWeights;
+    private List<GameObject> spawnedRooms;
 
     
 
     // Start is called before the first frame update
     void Start()
     {
+        spawnedRooms = new List<GameObject>();
         foreach (RoomList room in rooms)
         {
             totalWeights += room.weight;
@@ -58,11 +63,12 @@ public class RoomGenerator : MonoBehaviour
                     if (tempRoom != null)
                     {
                         
-                        GameObject newRoom = Instantiate(tempRoom, new Vector3(i * offset.x + 0.5f, -j * offset.y, 0), Quaternion.identity, transform);
+                        GameObject newRoom = Instantiate(startRoom, new Vector3(i * offset.x, -j * offset.y, 0), Quaternion.identity, transform);
                         RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
                         roomBehav.UpdateRooms(currentCell.status);
                         roomBehav.gridPosition = new Vector2(i, j);
                         newRoom.name += " " + i + "-" + j;
+                        spawnedRooms.Add(newRoom);
                     }
                     else
                     {
@@ -200,4 +206,16 @@ public class RoomGenerator : MonoBehaviour
         return returnList;
     }
 
+
+    public void RespawnRooms()
+    {
+        int count = spawnedRooms.Count;
+        for (int i = 0; i < spawnedRooms.Count; i++)
+        {
+            Destroy(spawnedRooms[i]);
+            spawnedRooms.RemoveAt(i);
+        }
+        board.Clear();
+        GenerateFloor();
+    }
 }
