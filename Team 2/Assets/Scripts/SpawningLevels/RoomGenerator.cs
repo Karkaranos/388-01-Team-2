@@ -25,7 +25,7 @@ public class RoomGenerator : MonoBehaviour
     private GameObject bottomRightRoomGO;
     private int newDoor;
     private int totalWeights;
-    [SerializeField]private List<GameObject> spawnedRooms;
+    [SerializeField] private List<GameObject> spawnedRooms;
     private bool hasReachedEnd;
     private Vector2 calcOffset;
 

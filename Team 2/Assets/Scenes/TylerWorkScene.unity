@@ -294,6 +294,7 @@ MonoBehaviour:
   Lasso: {fileID: 1174515314}
   ThrowingArm: {fileID: 1400078335}
   cameraBehav: {fileID: 1541089343}
+  roomGenerator: {fileID: 1774356172}
   MovementSpeed: 3.5
   controllerDeadzone: 0.1
   controllerRotateSmoothing: 1000
@@ -1632,7 +1633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4ad5741ede2cb47ba9532a693dc889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 10, y: 10}
+  gridSize: {x: 3, y: 3}
   startPos: 0
   GridStyle: 0
   startRoom: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
@@ -1642,6 +1643,7 @@ MonoBehaviour:
   - room: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
     weight: 2
   offset: {x: 17.8, y: 8.8}
+  bottomRightRoom: {x: 0, y: 0}
   spawnedRooms: []
 --- !u!1 &2005331327
 GameObject:
