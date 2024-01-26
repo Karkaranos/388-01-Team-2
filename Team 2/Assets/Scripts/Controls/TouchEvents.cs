@@ -11,7 +11,6 @@ public class TouchEvents : MonoBehaviour
     public TMP_Text posText;
     private Input touchControls;
     public GameObject ob;
-    bool beingTouched = false;
 
     Vector2 touchPos;
     private void Awake()
@@ -25,7 +24,6 @@ public class TouchEvents : MonoBehaviour
 
     private void EndTouch(InputAction.CallbackContext ctx)
     {
-        beingTouched = false;
         touchPos = touchControls.Touch.TouchPosition.ReadValue<Vector2>();
         tapText.text = "Touch Ended";
         //ob.transform.position = new Vector3(touchPos.x/(Screen.width/2), touchPos.y/(Screen.height/2), 0);

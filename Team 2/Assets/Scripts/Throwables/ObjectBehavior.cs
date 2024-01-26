@@ -12,6 +12,7 @@ public class ObjectBehavior : Throwable
 {
     [SerializeField]
     private ObjectStats stats;
+    public BoxCollider2D bc2D;
 
     public ObjectStats Stats { get => stats; set => stats = value; }
 
@@ -23,6 +24,8 @@ public class ObjectBehavior : Throwable
     {
         //base.DamageDealt = stats.DamageDealt;
         base.obStat = stats;
+        bc2D = GetComponent<BoxCollider2D>();
+        bc2D.sharedMaterial = base.Bouncy;
     }
 
     /// <summary>
@@ -31,16 +34,6 @@ public class ObjectBehavior : Throwable
     /// <param name="collision">The object collided with</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Throwable>() != null)
-        {
-            Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
-            if (collidedWith.thrown)
-            {
-            }
-            else
-            {
-                
-            }
-        }
+        CheckBounce(collision.gameObject);
     }
 }
