@@ -81,6 +81,7 @@ public class ThrowingArmBehavior : MonoBehaviour
                                 offCooldown = false;
                                 PlayerBehav.currentlyLassoed = _hit.transform.gameObject;
                                 PlayerBehav.currentlyLassoed.GetComponent<Throwable>().pickedUp = true;
+                                PlayerBehav.currentlyLassoed.GetComponent<Throwable>().bouncedWith.Clear();
                                 LassoPoint = _hit.point;
                                 Debug.Log(LassoPoint);
                                 LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;

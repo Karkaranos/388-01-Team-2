@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 public class EnemyBehavior : Throwable
 {
+    #region Variables
     [SerializeField]
     private CharacterStats stats;
     private GameObject player;
@@ -28,6 +29,10 @@ public class EnemyBehavior : Throwable
 
     private bool canMove = true;
 
+    #endregion
+
+    #region Functions
+
     /// <summary>
     /// Start is called on the first frame update. It gets a reference to the player
     /// and sets damage dealt
@@ -35,10 +40,12 @@ public class EnemyBehavior : Throwable
     private void Start()
     {
         //base.DamageDealt = stats.DamageDealt;
-        base.obStat = stats;
+        obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
-        bc2D.sharedMaterial = base.Bouncy;
+        bc2D.sharedMaterial = Bouncy;
         GetComponent<Renderer>().material.color = Color.red;
+        
+        //If the player can be found, track them.
         try
         {
             player = FindObjectOfType<PlayerBehavior>().gameObject;
@@ -63,9 +70,9 @@ public class EnemyBehavior : Throwable
         if (collision.gameObject.GetComponent<Throwable>()!=null)
         {
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
-            //CheckBounce(collision.gameObject);
-
-            if (!isBouncing&&(collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
+            
+            //If the enemy collided with an enemy or was thrown
+            if ((collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
             {
                 Stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_ENEMY));
                 print("New health: " + Stats.Health);
@@ -75,32 +82,12 @@ public class EnemyBehavior : Throwable
                 {
                     Destroy(gameObject);
                 }
-                //bc2D.sharedMaterial = base.BounceCount();
-            }
-            //If this object was thrown
-            else
-            {
-                //Maybe do something here later
             }
         }
         //If the object collided with is the player
         else if (collision.gameObject.GetComponent<PlayerBehavior>()!=null)
         {
             StartCoroutine(Freeze());
-        }
-        else if (collision.gameObject.tag == "Wall" && !bouncedWith.Contains(collision.gameObject))
-        {
-            Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
-            StartCoroutine(DamageFlash());
-            print("New health: " + Stats.Health);
-            if (Stats.Health == 0)
-            {
-                Destroy(gameObject);
-            }
-        }
-        else
-        {
-            //bc2D.sharedMaterial = base.BounceCount();
         }
     }
 
@@ -189,28 +176,33 @@ public class EnemyBehavior : Throwable
     /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
     protected override PhysicsMaterial2D CheckBounce(GameObject obj)
     {
-        if (obj.tag == "Wall"&&isBouncing)
+        //If it hits or bounces with the wall, take wall damage
+        if (obj.tag == "Wall"&&(isBouncing||!bouncedWith.Contains(obj)))
         {
             Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
+            StartCoroutine(DamageFlash());
         }
-        else if (isBouncing)
+        //If it bounces into an enemy, take bounce damage
+        else if (isBouncing && obj.tag != "Enemy")
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
+            StartCoroutine(DamageFlash());
         }
 
-        StartCoroutine(DamageFlash());
         print("New health: " + Stats.Health);
         if (Stats.Health == 0)
         {
             Destroy(gameObject);
         }
 
+        //If the object hasn't been bounced with previously, add it
         if (!bouncedWith.Contains(obj))
         {
             isBouncing = true;
             bouncedWith.Add(obj);
             return bouncy;
         }
+        //Otherwise, stop bouncing
         else
         {
             //print("Hit previously bounced with");
@@ -220,5 +212,5 @@ public class EnemyBehavior : Throwable
         }
     }
 
-
+    #endregion
 }

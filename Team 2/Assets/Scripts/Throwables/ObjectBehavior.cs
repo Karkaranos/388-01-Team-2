@@ -35,16 +35,5 @@ public class ObjectBehavior : Throwable
     private void OnCollisionEnter2D(Collision2D collision)
     {
         CheckBounce(collision.gameObject);
-        if (collision.gameObject.GetComponent<Throwable>() != null)
-        {
-            Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
-            if (collidedWith.thrown)
-            {
-            }
-            else
-            {
-                
-            }
-        }
     }
 }

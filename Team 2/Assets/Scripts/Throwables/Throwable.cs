@@ -32,23 +32,15 @@ public class Throwable : MonoBehaviour
     public float DamageDealt { get => damageDealt; set => damageDealt = value; }
     public PhysicsMaterial2D Bouncy { get => bouncy; }
 
-    public PhysicsMaterial2D BounceCount()
-    {
-        if(!isBouncing)
-        {
-            //bounceCount++;
-            //isBouncing = true;
-            print("off");
-            return bouncy;
-        }
-        else
-        {
-            //bounceCount = 0;
-           // isBouncing = false;
-            return notBouncy;
-        }
-    }
+    #endregion
 
+    #region Functions
+
+    /// <summary>
+    /// Deals the appropriate type of damage
+    /// </summary>
+    /// <param name="type">The type of damage to deal</param>
+    /// <returns>The value of damage</returns>
     public float Damage(ObjectStats.DamageTypes type)
     {
         //print(type);
@@ -70,6 +62,12 @@ public class Throwable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks whether the object has bounced with the current object. Stops bouncing if objects have previously bounced.
+    /// Can be overwritten by child classes
+    /// </summary>
+    /// <param name="obj">The object bounced with</param>
+    /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
     protected virtual PhysicsMaterial2D CheckBounce(GameObject obj)
     {
         if (!bouncedWith.Contains(obj))
