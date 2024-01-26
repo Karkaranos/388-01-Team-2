@@ -159,6 +159,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
             roomIAmIn = roomBehav.gridPosition;
+            transform.SetParent(collision.transform);
             cameraBehav.UpdateLocation(roomIAmIn);
 
             if (roomIAmIn == roomGenerator.bottomRightRoom)
