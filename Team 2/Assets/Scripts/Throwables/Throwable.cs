@@ -7,6 +7,7 @@
 
 *****************************************************************************/
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Throwable : MonoBehaviour
 {
@@ -20,11 +21,13 @@ public class Throwable : MonoBehaviour
     public ObjectStats obStat;
 
     [Header("Bouncing:")]
-    [SerializeField] private PhysicsMaterial2D notBouncy;
-    [SerializeField] private PhysicsMaterial2D bouncy;
+    [SerializeField] protected PhysicsMaterial2D notBouncy;
+    [SerializeField] protected PhysicsMaterial2D bouncy;
     [SerializeField] private int maxBounceCount;
     private int bounceCount;
     public bool isBouncing;
+
+    public List<GameObject> bouncedWith = new List<GameObject>();
 
     public float DamageDealt { get => damageDealt; set => damageDealt = value; }
     public PhysicsMaterial2D Bouncy { get => bouncy; }
@@ -48,7 +51,7 @@ public class Throwable : MonoBehaviour
 
     public float Damage(ObjectStats.DamageTypes type)
     {
-        print(type);
+        //print(type);
         if (type == ObjectStats.DamageTypes.TO_PLAYER)
         {
             return obStat.DMGToPlayer;
@@ -67,10 +70,27 @@ public class Throwable : MonoBehaviour
         }
     }
 
+    protected virtual PhysicsMaterial2D CheckBounce(GameObject obj)
+    {
+        if (!bouncedWith.Contains(obj))
+        {
+            //print("bounced with new object");
+            isBouncing = true;
+            bouncedWith.Add(obj);
+            return bouncy;
+        }
+        else
+        {
+            //print("Hit previously bounced with");
+            isBouncing = false;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            return notBouncy;
+        }
+    }
+}
+
 
 
 
 
     #endregion
-
-}

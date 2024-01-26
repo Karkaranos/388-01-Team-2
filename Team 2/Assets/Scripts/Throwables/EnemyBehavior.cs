@@ -8,6 +8,7 @@
 *****************************************************************************/
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyBehavior : Throwable
 {
@@ -21,6 +22,7 @@ public class EnemyBehavior : Throwable
     [Range(0, .5f)]
     private float timeBetweenFlashes;
     bool isFlashing = false;
+
 
     public CharacterStats Stats { get => stats; set => stats = value; }
 
@@ -56,27 +58,14 @@ public class EnemyBehavior : Throwable
     /// <param name="collision">The object collided with</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        CheckBounce(collision.gameObject);
         //If the object collided with is a throwable
         if (collision.gameObject.GetComponent<Throwable>()!=null)
         {
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
-           
-            //If the other object was thrown or both are enemies
-            if(isBouncing)
-            {
-                bc2D.sharedMaterial = base.BounceCount();
-                //print(isBouncing);
-                Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
+            //CheckBounce(collision.gameObject);
 
-                StartCoroutine(DamageFlash());
-                print("New health: " + Stats.Health);
-                if (Stats.Health == 0)
-                {
-                    Destroy(gameObject);
-                }
-                isBouncing = false;
-            }
-            else if (!isBouncing&&(collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
+            if (!isBouncing&&(collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
             {
                 Stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_ENEMY));
                 print("New health: " + Stats.Health);
@@ -86,8 +75,7 @@ public class EnemyBehavior : Throwable
                 {
                     Destroy(gameObject);
                 }
-                isBouncing = true;
-                bc2D.sharedMaterial = base.BounceCount();
+                //bc2D.sharedMaterial = base.BounceCount();
             }
             //If this object was thrown
             else
@@ -100,7 +88,7 @@ public class EnemyBehavior : Throwable
         {
             StartCoroutine(Freeze());
         }
-        else if (collision.gameObject.tag == "Wall")
+        else if (collision.gameObject.tag == "Wall" && !bouncedWith.Contains(collision.gameObject))
         {
             Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
             StartCoroutine(DamageFlash());
@@ -112,7 +100,7 @@ public class EnemyBehavior : Throwable
         }
         else
         {
-            bc2D.sharedMaterial = base.BounceCount();
+            //bc2D.sharedMaterial = base.BounceCount();
         }
     }
 
@@ -190,6 +178,45 @@ public class EnemyBehavior : Throwable
             }
             isFlashing = false;
         
+        }
+    }
+
+    /// <summary>
+    /// Checks whether the enemy has bounced with the current object and
+    /// takes the appropriate damage type. Stops bouncing if objects have previously bounced.
+    /// </summary>
+    /// <param name="obj">The object bounced with</param>
+    /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
+    protected override PhysicsMaterial2D CheckBounce(GameObject obj)
+    {
+        if (obj.tag == "Wall"&&isBouncing)
+        {
+            Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
+        }
+        else if (isBouncing)
+        {
+            Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
+        }
+
+        StartCoroutine(DamageFlash());
+        print("New health: " + Stats.Health);
+        if (Stats.Health == 0)
+        {
+            Destroy(gameObject);
+        }
+
+        if (!bouncedWith.Contains(obj))
+        {
+            isBouncing = true;
+            bouncedWith.Add(obj);
+            return bouncy;
+        }
+        else
+        {
+            //print("Hit previously bounced with");
+            isBouncing = false;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            return notBouncy;
         }
     }
 
