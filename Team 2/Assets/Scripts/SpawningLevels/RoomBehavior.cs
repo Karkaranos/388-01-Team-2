@@ -36,6 +36,7 @@ public class RoomBehavior : MonoBehaviour
             GameObject go = Instantiate(e.EnemyToSpawn, spawnPoint, Quaternion.identity);
             spawnedEnemies.Add(go);
             go.GetComponent<EnemyBehavior>().roomSpawnedIn = this;
+            go.GetComponent<EnemyBehavior>().SpawnInRoom(gameObject.transform);
         }
     }
 
