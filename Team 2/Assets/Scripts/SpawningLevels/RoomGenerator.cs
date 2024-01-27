@@ -23,7 +23,7 @@ public class RoomGenerator : MonoBehaviour
     [Header("Debug Information:")]
     public Vector2 offset;
     public Vector2 bottomRightRoom;
-
+    [SerializeField] private CameraBehavior mainCamera;
     private GameObject bottomRightRoomGO;
     private int newDoor;
     private int totalWeights;
@@ -83,7 +83,7 @@ public class RoomGenerator : MonoBehaviour
                         }
                         else
                         {
-                            newRoom = Instantiate(startRoom, new Vector3(i * calcOffset.x + 0.5f, -j * calcOffset.y, 0), Quaternion.identity, transform);
+                            newRoom = Instantiate(tempRoom, new Vector3(i * calcOffset.x + 0.5f, -j * calcOffset.y, 0), Quaternion.identity, transform);
                         }
                         
                         spawnedRooms.Add(newRoom);
@@ -118,7 +118,7 @@ public class RoomGenerator : MonoBehaviour
 
     public GameObject PickRandomRoom()
     {
-        int rand = UnityEngine.Random.Range(0, totalWeights);
+        int rand = UnityEngine.Random.Range(0, totalWeights + 1);
         foreach (RoomList room in rooms)
         {
             rand -= room.weight;
@@ -252,10 +252,10 @@ public class RoomGenerator : MonoBehaviour
        
             if (hasReachedEnd && go == bottomRightRoomGO)
             {
+                mainCamera.UpdateLocation(new Vector2(0, 0));
                 go.transform.position = new Vector2 (0.5f, 0);
                 GameObject.FindGameObjectWithTag("Player").transform.parent = null;
-                GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehavior>().UpdateLocation(new Vector2(0.5f, 0));
-
+                
             }
             else
             {

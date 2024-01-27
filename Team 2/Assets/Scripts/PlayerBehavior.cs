@@ -179,6 +179,7 @@ public class PlayerBehavior : MonoBehaviour
                 transform.SetParent(collision.transform);
                 roomGenerator.ReachedTheEnd();
             }
+            
         }
     }
 
