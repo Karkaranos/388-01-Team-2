@@ -7,6 +7,7 @@
 
 *****************************************************************************/
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Throwable : MonoBehaviour
 {
@@ -20,35 +21,29 @@ public class Throwable : MonoBehaviour
     public ObjectStats obStat;
 
     [Header("Bouncing:")]
-    [SerializeField] private PhysicsMaterial2D notBouncy;
-    [SerializeField] private PhysicsMaterial2D bouncy;
+    [SerializeField] protected PhysicsMaterial2D notBouncy;
+    [SerializeField] protected PhysicsMaterial2D bouncy;
     [SerializeField] private int maxBounceCount;
     private int bounceCount;
     public bool isBouncing;
 
+    public List<GameObject> bouncedWith = new List<GameObject>();
+
     public float DamageDealt { get => damageDealt; set => damageDealt = value; }
     public PhysicsMaterial2D Bouncy { get => bouncy; }
 
-    public PhysicsMaterial2D BounceCount()
-    {
-        if(!isBouncing)
-        {
-            //bounceCount++;
-            //isBouncing = true;
-            print("off");
-            return bouncy;
-        }
-        else
-        {
-            //bounceCount = 0;
-           // isBouncing = false;
-            return notBouncy;
-        }
-    }
+    #endregion
 
+    #region Functions
+
+    /// <summary>
+    /// Deals the appropriate type of damage
+    /// </summary>
+    /// <param name="type">The type of damage to deal</param>
+    /// <returns>The value of damage</returns>
     public float Damage(ObjectStats.DamageTypes type)
     {
-        print(type);
+        //print(type);
         if (type == ObjectStats.DamageTypes.TO_PLAYER)
         {
             return obStat.DMGToPlayer;
@@ -67,10 +62,33 @@ public class Throwable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks whether the object has bounced with the current object. Stops bouncing if objects have previously bounced.
+    /// Can be overwritten by child classes
+    /// </summary>
+    /// <param name="obj">The object bounced with</param>
+    /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
+    protected virtual PhysicsMaterial2D CheckBounce(GameObject obj)
+    {
+        if (!bouncedWith.Contains(obj))
+        {
+            //print("bounced with new object");
+            isBouncing = true;
+            bouncedWith.Add(obj);
+            return bouncy;
+        }
+        else
+        {
+            //print("Hit previously bounced with");
+            isBouncing = false;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            return notBouncy;
+        }
+    }
+}
+
 
 
 
 
     #endregion
-
-}
