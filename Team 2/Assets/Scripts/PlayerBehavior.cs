@@ -12,9 +12,11 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private ThrowingArmBehavior ThrowingArm;
     [SerializeField] private CameraBehavior cameraBehav;
     [SerializeField] private RoomGenerator roomGenerator;
+    public UIAimArrowBehavior aimingArrow;
     private PlayerControls playerControls;
     private Rigidbody2D rb2D;
     
+
 
     [Header("Movement Settings:")]
     [SerializeField] private float MovementSpeed;
@@ -24,6 +26,7 @@ public class PlayerBehavior : MonoBehaviour
 
     [Header("Debug Information:")]
     public GameObject currentlyLassoed;
+    
     [SerializeField] private Vector2 movementVector;
     public Vector2 aimingVector;
     [SerializeField] private bool lassoThrown;
@@ -98,7 +101,11 @@ public class PlayerBehavior : MonoBehaviour
                 lassoThrown = false;
                 Lasso.enabled = false;
                 currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
+                aimingArrow.HideArrow();
                 currentlyLassoed = null;
+                aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
+                aimingArrow.ShowArrow();
+                
             }
             
         }
@@ -141,16 +148,19 @@ public class PlayerBehavior : MonoBehaviour
 
     private void HandleRotation()
     {
+        aimingArrow.Aim(aimingVector, controllerDeadzone, controllerRotateSmoothing);
         
-        if ((Mathf.Abs(aimingVector.x) > controllerDeadzone || Mathf.Abs(aimingVector.y) > controllerDeadzone) )
-        {
-            Vector2 playerDirection = new Vector2(aimingVector.x, aimingVector.y);
-            if (playerDirection.sqrMagnitude > 0.0f)
+            /*if ((Mathf.Abs(aimingVector.x) > controllerDeadzone || Mathf.Abs(aimingVector.y) > controllerDeadzone))
             {
-                Quaternion newRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, controllerRotateSmoothing * Time.deltaTime);
-            }
-        }
+                Vector2 playerDirection = new Vector2(aimingVector.x, aimingVector.y);
+                if (playerDirection.sqrMagnitude > 0.0f)
+                {
+                    Quaternion newRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, controllerRotateSmoothing * Time.deltaTime);
+                }
+            }*/
+        
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
