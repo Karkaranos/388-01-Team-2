@@ -171,7 +171,10 @@ public class PlayerBehavior : MonoBehaviour
             roomIAmIn = roomBehav.gridPosition;
             transform.SetParent(collision.transform);
             cameraBehav.UpdateLocation(roomIAmIn);
-
+            if (!roomBehav.hasBeenVisited)
+            {
+                roomBehav.SpawnEnemies();
+            }
             if (roomIAmIn == roomGenerator.bottomRightRoom)
             {
                 roomGenerator.ReachedTheEnd();

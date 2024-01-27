@@ -24,6 +24,8 @@ public class EnemyBehavior : Throwable
     private float timeBetweenFlashes;
     bool isFlashing = false;
 
+    public RoomBehavior roomSpawnedIn;
+
 
     public CharacterStats Stats { get => stats; set => stats = value; }
 
@@ -212,5 +214,10 @@ public class EnemyBehavior : Throwable
         }
     }
 
+
+    /*private void OnDestroy()
+    {
+        roomSpawnedIn.EnemyDied(this.gameObject);
+    }*/
     #endregion
 }

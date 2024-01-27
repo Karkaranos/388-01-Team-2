@@ -378,6 +378,13 @@ MonoBehaviour:
   - {fileID: 1800918946471451649}
   - {fileID: 6945296110637457924}
   gridPosition: {x: 0, y: 0}
+  EnemiesToSpawn:
+  - EnemyToSpawn: {fileID: 4601847200763628958, guid: f66ad93c7a0065c4c82ed7526b631971, type: 3}
+    SpawnPoint: {x: 4.73, y: 1.52}
+  - EnemyToSpawn: {fileID: 4601847200763628958, guid: f66ad93c7a0065c4c82ed7526b631971, type: 3}
+    SpawnPoint: {x: -3.31, y: -0.58}
+  spawnedEnemies: []
+  hasBeenVisited: 0
 --- !u!1 &2032157485707997211
 GameObject:
   m_ObjectHideFlags: 0
