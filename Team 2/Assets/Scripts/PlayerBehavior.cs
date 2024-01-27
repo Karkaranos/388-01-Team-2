@@ -169,14 +169,14 @@ public class PlayerBehavior : MonoBehaviour
         {
             RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
             roomIAmIn = roomBehav.gridPosition;
-            transform.SetParent(collision.transform);
             cameraBehav.UpdateLocation(roomIAmIn);
-            if (!roomBehav.hasBeenVisited)
+            if (!roomBehav.hasBeenVisited && roomBehav.gridPosition != new Vector2(0, 0))
             {
                 roomBehav.SpawnEnemies();
             }
             if (roomIAmIn == roomGenerator.bottomRightRoom)
             {
+                transform.SetParent(collision.transform);
                 roomGenerator.ReachedTheEnd();
             }
         }

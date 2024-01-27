@@ -46,6 +46,8 @@ public class EnemyBehavior : Throwable
         bc2D = GetComponent<BoxCollider2D>();
         bc2D.sharedMaterial = Bouncy;
         GetComponent<Renderer>().material.color = Color.red;
+
+
         
         //If the player can be found, track them.
         try
@@ -214,7 +216,10 @@ public class EnemyBehavior : Throwable
         }
     }
 
-
+    public void SpawnInRoom(Transform parent)
+    {
+        transform.SetParent(parent);
+    }
     /*private void OnDestroy()
     {
         roomSpawnedIn.EnemyDied(this.gameObject);
