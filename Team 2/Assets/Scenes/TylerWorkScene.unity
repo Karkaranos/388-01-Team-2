@@ -636,6 +636,7 @@ MonoBehaviour:
   bouncy: {fileID: 0}
   maxBounceCount: 0
   isBouncing: 0
+  bouncedWith: []
 --- !u!1 &404434742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1772,7 @@ MonoBehaviour:
   bouncy: {fileID: 0}
   maxBounceCount: 0
   isBouncing: 0
+  bouncedWith: []
 --- !u!1 &1774356170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1983,6 +1985,7 @@ MonoBehaviour:
   bouncy: {fileID: 0}
   maxBounceCount: 0
   isBouncing: 0
+  bouncedWith: []
 --- !u!1 &2049294648
 GameObject:
   m_ObjectHideFlags: 0

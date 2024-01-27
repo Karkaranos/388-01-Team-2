@@ -6,9 +6,13 @@ public class RoomBehavior : MonoBehaviour
 {
     [Header("Debug Information:")]
     //0 - up, 1 - down, 2 - right, 3 - left
-     public GameObject[] walls;
-     public GameObject[] doors;
-     public Vector2 gridPosition;
+    public GameObject[] walls;
+    public GameObject[] doors;
+    public Vector2 gridPosition;
+    [SerializeField] private List<EnemySpawnpoint> EnemiesToSpawn;
+    public List<GameObject> spawnedEnemies = new List<GameObject>();
+
+    public bool hasBeenVisited;
 
     /// <summary>
     /// closes and opens rooms
@@ -22,4 +26,24 @@ public class RoomBehavior : MonoBehaviour
             walls[i].SetActive(!status[i]);
         }
     }
+
+    public void SpawnEnemies()
+    {
+        hasBeenVisited = true;
+        foreach (EnemySpawnpoint e in EnemiesToSpawn)
+        {
+            Vector2 spawnPoint = new Vector2(transform.position.x + e.SpawnPoint.x, transform.position.y + e.SpawnPoint.y);
+            GameObject go = Instantiate(e.EnemyToSpawn, spawnPoint, Quaternion.identity);
+            spawnedEnemies.Add(go);
+            go.GetComponent<EnemyBehavior>().roomSpawnedIn = this;
+        }
+    }
+
+    /*public void EnemyDied(GameObject go)
+    {
+        foreach (GameObject enemy in spawnedEnemies)
+        {
+           
+        }
+    }*/
 }
