@@ -81,7 +81,6 @@ public class ThrowingArmBehavior : MonoBehaviour
                                 offCooldown = false;
                                 PlayerBehav.currentlyLassoed = _hit.transform.gameObject;
                                 PlayerBehav.currentlyLassoed.GetComponent<Throwable>().pickedUp = true;
-
                                 PlayerBehav.aimingArrow.HideArrow();
                                 PlayerBehav.aimingArrow = _hit.transform.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
                                 PlayerBehav.aimingArrow.ShowArrow();
