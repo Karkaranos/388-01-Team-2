@@ -1995,18 +1995,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4ad5741ede2cb47ba9532a693dc889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 3, y: 3}
+  gridSize: {x: 5, y: 5}
   startPos: 0
   GridStyle: 0
   startRoom: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
   rooms:
-  - room: {fileID: 1802137274429792719, guid: fdca16b7ca6b08646bad67cd6dbe3a56, type: 3}
-    weight: 1
   - room: {fileID: 1802137274429792719, guid: 4e3c25820b91d734cbd1d5289dd9a9e4, type: 3}
     weight: 2
+  - room: {fileID: 1802137274429792719, guid: fdca16b7ca6b08646bad67cd6dbe3a56, type: 3}
+    weight: 1
   offset: {x: 17.8, y: 8.8}
   bottomRightRoom: {x: 0, y: 0}
+  mainCamera: {fileID: 1541089343}
   spawnedRooms: []
+  hasReachedEnd: 0
 --- !u!1 &1815285726
 GameObject:
   m_ObjectHideFlags: 0
