@@ -121,6 +121,15 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed57fbcb-a7fb-46b3-806e-6046ddacd668"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -156,6 +165,17 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aeefebb3-b448-4ac0-a01e-eed1d78659c9"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -184,6 +204,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         m_Controller_AimLasso = m_Controller.FindAction("AimLasso", throwIfNotFound: true);
         m_Controller_Throw = m_Controller.FindAction("Throw", throwIfNotFound: true);
         m_Controller_Movement = m_Controller.FindAction("Movement", throwIfNotFound: true);
+        m_Controller_Quit = m_Controller.FindAction("Quit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -310,6 +331,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
     private readonly InputAction m_Controller_AimLasso;
     private readonly InputAction m_Controller_Throw;
     private readonly InputAction m_Controller_Movement;
+    private readonly InputAction m_Controller_Quit;
     public struct ControllerActions
     {
         private @Input m_Wrapper;
@@ -317,6 +339,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         public InputAction @AimLasso => m_Wrapper.m_Controller_AimLasso;
         public InputAction @Throw => m_Wrapper.m_Controller_Throw;
         public InputAction @Movement => m_Wrapper.m_Controller_Movement;
+        public InputAction @Quit => m_Wrapper.m_Controller_Quit;
         public InputActionMap Get() { return m_Wrapper.m_Controller; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -335,6 +358,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Quit.started += instance.OnQuit;
+            @Quit.performed += instance.OnQuit;
+            @Quit.canceled += instance.OnQuit;
         }
 
         private void UnregisterCallbacks(IControllerActions instance)
@@ -348,6 +374,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Quit.started -= instance.OnQuit;
+            @Quit.performed -= instance.OnQuit;
+            @Quit.canceled -= instance.OnQuit;
         }
 
         public void RemoveCallbacks(IControllerActions instance)
@@ -385,5 +414,6 @@ public partial class @Input: IInputActionCollection2, IDisposable
         void OnAimLasso(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
+        void OnQuit(InputAction.CallbackContext context);
     }
 }
