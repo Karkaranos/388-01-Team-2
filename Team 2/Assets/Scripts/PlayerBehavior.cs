@@ -209,7 +209,7 @@ public class PlayerBehavior : MonoBehaviour
         //If the object collided with is a throwable
         if (collision.gameObject.GetComponent<Throwable>() != null)
         {
-            Throwable collidedWith = collision.gameObject.GetComponent<EnemyBehavior>();
+            Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
 
             //If the enemy was not thrown
             if (!collidedWith.thrown && !_invincible)
