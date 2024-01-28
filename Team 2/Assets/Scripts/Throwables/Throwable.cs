@@ -85,6 +85,11 @@ public class Throwable : MonoBehaviour
             return notBouncy;
         }
     }
+
+    public void GetThrown(Vector2 arrow)
+    {
+        GetComponent<Rigidbody2D>().AddForce(arrow);
+    }
 }
 
 

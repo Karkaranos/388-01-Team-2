@@ -102,7 +102,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -183,6 +183,7 @@ MonoBehaviour:
   bouncy: {fileID: 6200000, guid: 886bbf57f5ac1e94497f93a2f47024e6, type: 2}
   maxBounceCount: 5
   isBouncing: 0
+  bouncedWith: []
   stats:
     _baseDmgDealt: 10
     _dmgCap: 50
@@ -197,3 +198,4 @@ MonoBehaviour:
   bc2D: {fileID: 0}
   flashTime: 1
   timeBetweenFlashes: 0.1
+  roomSpawnedIn: {fileID: 0}

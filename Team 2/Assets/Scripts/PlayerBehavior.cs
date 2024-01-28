@@ -91,6 +91,10 @@ public class PlayerBehavior : MonoBehaviour
 
     private void ThrowLasso_started(InputAction.CallbackContext obj)
     {
+        if(currentlyLassoed!=null)
+        {
+            currentlyLassoed.GetComponent<Throwable>().GetThrown(aimingVector);
+        }
         if (!lassoThrown)
         {
             lassoThrown = true;
