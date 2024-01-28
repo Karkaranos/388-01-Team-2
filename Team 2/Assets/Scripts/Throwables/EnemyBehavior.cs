@@ -16,6 +16,7 @@ public class EnemyBehavior : Throwable
     [SerializeField]
     private CharacterStats stats;
     private GameObject player;
+    private PlayerBehavior pbehav;
     public BoxCollider2D bc2D;
     [SerializeField][Range(0,2)]
     private float flashTime;
@@ -41,6 +42,7 @@ public class EnemyBehavior : Throwable
     /// </summary>
     private void Start()
     {
+
         //base.DamageDealt = stats.DamageDealt;
         obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
@@ -53,13 +55,14 @@ public class EnemyBehavior : Throwable
         try
         {
             player = FindObjectOfType<PlayerBehavior>().gameObject;
+            pbehav = player.GetComponent<PlayerBehavior>();
             StartCoroutine(TrackPlayer());
         }
         catch
         {
             print("Player not found");
         }
-
+        
 
     }
 
@@ -215,14 +218,11 @@ public class EnemyBehavior : Throwable
             return notBouncy;
         }
     }
-
-    public void SpawnInRoom(Transform parent)
+    private void OnDestroy()
     {
-        transform.SetParent(parent);
+        
+        pbehav.aimingArrow = pbehav.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
+        pbehav.ResetLasso();
     }
-    /*private void OnDestroy()
-    {
-        roomSpawnedIn.EnemyDied(this.gameObject);
-    }*/
     #endregion
 }

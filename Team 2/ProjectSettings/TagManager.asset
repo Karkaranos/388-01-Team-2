@@ -8,6 +8,8 @@ TagManager:
   - Room
   - Door
   - Wall
+  - Enemy
+  - Spawn
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - UI
   - Rooms
   - Throwable
-  - 
+  - Door
   - 
   - 
   - 

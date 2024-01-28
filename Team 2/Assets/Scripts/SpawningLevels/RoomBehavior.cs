@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class RoomBehavior : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class RoomBehavior : MonoBehaviour
     //0 - up, 1 - down, 2 - right, 3 - left
     public GameObject[] walls;
     public GameObject[] doors;
+    public bool[] overallStatus = new bool[4];
     public Vector2 gridPosition;
     [SerializeField] private List<EnemySpawnpoint> EnemiesToSpawn;
     public List<GameObject> spawnedEnemies = new List<GameObject>();
@@ -25,26 +27,22 @@ public class RoomBehavior : MonoBehaviour
             doors[i].SetActive(status[i]);
             walls[i].SetActive(!status[i]);
         }
-    }
+   }
 
     public void SpawnEnemies()
     {
+        
         hasBeenVisited = true;
         foreach (EnemySpawnpoint e in EnemiesToSpawn)
         {
             Vector2 spawnPoint = new Vector2(transform.position.x + e.SpawnPoint.x, transform.position.y + e.SpawnPoint.y);
             GameObject go = Instantiate(e.EnemyToSpawn, spawnPoint, Quaternion.identity);
-            spawnedEnemies.Add(go);
-            go.GetComponent<EnemyBehavior>().roomSpawnedIn = this;
-            go.GetComponent<EnemyBehavior>().SpawnInRoom(gameObject.transform);
+            go.GetComponent<Throwable>().SpawnInRoom(transform);
+            
+            
         }
+        
     }
 
-    /*public void EnemyDied(GameObject go)
-    {
-        foreach (GameObject enemy in spawnedEnemies)
-        {
-           
-        }
-    }*/
+    
 }

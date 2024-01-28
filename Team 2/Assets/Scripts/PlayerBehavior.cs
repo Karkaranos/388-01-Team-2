@@ -30,7 +30,7 @@ public class PlayerBehavior : MonoBehaviour
     
     [SerializeField] private Vector2 movementVector;
     public Vector2 aimingVector;
-    [SerializeField] private bool lassoThrown;
+    [SerializeField] public bool lassoThrown;
     public bool Throwing;
 
     //Input refrences
@@ -43,6 +43,7 @@ public class PlayerBehavior : MonoBehaviour
     [Header("Player Information:")]
     [SerializeField] private CharacterStats stats;
     private bool _invincible;
+    private float timer;
 
     //storing location
     [HideInInspector] public Vector2 roomIAmIn;
@@ -91,42 +92,56 @@ public class PlayerBehavior : MonoBehaviour
 
     private void ThrowLasso_started(InputAction.CallbackContext obj)
     {
-        if(currentlyLassoed!=null)
+        if (timer >= 0.1 && !Throwing)
         {
-            currentlyLassoed.GetComponent<Throwable>().GetThrown(aimingVector);
-        }
-        if (!lassoThrown)
-        {
-            lassoThrown = true;
-            if (ThrowingArm.offCooldown)
+            timer = 0;
+            if (currentlyLassoed != null)
             {
-                ThrowingArm.SetLassoPoint();
+                currentlyLassoed.GetComponent<Throwable>().GetThrown(aimingVector);
+                ResetLasso();
             }
-            
-        }
-        else
-        {
-            if (!Throwing)
+            else
             {
-                if (currentlyLassoed != null)
+                if (!lassoThrown)
                 {
-                    currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
-                }
-                lassoThrown = false;
-                Lasso.enabled = false;
-                
-                aimingArrow.HideArrow();
-                currentlyLassoed = null;
-                aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
-                aimingArrow.ShowArrow();
 
-                
-                
+                    if (ThrowingArm.offCooldown)
+                    {
+                        ThrowingArm.SetLassoPoint();
+                    }
+
+                }
+                else
+                {
+                    
+                    
+
+                        ResetLasso();
+
+
+                    
+
+                }
             }
             
+            
         }
+        
     }
+    public void ResetLasso()
+    {
+        if (currentlyLassoed != null)
+        {
+            currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
+        }
+        lassoThrown = false;
+        Lasso.enabled = false;
 
+        aimingArrow.HideArrow();
+        currentlyLassoed = null;
+        aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
+        aimingArrow.ShowArrow();
+    }
     private void OnEnable()
     {
         playerControls.Enable();
@@ -140,7 +155,7 @@ public class PlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        timer += Time.deltaTime;   
             HandleMovement();
         
         
@@ -181,22 +196,32 @@ public class PlayerBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Door")
+        if (collision.GetComponentInParent<RoomBehavior>() != null)
         {
             RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
-            roomIAmIn = roomBehav.gridPosition;
-            cameraBehav.UpdateLocation(roomIAmIn);
-            if (!roomBehav.hasBeenVisited && roomBehav.gridPosition != new Vector2(0, 0))
+            if (collision.tag == "Door")
             {
-                roomBehav.SpawnEnemies();
+
+                roomIAmIn = roomBehav.gridPosition;
+                cameraBehav.UpdateLocation(roomIAmIn);
+
+                if (roomIAmIn == roomGenerator.bottomRightRoom)
+                {
+                    transform.SetParent(collision.transform);
+                    roomGenerator.ReachedTheEnd();
+                }
+
             }
-            if (roomIAmIn == roomGenerator.bottomRightRoom)
+            if (collision.tag == "Spawn")
             {
-                transform.SetParent(collision.transform);
-                roomGenerator.ReachedTheEnd();
+
+                if (!roomBehav.hasBeenVisited && roomBehav.gridPosition != new Vector2(0, 0))
+                {
+                    roomBehav.SpawnEnemies();
+                }
             }
-            
         }
+        
     }
 
     /// <summary>

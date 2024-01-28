@@ -83,23 +83,24 @@ public class RoomGenerator : MonoBehaviour
                         }
                         else
                         {
-                            newRoom = Instantiate(tempRoom, new Vector3(i * calcOffset.x + 0.5f, -j * calcOffset.y, 0), Quaternion.identity, transform);
+                            newRoom = Instantiate(tempRoom, new Vector3(i * calcOffset.x, -j * calcOffset.y, 0), Quaternion.identity, transform);
                         }
                         
                         spawnedRooms.Add(newRoom);
                         RoomBehavior roomBehav = newRoom.GetComponent<RoomBehavior>();
 
-                            /*if (hasReachedEnd && i == 0 && j == 0)
+                        /*if (hasReachedEnd && i == 0 && j == 0)
+                        {
+                            if (newDoor < 1)
                             {
-                                if (newDoor < 1)
-                                {
-                                    currentCell.status[0] = true;
-                                }
-                                else
-                                {
-                                    currentCell.status[3] = true;
-                                }
-                            }*/
+                                currentCell.status[0] = true;
+                            }
+                            else
+                            {
+                                currentCell.status[3] = true;
+                            }
+                        }*/
+                        roomBehav.overallStatus = currentCell.status;
                             roomBehav.UpdateRooms(currentCell.status);
                             roomBehav.gridPosition = new Vector2(i, j);
                             newRoom.name += " " + i + "-" + j;
@@ -253,7 +254,7 @@ public class RoomGenerator : MonoBehaviour
             if (hasReachedEnd && go == bottomRightRoomGO)
             {
                 mainCamera.UpdateLocation(new Vector2(0, 0));
-                go.transform.position = new Vector2 (0.5f, 0);
+                go.transform.position = new Vector2 (0, 0);
                 GameObject.FindGameObjectWithTag("Player").transform.parent = null;
                 
             }

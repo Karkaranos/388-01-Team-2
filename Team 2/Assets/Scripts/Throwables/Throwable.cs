@@ -108,6 +108,11 @@ public class Throwable : MonoBehaviour
         }
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
+
+    public void SpawnInRoom(Transform parent)
+    {
+        transform.SetParent(parent);
+    }
 }
 
 

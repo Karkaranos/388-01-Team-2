@@ -64,10 +64,10 @@ public class ThrowingArmBehavior : MonoBehaviour
 
     public void SetLassoPoint()
     {
-        
-            
-            Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x * 100, PlayerBehav.aimingVector.y * 100, 0) - ThrowingArm.position;
-            Debug.DrawLine(FirePoint.position, distanceVector.normalized);
+        Debug.Log("Throwing Lasso");
+        PlayerBehav.Throwing = true;
+        Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x * 100, PlayerBehav.aimingVector.y * 100, 0) - ThrowingArm.position;
+        Debug.DrawLine(FirePoint.position, distanceVector.normalized);
             if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
             {
                 RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
@@ -84,27 +84,29 @@ public class ThrowingArmBehavior : MonoBehaviour
                                     missText.gameObject.SetActive(true);
                                 }
                                 missText.text = "You Hit " + _hit.transform.gameObject.name;
-                                PlayerBehav.Throwing = true;
+                                PlayerBehav.lassoThrown = true;
                                 offCooldown = false;
                                 PlayerBehav.currentlyLassoed = _hit.transform.gameObject;
                                 PlayerBehav.currentlyLassoed.GetComponent<Throwable>().pickedUp = true;
                                 PlayerBehav.aimingArrow.HideArrow();
                                 PlayerBehav.aimingArrow = _hit.transform.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
-                            PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                                PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                                 PlayerBehav.aimingArrow.ShowArrow();
                                 PlayerBehav.currentlyLassoed.GetComponent<Throwable>().bouncedWith.Clear();
                                 LassoPoint = _hit.point;
                                 Debug.Log(LassoPoint);
                                 LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
+                            
                                 Lasso.Missed = false;
                                 Lasso.enabled = true;
                             }
+                        
                         }
                     }
-                }
                 else
                 {
                     missText.text = "You Missed";
+                    PlayerBehav.Throwing = false;
                     /* LassoPoint = FirePoint.position + Vector3.forward * maxDistance;
                      LassoX = LassoPoint.x;
                      Debug.Log(LassoPoint);
@@ -112,9 +114,23 @@ public class ThrowingArmBehavior : MonoBehaviour
                      Lasso.Missed = true;
                      Lasso.enabled = true;*/
                 }
-
-            
             }
+            else
+            {
+                missText.text = "You Missed";
+                PlayerBehav.Throwing = false;
+                /* LassoPoint = FirePoint.position + Vector3.forward * maxDistance;
+                 LassoX = LassoPoint.x;
+                 Debug.Log(LassoPoint);
+                 LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
+                 Lasso.Missed = true;
+                 Lasso.enabled = true;*/
+            }
+
+
+
+        }
+        
     }
 
    
