@@ -9,6 +9,8 @@ public class ThrowingArmBehavior : MonoBehaviour
     public LassoBehavior Lasso;
     public PlayerBehavior PlayerBehav;
     [SerializeField] private TMP_Text missText;
+    [SerializeField] private Transform aimingArrow;
+    [SerializeField] private TMP_Text cooldownText;
 
     [Header("Layers Settings:")]
     [SerializeField] private bool attachToAll = false;
@@ -36,6 +38,7 @@ public class ThrowingArmBehavior : MonoBehaviour
 
     private void Start()
     {
+        cooldownTimer = cooldownMax;
         Lasso.enabled = false;
         if (hasMaxDistance)
         {
@@ -48,14 +51,16 @@ public class ThrowingArmBehavior : MonoBehaviour
     {
         if (!offCooldown)
         {
-            if (cooldownTimer < cooldownMax)
+            if (cooldownTimer > 0)
             {
-                cooldownTimer += Time.deltaTime;
+                cooldownTimer -= Time.deltaTime;
+                cooldownText.text = "Lasso Cooldown: " + cooldownTimer;
             }
             else
             {
                 offCooldown = true;
-                cooldownTimer = 0;
+                cooldownText.text = "Lasso Cooldown: 0";
+                cooldownTimer = cooldownMax;
             }
         }
     }
@@ -66,8 +71,9 @@ public class ThrowingArmBehavior : MonoBehaviour
     {
         Debug.Log("Throwing Lasso");
         PlayerBehav.Throwing = true;
-        Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x * 100, PlayerBehav.aimingVector.y * 100, 0) - ThrowingArm.position;
-        Debug.DrawLine(FirePoint.position, distanceVector.normalized);
+        Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
+        Debug.Log(distanceVector);
+        Debug.DrawLine(FirePoint.position, distanceVector.normalized, Color.green);
             if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
             {
                 RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);

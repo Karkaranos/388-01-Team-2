@@ -221,8 +221,13 @@ public class EnemyBehavior : Throwable
     private void OnDestroy()
     {
         
-        pbehav.aimingArrow = pbehav.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
-        pbehav.ResetLasso();
+        
+        if (pickedUp)
+        {
+            pbehav.aimingArrow = pbehav.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
+            pbehav.ResetLasso();
+        }
+        GameObject.FindObjectOfType<GameManager>().enemyDefeated();
     }
     #endregion
 }

@@ -98,7 +98,7 @@ public class PlayerBehavior : MonoBehaviour
             if (currentlyLassoed != null)
             {
                 currentlyLassoed.GetComponent<Throwable>().GetThrown(aimingVector);
-                ResetLasso();
+                
             }
             else
             {

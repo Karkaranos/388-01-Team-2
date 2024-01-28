@@ -4186,7 +4186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7103460834418690064}
   - component: {fileID: 5007939803178562213}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spawn
   m_TagString: Spawn
   m_Icon: {fileID: 0}

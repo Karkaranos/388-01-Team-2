@@ -93,9 +93,12 @@ public class Throwable : MonoBehaviour
 
     public void GetThrown(Vector2 arrow)
     {
+        PlayerBehavior pbehav = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();
+        pbehav.ResetLasso();
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<Rigidbody2D>().AddForce(arrow * 200);
         StartCoroutine(KillForce());
+        
     }
 
     IEnumerator KillForce()

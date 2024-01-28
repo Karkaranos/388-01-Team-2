@@ -747,7 +747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 291249736622932784}
   - component: {fileID: 2479571905198704258}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spawn
   m_TagString: Spawn
   m_Icon: {fileID: 0}

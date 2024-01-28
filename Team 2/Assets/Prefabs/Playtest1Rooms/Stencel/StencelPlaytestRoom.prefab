@@ -1718,14 +1718,6 @@ MonoBehaviour:
     SpawnPoint: {x: 0, y: 0}
   - EnemyToSpawn: {fileID: 0}
     SpawnPoint: {x: 0, y: 0}
-  - EnemyToSpawn: {fileID: 0}
-    SpawnPoint: {x: 0, y: 0}
-  - EnemyToSpawn: {fileID: 0}
-    SpawnPoint: {x: 0, y: 0}
-  - EnemyToSpawn: {fileID: 0}
-    SpawnPoint: {x: 0, y: 0}
-  - EnemyToSpawn: {fileID: 0}
-    SpawnPoint: {x: 0, y: 0}
   spawnedEnemies: []
   hasBeenVisited: 0
 --- !u!1 &2849848182511811196
@@ -3676,7 +3668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4353201336561738023}
   - component: {fileID: 8266310281782050749}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spawn
   m_TagString: Spawn
   m_Icon: {fileID: 0}
