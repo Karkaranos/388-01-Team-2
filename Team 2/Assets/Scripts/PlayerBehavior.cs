@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehavior : MonoBehaviour
 {
@@ -242,6 +243,11 @@ public class PlayerBehavior : MonoBehaviour
                 print("Player attacked by Enemy");
                 stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_PLAYER));
                 print("New health: " + stats.Health);
+
+                if(stats.Health <= 0)
+                {
+                    SceneManager.LoadScene("EndScene");
+                }
                 StartCoroutine(Invincible());
             }
         }

@@ -12,6 +12,14 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("HighScore", 0);
         }
+        if(PlayerPrefs.HasKey("CurrentScore")==false)
+        {
+            PlayerPrefs.SetInt("CurrentScore", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("CurrentScore", 0);
+        }
     }
 
     public void enemyDefeated()
