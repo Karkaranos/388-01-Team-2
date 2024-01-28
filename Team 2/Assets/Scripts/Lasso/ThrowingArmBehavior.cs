@@ -90,6 +90,7 @@ public class ThrowingArmBehavior : MonoBehaviour
                                 PlayerBehav.currentlyLassoed.GetComponent<Throwable>().pickedUp = true;
                                 PlayerBehav.aimingArrow.HideArrow();
                                 PlayerBehav.aimingArrow = _hit.transform.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
+                            PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                                 PlayerBehav.aimingArrow.ShowArrow();
                                 PlayerBehav.currentlyLassoed.GetComponent<Throwable>().bouncedWith.Clear();
                                 LassoPoint = _hit.point;

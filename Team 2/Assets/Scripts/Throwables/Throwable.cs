@@ -8,6 +8,7 @@
 *****************************************************************************/
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Throwable : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class Throwable : MonoBehaviour
     [SerializeField] private int maxBounceCount;
     private int bounceCount;
     public bool isBouncing;
+
+    [SerializeField]
+    private float timeUntilStopping;
+    private float stopTime;
 
     public List<GameObject> bouncedWith = new List<GameObject>();
 
@@ -84,6 +89,24 @@ public class Throwable : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             return notBouncy;
         }
+    }
+
+    public void GetThrown(Vector2 arrow)
+    {
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().AddForce(arrow * 200);
+        StartCoroutine(KillForce());
+    }
+
+    IEnumerator KillForce()
+    {
+        stopTime = timeUntilStopping;
+        while(GetComponent<Rigidbody2D>().velocity.magnitude > 50)
+        {
+            GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity * .8f;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }
 
