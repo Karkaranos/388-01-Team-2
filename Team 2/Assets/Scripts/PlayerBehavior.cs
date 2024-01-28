@@ -12,6 +12,7 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private ThrowingArmBehavior ThrowingArm;
     [SerializeField] private CameraBehavior cameraBehav;
     [SerializeField] private RoomGenerator roomGenerator;
+    [SerializeField] private GameManager GM;
     public UIAimArrowBehavior aimingArrow;
     private PlayerControls playerControls;
     private Rigidbody2D rb2D;
@@ -22,7 +23,7 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private float MovementSpeed;
     [SerializeField] private float controllerDeadzone = 0.1f;
     [SerializeField] private float controllerRotateSmoothing = 1000f;
-    [SerializeField] private bool canMoveWhileLassoing;
+    [SerializeField] public static bool canMoveWhileLassoing;
 
     [Header("Debug Information:")]
     public GameObject currentlyLassoed;
@@ -37,6 +38,7 @@ public class PlayerBehavior : MonoBehaviour
     private InputAction move;
     private InputAction aim;
     private InputAction throwLasso;
+    private InputAction quit;
 
     [Header("Player Information:")]
     [SerializeField] private CharacterStats stats;
@@ -54,8 +56,9 @@ public class PlayerBehavior : MonoBehaviour
         move = pInput.actions.FindAction("Movement");
         aim = pInput.actions.FindAction("AimLasso");
         throwLasso = pInput.actions.FindAction("Throw");
+        quit = pInput.actions.FindAction("Quit");
 
-
+        quit.started += Quit_started;
         move.performed += Move_performed;
 
 
@@ -66,7 +69,10 @@ public class PlayerBehavior : MonoBehaviour
         throwLasso.canceled += ThrowLasso_canceled;
     }
 
-
+    private void Quit_started(InputAction.CallbackContext obj)
+    {
+        GM.Quit();
+    }
 
     private void Aim_performed(InputAction.CallbackContext obj)
     {
@@ -98,13 +104,19 @@ public class PlayerBehavior : MonoBehaviour
         {
             if (!Throwing)
             {
+                if (currentlyLassoed != null)
+                {
+                    currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
+                }
                 lassoThrown = false;
                 Lasso.enabled = false;
-                currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
+                
                 aimingArrow.HideArrow();
                 currentlyLassoed = null;
                 aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
                 aimingArrow.ShowArrow();
+
+                
                 
             }
             
