@@ -14,7 +14,7 @@ public class RoomGenerator : MonoBehaviour
     [SerializeField] private Vector2 gridSize;
     [SerializeField] private int startPos = 0;
     [SerializeField] private List<Cell> board;
-    [SerializeField] private bool GridStyle;
+    public static bool GridStyle;
 
     [Header("Room Settings:")]
     [SerializeField] private GameObject startRoom;
@@ -25,7 +25,7 @@ public class RoomGenerator : MonoBehaviour
     public Vector2 bottomRightRoom;
     [SerializeField] private CameraBehavior mainCamera;
     private GameObject bottomRightRoomGO;
-    private int newDoor;
+    
     private int totalWeights;
     [SerializeField] private List<GameObject> spawnedRooms;
     [SerializeField]private bool hasReachedEnd;
