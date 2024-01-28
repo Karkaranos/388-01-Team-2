@@ -356,6 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b1f69f054c9f140b149b5315841456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemiesDefeated: 0
 --- !u!4 &744424235
 Transform:
   m_ObjectHideFlags: 0
@@ -810,11 +811,11 @@ MonoBehaviour:
     _dmgToPlayer: 0
     _bounceDamage: 0
     _dmgToEnemy: 0
-    _health: 0
-    _maxHealth: 0
-    _speed: 0
+    _health: 100
+    _maxHealth: 100
+    _speed: 1
     _freezeTime: 0
-    _invincTime: 0
+    _invincTime: 2
   roomIAmIn: {x: 0, y: 0}
 --- !u!58 &1220601698
 CircleCollider2D:
