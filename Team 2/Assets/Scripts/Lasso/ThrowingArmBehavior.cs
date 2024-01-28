@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ThrowingArmBehavior : MonoBehaviour
@@ -7,6 +8,7 @@ public class ThrowingArmBehavior : MonoBehaviour
     [Header("Scripts Ref:")]
     public LassoBehavior Lasso;
     public PlayerBehavior PlayerBehav;
+    [SerializeField] private TMP_Text missText;
 
     [Header("Layers Settings:")]
     [SerializeField] private bool attachToAll = false;
@@ -77,6 +79,11 @@ public class ThrowingArmBehavior : MonoBehaviour
                         {
                             if (offCooldown)
                             {
+                                if(!missText.IsActive())
+                                {
+                                    missText.gameObject.SetActive(true);
+                                }
+                                missText.text = "You Hit " + _hit.transform.gameObject.name;
                                 PlayerBehav.Throwing = true;
                                 offCooldown = false;
                                 PlayerBehav.currentlyLassoed = _hit.transform.gameObject;
@@ -96,6 +103,7 @@ public class ThrowingArmBehavior : MonoBehaviour
                 }
                 else
                 {
+                    missText.text = "You Missed";
                     /* LassoPoint = FirePoint.position + Vector3.forward * maxDistance;
                      LassoX = LassoPoint.x;
                      Debug.Log(LassoPoint);
