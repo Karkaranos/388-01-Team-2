@@ -356,7 +356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b1f69f054c9f140b149b5315841456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesDefeated: 0
 --- !u!4 &744424235
 Transform:
   m_ObjectHideFlags: 0
