@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387547275447756073}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2136,6 +2136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4486266215831948134}
   - component: {fileID: 8696884217081475843}
+  - component: {fileID: 2842642826707395588}
   m_Layer: 0
   m_Name: PlaytestRoom7
   m_TagString: Untagged
@@ -2201,6 +2202,18 @@ MonoBehaviour:
     SpawnPoint: {x: 2.246184, y: -0.04492369}
   spawnedEnemies: []
   hasBeenVisited: 0
+--- !u!210 &2842642826707395588
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454641980523459440}
+  m_Enabled: 1
+  m_SortingLayerID: -1886190621
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &1857981199229386955
 GameObject:
   m_ObjectHideFlags: 0
