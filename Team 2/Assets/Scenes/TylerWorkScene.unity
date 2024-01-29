@@ -311,11 +311,12 @@ MonoBehaviour:
     _dmgToPlayer: 0
     _bounceDamage: 0
     _dmgToEnemy: 0
-    _health: 0
-    _maxHealth: 0
+    _health: 100
+    _maxHealth: 100
     _speed: 0
     _freezeTime: 0
-    _invincTime: 0
+    _invincTime: 2
+  _invincible: 0
   roomIAmIn: {x: 0, y: 0}
 --- !u!58 &212624774
 CircleCollider2D:
@@ -688,6 +689,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrown: 0
   pickedUp: 0
+  killed: 0
   obStat:
     _baseDmgDealt: 0
     _dmgCap: 0
@@ -1395,6 +1397,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &816017190
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113109570586756639, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6494416465914964978, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
+      propertyPath: m_Name
+      value: Enemy (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 77502a18dbbc22c4c9ce6d6020bf1526, type: 3}
 --- !u!1 &1000852094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,6 +1795,8 @@ MonoBehaviour:
   Lasso: {fileID: 1174515314}
   PlayerBehav: {fileID: 212624773}
   missText: {fileID: 454932457}
+  aimingArrow: {fileID: 0}
+  cooldownText: {fileID: 0}
   attachToAll: 0
   throwableLayerNumber: 7
   layersToIgnore:
@@ -2200,6 +2265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrown: 0
   pickedUp: 0
+  killed: 0
   obStat:
     _baseDmgDealt: 0
     _dmgCap: 0
@@ -2499,6 +2565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrown: 0
   pickedUp: 0
+  killed: 0
   obStat:
     _baseDmgDealt: 0
     _dmgCap: 0

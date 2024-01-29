@@ -43,6 +43,7 @@ public class PlayerBehavior : MonoBehaviour
 
     [Header("Player Information:")]
     [SerializeField] private CharacterStats stats;
+    [SerializeField]
     private bool _invincible;
     private float timer;
 
@@ -261,7 +262,9 @@ public class PlayerBehavior : MonoBehaviour
     IEnumerator Invincible()
     {
         _invincible = true;
+        GetComponent<SpriteRenderer>().color = Color.cyan;
         yield return new WaitForSeconds(stats.InvincibilityTime);
+        GetComponent<SpriteRenderer>().color = Color.white;
         _invincible = false;
     }
 
