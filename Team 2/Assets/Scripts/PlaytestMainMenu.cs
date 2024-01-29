@@ -92,6 +92,7 @@ public class PlaytestMainMenu : MonoBehaviour
 
     public void StartGame()
     {
+        GameManager.enemiesDefeated = 0;
         SceneManager.LoadScene(1);
     }
 }
