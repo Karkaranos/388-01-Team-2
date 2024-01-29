@@ -69,6 +69,7 @@ public class PlayerBehavior : MonoBehaviour
 
         throwLasso.started += ThrowLasso_started;
         throwLasso.canceled += ThrowLasso_canceled;
+        PlayerPrefs.SetInt("CurrentScore", 0);
     }
 
     private void Quit_started(InputAction.CallbackContext obj)
@@ -246,7 +247,7 @@ public class PlayerBehavior : MonoBehaviour
 
                 if(stats.Health <= 0)
                 {
-                    SceneManager.LoadScene("EndScene");
+                    StartCoroutine(GameEnd());
                 }
                 StartCoroutine(Invincible());
             }
@@ -262,5 +263,17 @@ public class PlayerBehavior : MonoBehaviour
         _invincible = true;
         yield return new WaitForSeconds(stats.InvincibilityTime);
         _invincible = false;
+    }
+
+    IEnumerator GameEnd()
+    {
+        List<GameObject> allEnemies = new List<GameObject>();
+        allEnemies.Add(FindAnyObjectByType<EnemyBehavior>().gameObject);
+        foreach(GameObject g in allEnemies)
+        {
+            Destroy(g);
+        }
+        yield return new WaitForSeconds(.01f);
+        SceneManager.LoadScene("EndScene");
     }
 }

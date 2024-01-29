@@ -87,6 +87,7 @@ public class EnemyBehavior : Throwable
                 StartCoroutine(DamageFlash());
                 if (Stats.Health == 0)
                 {
+                    killed = true;
                     Destroy(gameObject);
                 }
             }
@@ -199,7 +200,9 @@ public class EnemyBehavior : Throwable
         print("New health: " + Stats.Health);
         if (Stats.Health == 0)
         {
+            killed = true;
             Destroy(gameObject);
+
         }
 
         //If the object hasn't been bounced with previously, add it
@@ -227,7 +230,10 @@ public class EnemyBehavior : Throwable
             pbehav.aimingArrow = pbehav.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
             pbehav.ResetLasso();
         }
-        GameObject.FindObjectOfType<GameManager>().enemyDefeated();
+        if(killed)
+        {
+            GameObject.FindObjectOfType<GameManager>().enemyDefeated();
+        }
     }
     #endregion
 }

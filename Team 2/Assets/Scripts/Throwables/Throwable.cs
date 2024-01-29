@@ -16,6 +16,7 @@ public class Throwable : MonoBehaviour
 
     public bool thrown = false;
     public bool pickedUp = false;
+    public bool killed;
 
 
     private float damageDealt;
