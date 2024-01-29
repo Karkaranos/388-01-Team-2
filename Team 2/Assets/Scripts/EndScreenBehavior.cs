@@ -22,7 +22,7 @@ public class EndScreenBehavior : MonoBehaviour
     void Start()
     {
         highScore.text = "Your High Score:\n" + PlayerPrefs.GetInt("HighScore");
-        recentScore.text = "Your Recent Score:\n" + PlayerPrefs.GetInt("CurrentScore");
+        recentScore.text = "Your Recent Score:\n" + GameManager.enemiesDefeated;
     }
 
     public void Restart()

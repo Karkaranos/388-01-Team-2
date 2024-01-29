@@ -574,7 +574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 240, y: 186}
+  m_AnchoredPosition: {x: 217, y: 156}
   m_SizeDelta: {x: 289.7815, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &764647115
@@ -816,6 +816,7 @@ MonoBehaviour:
     _speed: 1
     _freezeTime: 0
     _invincTime: 2
+  _invincible: 0
   roomIAmIn: {x: 0, y: 0}
 --- !u!58 &1220601698
 CircleCollider2D:
@@ -1013,7 +1014,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -305, y: 186}
+  m_AnchoredPosition: {x: -260, y: 156}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1235283088

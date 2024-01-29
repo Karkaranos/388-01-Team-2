@@ -10,7 +10,7 @@ public class PlaytestMainMenu : MonoBehaviour
     [Header("Refrences:")]
     public TMP_Text gridText;
     public TMP_Text moveLassoText;
-    private bool inMain = true;
+    [SerializeField] private bool inMain = true;
 
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject varsMenu;
