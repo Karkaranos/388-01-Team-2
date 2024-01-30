@@ -202,17 +202,14 @@ public class PlayerBehavior : MonoBehaviour
         if (collision.GetComponentInParent<RoomBehavior>() != null)
         {
             RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
+            roomIAmIn = roomBehav.gridPosition;
             if (collision.tag == "Door")
             {
 
-                roomIAmIn = roomBehav.gridPosition;
+                
                 cameraBehav.UpdateLocation(roomIAmIn);
 
-                if (roomIAmIn == roomGenerator.bottomRightRoom)
-                {
-                    transform.SetParent(collision.transform);
-                    roomGenerator.ReachedTheEnd();
-                }
+                
 
             }
             if (collision.tag == "Spawn")
@@ -221,6 +218,11 @@ public class PlayerBehavior : MonoBehaviour
                 if (!roomBehav.hasBeenVisited && roomBehav.gridPosition != new Vector2(0, 0))
                 {
                     roomBehav.SpawnEnemies();
+                }
+                if (roomIAmIn == roomGenerator.bottomRightRoom)
+                {
+                    transform.SetParent(collision.transform);
+                    roomGenerator.ReachedTheEnd();
                 }
             }
         }
