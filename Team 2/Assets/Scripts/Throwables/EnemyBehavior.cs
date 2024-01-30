@@ -9,13 +9,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyBehavior : Throwable
 {
     #region Variables
     [SerializeField]
     private CharacterStats stats;
-    private GameObject player;
     private PlayerBehavior pbehav;
     public BoxCollider2D bc2D;
     [SerializeField][Range(0,2)]
@@ -26,6 +27,11 @@ public class EnemyBehavior : Throwable
     bool isFlashing = false;
 
     public RoomBehavior roomSpawnedIn;
+
+    [Header("Pathfinding")]
+    [SerializeField]private Transform target;
+    NavMeshAgent agent;
+
 
 
     public CharacterStats Stats { get => stats; set => stats = value; }
@@ -42,7 +48,9 @@ public class EnemyBehavior : Throwable
     /// </summary>
     private void Start()
     {
-
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
         //base.DamageDealt = stats.DamageDealt;
         obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
@@ -54,9 +62,13 @@ public class EnemyBehavior : Throwable
         //If the player can be found, track them.
         try
         {
-            player = FindObjectOfType<PlayerBehavior>().gameObject;
-            pbehav = player.GetComponent<PlayerBehavior>();
-            StartCoroutine(TrackPlayer());
+            target = FindObjectOfType<PlayerBehavior>().gameObject.transform;
+            pbehav = target.gameObject.GetComponent<PlayerBehavior>();
+            if(SceneManager.GetActiveScene().name.Equals("MainScene"))
+            {
+                StartCoroutine(TrackPlayer());
+            }
+
         }
         catch
         {
@@ -66,12 +78,23 @@ public class EnemyBehavior : Throwable
 
     }
 
+    private void Update()
+    {
+        if (canMove && !SceneManager.GetActiveScene().name.Equals("MainScene"))        
+        {
+            agent.SetDestination(target.position);
+        }
+    }
+
+
+
     /// <summary>
     /// Handles collisions with objects
     /// </summary>
     /// <param name="collision">The object collided with</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        print("Hit " + collision.gameObject.name);
         CheckBounce(collision.gameObject);
         //If the object collided with is a throwable
         if (collision.gameObject.GetComponent<Throwable>()!=null)
@@ -105,11 +128,12 @@ public class EnemyBehavior : Throwable
     /// <returns>Time between adjustments</returns>
     IEnumerator TrackPlayer()
     {
+        print("other movement loaded");
         for(; ; )
         {
             if(!pickedUp && canMove)
             {
-                Vector2 targetPos = player.transform.position;
+                Vector2 targetPos = target.transform.position;
                 Vector2 difference;
                 Vector2 moveForce = Vector2.zero;
 
@@ -156,6 +180,7 @@ public class EnemyBehavior : Throwable
     {
         if(!isFlashing)
         {
+            StartCoroutine(Freeze());
             isFlashing = true;
             float flashedFor = 0;
             while (flashedFor < flashTime)
@@ -185,16 +210,17 @@ public class EnemyBehavior : Throwable
     protected override PhysicsMaterial2D CheckBounce(GameObject obj)
     {
         //If it hits or bounces with the wall, take wall damage
-        if (obj.tag == "Wall"&&(isBouncing||!bouncedWith.Contains(obj)))
+        if (obj.tag == "Wall"&&(isBouncing))
         {
             Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
             StartCoroutine(DamageFlash());
         }
         //If it bounces into an enemy, take bounce damage
-        else if (isBouncing && obj.tag != "Enemy")
+        else if (isBouncing && obj.tag != "Enemy" && obj.name != "Tilemap" && !obj.name.Contains("Wall") && !obj.name.Contains("Door"))
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
             StartCoroutine(DamageFlash());
+            print("hkshlsg");
         }
 
         print("New health: " + Stats.Health);
