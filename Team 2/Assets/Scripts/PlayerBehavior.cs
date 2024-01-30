@@ -80,7 +80,9 @@ public class PlayerBehavior : MonoBehaviour
 
     private void Aim_performed(InputAction.CallbackContext obj)
     {
-        aimingVector = obj.ReadValue<Vector2>();
+        if (obj.ReadValue<Vector2>() != new Vector2 (0, 0)) {
+            aimingVector = obj.ReadValue<Vector2>();
+        }
     }
 
     private void Move_performed(InputAction.CallbackContext obj)
@@ -208,7 +210,7 @@ public class PlayerBehavior : MonoBehaviour
 
                 
                 cameraBehav.UpdateLocation(roomIAmIn);
-
+                ResetLasso();
                 
 
             }
