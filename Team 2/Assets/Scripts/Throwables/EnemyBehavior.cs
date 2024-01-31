@@ -292,7 +292,7 @@ public class EnemyBehavior : Throwable
         }
 
         //If the object hasn't been bounced with previously, add it
-        if (!bouncedWith.Contains(obj))
+        if (!bouncedWith.Contains(obj)&&obj.tag != "Wall" && obj.tag != "Rooms")
         {
             isBouncing = true;
             bouncedWith.Add(obj);
