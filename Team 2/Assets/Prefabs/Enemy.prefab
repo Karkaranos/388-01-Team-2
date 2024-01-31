@@ -251,14 +251,14 @@ MonoBehaviour:
   roomSpawnedIn: {fileID: 0}
   target: {fileID: 0}
   player: {fileID: 0}
-  detectionRadius: 2
+  detectionRadius: 10
   radiusActive: 3
-  maxRaycastDistance: 2
+  maxRaycastDistance: 10
   attachToAll: 0
   playerLayerNumber: 3
   layersToIgnore:
     serializedVersion: 2
-    m_Bits: 1008
+    m_Bits: 2033
 --- !u!195 &7192061090785554465
 NavMeshAgent:
   m_ObjectHideFlags: 0

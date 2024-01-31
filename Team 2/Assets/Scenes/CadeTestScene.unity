@@ -963,9 +963,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: {x: 5, y: 5}
   startPos: 0
-  startRoom: {fileID: 7227700253671823979, guid: 710a7dc6f66891e47b7e1cab130bded2, type: 3}
+  startRoom: {fileID: 4899614505787303258, guid: 940e18ff170895a4e841e7ff042d6060, type: 3}
   rooms:
-  - room: {fileID: 7227700253671823979, guid: 710a7dc6f66891e47b7e1cab130bded2, type: 3}
+  - room: {fileID: 4899614505787303258, guid: 940e18ff170895a4e841e7ff042d6060, type: 3}
     weight: 1
   - room: {fileID: 7132620822483108746, guid: 9086762e8bd58e44e895853328f30eff, type: 3}
     weight: 1
@@ -2035,8 +2035,8 @@ MonoBehaviour:
     _dmgToPlayer: 0
     _bounceDamage: 0
     _dmgToEnemy: 0
-    _health: 100
-    _maxHealth: 100
+    _health: 100000
+    _maxHealth: 100000
     _speed: 1
     _freezeTime: 0
     _invincTime: 2
