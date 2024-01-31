@@ -408,7 +408,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2669096580275055874}
   - component: {fileID: 2026707004266384457}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2486,7 +2486,7 @@ GameObject:
   - component: {fileID: 5765612309967741541}
   - component: {fileID: 7581184744148907552}
   - component: {fileID: 8526329331480455537}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlaytestRoom2
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
@@ -3010,7 +3010,7 @@ GameObject:
   - component: {fileID: 6731384120532040946}
   - component: {fileID: 3924369572861927397}
   - component: {fileID: 3593935633239696785}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5785,7 +5785,7 @@ GameObject:
   - component: {fileID: 2172245027050841171}
   - component: {fileID: 3141081963374393914}
   - component: {fileID: 5068118009021693019}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

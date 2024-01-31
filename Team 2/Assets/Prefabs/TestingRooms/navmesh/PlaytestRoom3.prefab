@@ -857,7 +857,7 @@ GameObject:
   - component: {fileID: 2344768858188121967}
   - component: {fileID: 5736865496737002580}
   - component: {fileID: 7787501367814251976}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5792,7 +5792,7 @@ GameObject:
   - component: {fileID: 8593785287080339854}
   - component: {fileID: 6286248376017431089}
   - component: {fileID: 4129288722296943837}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlaytestRoom3
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}

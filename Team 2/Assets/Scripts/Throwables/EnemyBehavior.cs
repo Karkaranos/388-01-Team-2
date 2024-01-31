@@ -30,13 +30,28 @@ public class EnemyBehavior : Throwable
 
     [Header("Pathfinding")]
     [SerializeField]private Transform target;
+    [SerializeField] private GameObject player;
     NavMeshAgent agent;
+    private bool pathfindingActivated = false;
+    [SerializeField]
+    private float detectionRadius;
+    [SerializeField]
+    private float radiusActive;
+    [SerializeField]
+    private float maxRaycastDistance;
 
+    [Header("Layers Settings:")]
+    [SerializeField] private bool attachToAll = false;
+    [SerializeField] private int playerLayerNumber = 3;
+    [SerializeField] private LayerMask layersToIgnore = new LayerMask();
+    private float defaultRaycastDistance = 1000f;
 
+    private bool searching;
 
     public CharacterStats Stats { get => stats; set => stats = value; }
 
     private bool canMove = true;
+    private bool usingNavMesh;
 
     #endregion
 
@@ -60,6 +75,7 @@ public class EnemyBehavior : Throwable
 
         
         //If the player can be found, track them.
+        /*
         try
         {
             target = FindObjectOfType<PlayerBehavior>().gameObject.transform;
@@ -73,19 +89,62 @@ public class EnemyBehavior : Throwable
         catch
         {
             print("Player not found");
-        }
+        }*/
         
 
     }
 
     private void Update()
     {
-        if (canMove && !SceneManager.GetActiveScene().name.Equals("MainScene"))        
+        if (canMove && !SceneManager.GetActiveScene().name.Equals("MainScene")&&!pathfindingActivated&&target!=null)        
         {
             agent.SetDestination(target.position);
+            player = null;
+            usingNavMesh = true;
+        }
+
+        if(player == null && !searching&&!usingNavMesh )
+        {
+            StartCoroutine(SearchForTarget());
+        }
+        else if (!pathfindingActivated && player !=null&&!usingNavMesh)
+        {
+            StartCoroutine(TrackPlayer());
         }
     }
 
+
+    IEnumerator SearchForTarget()
+    {
+        searching = true;
+
+        if (Physics2D.CircleCast(transform.position, detectionRadius, Vector2.zero, detectionRadius, ~layersToIgnore))
+        {
+            Debug.DrawLine(transform.position, new Vector3(0, detectionRadius, 0), Color.green);
+            RaycastHit2D _hit = Physics2D.CircleCast(transform.position, detectionRadius, Vector2.zero, detectionRadius, ~layersToIgnore);
+            if (_hit)
+            {
+                if (_hit.transform.gameObject.layer == playerLayerNumber)
+                {
+                    Vector2 dir = new Vector2(_hit.transform.position.x - transform.position.x, _hit.transform.position.y - transform.position.y);
+
+                    Debug.DrawLine(transform.position, dir, Color.red);
+                    RaycastHit2D _LOS = Physics2D.Raycast(transform.position, dir, maxRaycastDistance, ~layersToIgnore);
+                    if(_LOS)
+                    {
+                        if(_LOS.transform.gameObject.layer == playerLayerNumber)
+                        {
+                            player = _LOS.transform.gameObject;
+                            target = _LOS.transform;
+                            print("Target  of " + player.name + " aquired");
+                        }
+                    }
+                }
+            }
+        }
+        yield return new WaitForSeconds(.5f);
+        searching = false;
+    }
 
 
     /// <summary>
@@ -128,10 +187,11 @@ public class EnemyBehavior : Throwable
     /// <returns>Time between adjustments</returns>
     IEnumerator TrackPlayer()
     {
+        pathfindingActivated = true;
         print("other movement loaded");
         for(; ; )
         {
-            if(!pickedUp && canMove)
+            if(!pickedUp && canMove && !usingNavMesh)
             {
                 Vector2 targetPos = target.transform.position;
                 Vector2 difference;

@@ -334,6 +334,15 @@ MonoBehaviour:
   timeBetweenFlashes: 0.1
   roomSpawnedIn: {fileID: 0}
   target: {fileID: 0}
+  player: {fileID: 0}
+  detectionRadius: 2
+  radiusActive: 3
+  maxRaycastDistance: 2
+  attachToAll: 0
+  playerLayerNumber: 3
+  layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 1008
 --- !u!195 &2065760599523554197
 NavMeshAgent:
   m_ObjectHideFlags: 0

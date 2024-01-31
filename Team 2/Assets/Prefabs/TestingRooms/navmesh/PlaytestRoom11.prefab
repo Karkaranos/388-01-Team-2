@@ -1387,7 +1387,7 @@ GameObject:
   - component: {fileID: 8291104363614856175}
   - component: {fileID: 6869579010176320474}
   - component: {fileID: 7237377820342822908}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -3327,7 +3327,7 @@ GameObject:
   - component: {fileID: 6065047133221418455}
   - component: {fileID: 2047985138109621628}
   - component: {fileID: 5918153519367165402}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlaytestRoom11
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
