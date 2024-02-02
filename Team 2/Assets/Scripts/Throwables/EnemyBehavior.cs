@@ -43,8 +43,11 @@ public class EnemyBehavior : Throwable
     [Header("Layers Settings:")]
     [SerializeField] private bool attachToAll = false;
     [SerializeField] private int playerLayerNumber = 3;
+    [SerializeField] private int obstacleLayerNumber = 7;
     [SerializeField] private LayerMask layersToIgnore = new LayerMask();
+    [SerializeField] private LayerMask layersToIgnoreForObs = new LayerMask();
     private float defaultRaycastDistance = 1000f;
+
 
     private bool searching;
 
@@ -98,8 +101,9 @@ public class EnemyBehavior : Throwable
     {
         if (canMove && !SceneManager.GetActiveScene().name.Equals("MainScene")&&!pathfindingActivated&&target!=null)        
         {
-            agent.SetDestination(target.position);
-            player = null;
+            CheckPath();
+
+            //player = null;
             usingNavMesh = true;
         }
 
@@ -114,11 +118,62 @@ public class EnemyBehavior : Throwable
     }
 
 
+    private void CheckPath()
+    {
+        Vector2 targetPos = target.transform.position;
+        Vector2 difference;
+
+        difference.x = targetPos.x - transform.position.x;
+        difference.y = targetPos.y - transform.position.y;
+        RaycastHit2D _hit = Physics2D.CircleCast(transform.position, detectionRadius/2, difference, detectionRadius/2, ~layersToIgnoreForObs);
+        if (_hit)
+        {
+            print("Enemy has located " + _hit.transform.gameObject);
+            if (_hit.transform.gameObject.tag.Equals("Throwable")||_hit.transform.gameObject.tag.Equals("Enemy"))
+            {
+                print("should not be on player");
+                agent.SetDestination(ObstacleManuvering(_hit.transform));
+            }
+            else if (_hit.transform.gameObject.tag.Equals("Player"))
+            {
+                print("tracking player");
+                agent.SetDestination(target.position);
+            }
+        }
+    }
+
+    private Vector3 ObstacleManuvering(Transform obPos)
+    {
+        Vector3 obstacleToPlayer;
+        //Look into a*
+        Vector3 newPos = obPos.position;
+        obstacleToPlayer = target.transform.position - obPos.position;
+
+        //Change this to check current position against the target position
+        if(Mathf.Abs(obstacleToPlayer.y) <.5f && Mathf.Abs(obstacleToPlayer.x) >= .5f)
+        {
+            newPos.x += obstacleToPlayer.x % 2;
+        }
+        else if (Mathf.Abs(obstacleToPlayer.y) >= .5f && Mathf.Abs(obstacleToPlayer.x) < .5f)
+        {
+            newPos.y += obstacleToPlayer.y % 2;
+        }
+        else
+        {
+            newPos.x += obstacleToPlayer.x % 2;
+            newPos.y += obstacleToPlayer.y % 2;
+        }
+
+        print("new target: " + newPos);
+        return newPos;
+
+    }
+
     IEnumerator SearchForTarget()
     {
         searching = true;
 
-        if (Physics2D.CircleCast(transform.position, detectionRadius, Vector2.zero, detectionRadius, ~layersToIgnore))
+        if (Physics2D.CircleCast(transform.position, 10, Vector2.zero, 10, ~layersToIgnore))
         {
             Debug.DrawLine(transform.position, new Vector3(0, detectionRadius, 0), Color.green);
             RaycastHit2D _hit = Physics2D.CircleCast(transform.position, detectionRadius, Vector2.zero, detectionRadius, ~layersToIgnore);
@@ -153,7 +208,7 @@ public class EnemyBehavior : Throwable
     /// <param name="collision">The object collided with</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        print("Hit " + collision.gameObject.name);
+        //print("Hit " + collision.gameObject.name);
         CheckBounce(collision.gameObject);
         //If the object collided with is a throwable
         if (collision.gameObject.GetComponent<Throwable>()!=null)

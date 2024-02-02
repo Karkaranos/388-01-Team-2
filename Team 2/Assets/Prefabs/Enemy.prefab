@@ -81,7 +81,7 @@ Transform:
   m_Children:
   - {fileID: 8899334877794229899}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3896908537533216935
 SpriteRenderer:
@@ -256,9 +256,13 @@ MonoBehaviour:
   maxRaycastDistance: 10
   attachToAll: 0
   playerLayerNumber: 3
+  obstacleLayerNumber: 7
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 2033
+  layersToIgnoreForObs:
+    serializedVersion: 2
+    m_Bits: 1913
 --- !u!195 &7192061090785554465
 NavMeshAgent:
   m_ObjectHideFlags: 0
