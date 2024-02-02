@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 3030395028208949062}
   m_Layer: 7
   m_Name: Throwable
-  m_TagString: Untagged
+  m_TagString: Throwable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -220,6 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrown: 1
   pickedUp: 0
+  killed: 0
   obStat:
     _baseDmgDealt: 0
     _dmgCap: 0

@@ -963,7 +963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: {x: 5, y: 5}
   startPos: 0
-  startRoom: {fileID: 4899614505787303258, guid: 940e18ff170895a4e841e7ff042d6060, type: 3}
+  startRoom: {fileID: 4899614505787303258, guid: c9d410acf3f294e4faf539dde731cb66, type: 3}
   rooms:
   - room: {fileID: 4899614505787303258, guid: 940e18ff170895a4e841e7ff042d6060, type: 3}
     weight: 1
