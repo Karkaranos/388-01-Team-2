@@ -508,7 +508,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: {x: 5, y: 5}
   startPos: 0
-  startRoom: {fileID: 7227700253671823979, guid: 710a7dc6f66891e47b7e1cab130bded2, type: 3}
   rooms:
   - room: {fileID: 7227700253671823979, guid: 710a7dc6f66891e47b7e1cab130bded2, type: 3}
     weight: 1
@@ -526,6 +525,9 @@ MonoBehaviour:
     weight: 1
   - room: {fileID: 7893075268161559105, guid: c386c758b90e9604c854a6e4a44742f4, type: 3}
     weight: 1
+  setSpawns:
+  - room: {fileID: 7227700253671823979, guid: 710a7dc6f66891e47b7e1cab130bded2, type: 3}
+    GridPosition: {x: 0, y: 0}
   offset: {x: 17, y: 9}
   bottomRightRoom: {x: 0, y: 0}
   mainCamera: {fileID: 757713683}
