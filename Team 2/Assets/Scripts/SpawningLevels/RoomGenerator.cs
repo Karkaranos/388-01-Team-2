@@ -17,8 +17,8 @@ public class RoomGenerator : MonoBehaviour
     public static bool GridStyle;
 
     [Header("Room Settings:")]
-    [SerializeField] private GameObject startRoom;
     [SerializeField] private List<RoomList> rooms;
+    [SerializeField] private List<FixedRoomSpawns> setSpawns;
 
     [Header("Debug Information:")]
     public Vector2 offset;
@@ -68,9 +68,13 @@ public class RoomGenerator : MonoBehaviour
 
 
                     GameObject tempRoom = PickRandomRoom();
-                    if (i == 0 && j == 0)
+                    
+                    foreach (FixedRoomSpawns r in setSpawns)
                     {
-                        tempRoom = startRoom;
+                        if (r.GridPosition.x == i &&  r.GridPosition.y == j)
+                        {
+                            tempRoom = r.room;
+                        }
                     }
                     if (tempRoom != null)
                     {
