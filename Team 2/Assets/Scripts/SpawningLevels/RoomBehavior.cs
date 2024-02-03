@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,11 +39,27 @@ public class RoomBehavior : MonoBehaviour
             Vector2 spawnPoint = new Vector2(transform.position.x + e.SpawnPoint.x, transform.position.y + e.SpawnPoint.y);
             GameObject go = Instantiate(e.EnemyToSpawn, spawnPoint, Quaternion.identity);
             go.GetComponent<Throwable>().SpawnInRoom(transform);
+            if (go.GetComponent<EnemyBehavior>() != null)
+            {
+                spawnedEnemies.Add(go);
+            }
             
             
         }
         
     }
 
+    public void EnemyDefeated(GameObject go)
+    {
+        foreach (GameObject e in spawnedEnemies)
+        {
+            if (e ==  go)
+            {
+               Destroy(e);
+            }
+        }
+        spawnedEnemies.RemoveAll(null);
+        
+    }
     
 }
