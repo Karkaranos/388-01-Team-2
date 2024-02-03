@@ -340,9 +340,13 @@ MonoBehaviour:
   maxRaycastDistance: 10
   attachToAll: 0
   playerLayerNumber: 3
+  obstacleLayerNumber: 7
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 2033
+  layersToIgnoreForObs:
+    serializedVersion: 2
+    m_Bits: 1913
 --- !u!195 &2065760599523554197
 NavMeshAgent:
   m_ObjectHideFlags: 0
