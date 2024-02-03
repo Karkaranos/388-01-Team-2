@@ -101,7 +101,7 @@ public class EnemyBehavior : Throwable
     {
         if (canMove && !SceneManager.GetActiveScene().name.Equals("MainScene")&&!pathfindingActivated&&target!=null)        
         {
-            CheckPath();
+            //CheckPath();
 
             //player = null;
             usingNavMesh = true;
@@ -113,7 +113,7 @@ public class EnemyBehavior : Throwable
         }
         else if (!pathfindingActivated && player !=null&&!usingNavMesh)
         {
-            StartCoroutine(TrackPlayer());
+            //StartCoroutine(TrackPlayer());
         }
     }
 
