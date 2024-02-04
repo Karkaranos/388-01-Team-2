@@ -38,14 +38,35 @@ public class NodeInfo : MonoBehaviour
 public class NodeLocations: MonoBehaviour
 {
     public Vector3 location;
+    public float x;
+    public float y;
+    public GameObject a;
 
-    public NodeLocations(float x, float y)
+    public NodeLocations(float _x, float _y)
     {
-        location = new Vector3(x, y, 0);
+        x = _x;
+        y = _y;
     }
+
+    public Vector3 ToVector()
+    {
+        return new Vector3(x, y, 0);
+    }
+
+    public static NodeLocations operator +(NodeLocations a, NodeLocations b)
+   => new NodeLocations(a.x + b.x, a.y + b.y);
 
     public override string ToString()
     {
-        return "X: " + location.x + " , Y: " + location.y;
+        return "X: " + x + " , Y: " + y;
+    }
+
+    public override bool Equals(object other)
+    {
+        if(((NodeLocations) other).x == x && ((NodeLocations) other).y==y)
+        {
+            return true;
+        }
+        return false;
     }
 }
