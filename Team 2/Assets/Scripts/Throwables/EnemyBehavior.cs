@@ -99,22 +99,24 @@ public class EnemyBehavior : Throwable
 
     private void Update()
     {
+        /*
         if (canMove && !SceneManager.GetActiveScene().name.Equals("MainScene")&&!pathfindingActivated&&target!=null)        
         {
-            CheckPath();
+            //CheckPath();
 
             //player = null;
             usingNavMesh = true;
-        }
+        }*/
 
         if(player == null && !searching&&!usingNavMesh )
         {
             StartCoroutine(SearchForTarget());
         }
+        /*
         else if (!pathfindingActivated && player !=null&&!usingNavMesh)
         {
-            StartCoroutine(TrackPlayer());
-        }
+            //StartCoroutine(TrackPlayer());
+        }*/
     }
 
 
