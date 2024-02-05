@@ -11,7 +11,7 @@ using UnityEngine;
 public class RoomGenerator : MonoBehaviour
 {
     [Header("Grid Settings:")]
-    [SerializeField] private Vector2 gridSize;
+    [SerializeField] public Vector2 gridSize;
     [SerializeField] private int startPos = 0;
     [SerializeField] private List<Cell> board;
     public static bool GridStyle;
@@ -105,9 +105,13 @@ public class RoomGenerator : MonoBehaviour
                             }
                         }*/
                         roomBehav.overallStatus = currentCell.status;
-                            roomBehav.UpdateRooms(currentCell.status);
-                            roomBehav.gridPosition = new Vector2(i, j);
-                            newRoom.name += " " + i + "-" + j;
+                        roomBehav.UpdateRooms(currentCell.status);
+                        roomBehav.gridPosition = new Vector2(i, j);
+                        newRoom.name += " " + i + "-" + j;
+                        if (roomBehav.gridPosition == new Vector2(0, 0))
+                        {
+                            roomBehav.VisitRoom();
+                        }
                         
                     }
                     else

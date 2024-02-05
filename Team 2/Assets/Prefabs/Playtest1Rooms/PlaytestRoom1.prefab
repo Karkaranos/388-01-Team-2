@@ -1748,12 +1748,15 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+
 --- !u!114 &4114111918359876598
 MonoBehaviour:
+
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+
   m_GameObject: {fileID: 258124227599152616}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1766,10 +1769,12 @@ MonoBehaviour:
   m_AffectedAgents: ffffffff
 --- !u!114 &1291425942748495548
 MonoBehaviour:
+
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+
   m_GameObject: {fileID: 258124227599152616}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1789,6 +1794,7 @@ MonoBehaviour:
   - tile: {fileID: 11400000, guid: 3c1aa3c41aa15da4398328fd19bde9c2, type: 2}
     overrideArea: 1
     area: 0
+
 --- !u!1 &1122421533745851033
 GameObject:
   m_ObjectHideFlags: 0
@@ -4758,7 +4764,9 @@ Transform:
   - {fileID: 8871449425207918850}
   - {fileID: 1741201419784119805}
   - {fileID: 4156419157065567432}
+
   - {fileID: 2580146276759522650}
+
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4800,6 +4808,7 @@ MonoBehaviour:
   - EnemyToSpawn: {fileID: 4898780974343086028, guid: cc06c8e22e534a149bc31f9e078a38b0, type: 3}
     SpawnPoint: {x: 5.95, y: 2.98}
   spawnedEnemies: []
+  MinimapFog: {fileID: 735217203412785343}
   hasBeenVisited: 0
 --- !u!210 &-4276653108923547197
 SortingGroup:
