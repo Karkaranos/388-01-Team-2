@@ -78,35 +78,35 @@ public class EnemyBehavior : Throwable
 
         
         //If the player can be found, track them.
-        /*
+        
         try
         {
             target = FindObjectOfType<PlayerBehavior>().gameObject.transform;
             pbehav = target.gameObject.GetComponent<PlayerBehavior>();
-            if(SceneManager.GetActiveScene().name.Equals("MainScene"))
+            /*if(SceneManager.GetActiveScene().name.Equals("MainScene"))
             {
                 StartCoroutine(TrackPlayer());
-            }
+            }*/
 
         }
         catch
         {
             print("Player not found");
-        }*/
+        }
         
 
     }
 
     private void Update()
     {
-        /*
-        if (canMove && !SceneManager.GetActiveScene().name.Equals("MainScene")&&!pathfindingActivated&&target!=null)        
+        
+        if (canMove &&!pathfindingActivated&&target!=null)        
         {
-            //CheckPath();
+            CheckPath();
 
             //player = null;
             usingNavMesh = true;
-        }*/
+        }
 
         if(player == null && !searching&&!usingNavMesh )
         {
@@ -218,7 +218,7 @@ public class EnemyBehavior : Throwable
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
             
             //If the enemy collided with an enemy or was thrown
-            if ((collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
+            if (collidedWith.thrown || thrown)
             {
                 Stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_ENEMY));
                 print("New health: " + Stats.Health);
@@ -327,17 +327,16 @@ public class EnemyBehavior : Throwable
     protected override PhysicsMaterial2D CheckBounce(GameObject obj)
     {
         //If it hits or bounces with the wall, take wall damage
-        if (obj.tag == "Wall"&&(isBouncing))
+        if (obj.tag == "Wall"&&(isBouncing)&&thrown)
         {
-            Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
+            Stats.TakeDamage(Damage(ObjectStats.DamageTypes.FROM_WALL));
             StartCoroutine(DamageFlash());
         }
         //If it bounces into an enemy, take bounce damage
-        else if (isBouncing && obj.tag != "Enemy" && obj.name != "Tilemap" && !obj.name.Contains("Wall") && !obj.name.Contains("Door"))
+        else if (thrown &&(isBouncing && obj.tag != "Enemy" && obj.name != "Tilemap" && !obj.name.Contains("Wall") && !obj.name.Contains("Door")))
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
             StartCoroutine(DamageFlash());
-            print("hkshlsg");
         }
 
         print("New health: " + Stats.Health);
