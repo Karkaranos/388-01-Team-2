@@ -1123,6 +1123,113 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1235283086}
   m_CullTransparentMesh: 1
+--- !u!1001 &1368007914
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1454641980523459440, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_Name
+      value: PlaytestRoom7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486266215831948134, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8240387615468452220, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1368007917}
+    - targetCorrespondingSourceObject: {fileID: 8240387615468452220, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1368007916}
+  m_SourcePrefab: {fileID: 100100000, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+--- !u!1 &1368007915 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8240387615468452220, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+  m_PrefabInstance: {fileID: 1368007914}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1368007916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368007915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 709c8d6349be44c68dff3d220992400c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TileModifiers:
+  - tile: {fileID: 11400000, guid: f592cee08d7f5374dbd93232ed899670, type: 2}
+    overrideArea: 1
+    area: 1
+  - tile: {fileID: 11400000, guid: 1def217bc48790742b9d3a104336db43, type: 2}
+    overrideArea: 1
+    area: 1
+--- !u!114 &1368007917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368007915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &1391808349
 GameObject:
   m_ObjectHideFlags: 0
