@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngineInternal;
 
 public class ThrowingArmBehavior : MonoBehaviour
 {
@@ -24,11 +23,9 @@ public class ThrowingArmBehavior : MonoBehaviour
     public Transform ThrowingArm;
     public Transform FirePoint;
 
-    [Header("Distance & Width:")]
+    [Header("Distance:")]
     [SerializeField] private bool hasMaxDistance = false;
     [SerializeField] private float maxDistance = 20;
-    [SerializeField] private float lassoWidth = 1;
-    
 
     [Header("Cooldown Specs")]
     [SerializeField] private float cooldownMax;
@@ -74,9 +71,9 @@ public class ThrowingArmBehavior : MonoBehaviour
     {
         Debug.Log("Throwing Lasso");
         PlayerBehav.Throwing = true;
-        Vector2 distanceVector = new Vector2(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y);
+        Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
         Debug.Log(distanceVector);
-        
+        Debug.DrawLine(FirePoint.position, distanceVector.normalized, Color.green);
             if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
             {
                 RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
@@ -88,7 +85,6 @@ public class ThrowingArmBehavior : MonoBehaviour
                         {
                             if (offCooldown)
                             {
-                            
                                 if(!missText.IsActive())
                                 {
                                     missText.gameObject.SetActive(true);
@@ -103,7 +99,7 @@ public class ThrowingArmBehavior : MonoBehaviour
                                 PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                                 PlayerBehav.aimingArrow.ShowArrow();
                                 PlayerBehav.currentlyLassoed.GetComponent<Throwable>().bouncedWith.Clear();
-                                LassoPoint = _hit.transform.position;
+                                LassoPoint = _hit.point;
                                 Debug.Log(LassoPoint);
                                 LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
                             
@@ -144,12 +140,6 @@ public class ThrowingArmBehavior : MonoBehaviour
     }
 
    
-    public void DrawBox()
-    {
-        Vector2 distanceVector = new Vector2(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y);
-        Physics2D.BoxCast(FirePoint.position, new Vector2(maxDistance, lassoWidth), Vector2.Angle(Vector2.zero, distanceVector), distanceVector.normalized);
-    }
-
 
     private void OnDrawGizmosSelected()
     {

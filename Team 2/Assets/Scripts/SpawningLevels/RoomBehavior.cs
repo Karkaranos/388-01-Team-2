@@ -14,7 +14,6 @@ public class RoomBehavior : MonoBehaviour
     public Vector2 gridPosition;
     [SerializeField] private List<EnemySpawnpoint> EnemiesToSpawn;
     public List<GameObject> spawnedEnemies = new List<GameObject>();
-    public GameObject MinimapFog;
 
     public bool hasBeenVisited;
 
@@ -48,12 +47,6 @@ public class RoomBehavior : MonoBehaviour
             
         }
         
-    }
-
-    public void VisitRoom()
-    {
-        hasBeenVisited = true;
-        MinimapFog.SetActive(false);
     }
 
     public void EnemyDefeated(GameObject go)

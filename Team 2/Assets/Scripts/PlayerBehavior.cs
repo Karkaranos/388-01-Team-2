@@ -207,10 +207,7 @@ public class PlayerBehavior : MonoBehaviour
             roomIAmIn = roomBehav.gridPosition;
             if (collision.tag == "Door")
             {
-                if (!roomBehav.hasBeenVisited)
-                {
-                    roomBehav.VisitRoom();
-                }
+
                 
                 cameraBehav.UpdateLocation(roomIAmIn);
                 ResetLasso();
