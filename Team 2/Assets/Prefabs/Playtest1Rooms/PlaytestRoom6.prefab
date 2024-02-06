@@ -6215,8 +6215,8 @@ Transform:
   - {fileID: 8080074666113815871}
   - {fileID: 6527440602911851518}
   - {fileID: 3528697269786237690}
-
   - {fileID: 6719075710817986283}
+  - {fileID: 7484660671046643877}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
