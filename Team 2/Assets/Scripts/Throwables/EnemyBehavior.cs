@@ -185,13 +185,13 @@ public class EnemyBehavior : Throwable
     protected override PhysicsMaterial2D CheckBounce(GameObject obj)
     {
         //If it hits or bounces with the wall, take wall damage
-        if (obj.tag == "Wall"&&(isBouncing||!bouncedWith.Contains(obj)))
+        if ((thrown||isBouncing) && obj.tag == "Wall"/*&&(isBouncing||!bouncedWith.Contains(obj))*/)
         {
-            Stats.TakeDamage(base.Damage(ObjectStats.DamageTypes.FROM_WALL));
+            Stats.TakeDamage(Damage(ObjectStats.DamageTypes.FROM_WALL));
             StartCoroutine(DamageFlash());
         }
         //If it bounces into an enemy, take bounce damage
-        else if (isBouncing && obj.tag != "Enemy")
+        else if ((isBouncing || thrown || obj.GetComponent<Throwable>().thrown) && obj.tag != "Enemy")
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
             StartCoroutine(DamageFlash());

@@ -172,8 +172,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5860005dbaef41c49ab79b6c8fcf3c37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrown: 1
+  thrown: 0
   pickedUp: 0
+  killed: 0
+  forceModifier: 10
+  maxVelocity: 50
   obStat:
     _baseDmgDealt: 0
     _dmgCap: 0
