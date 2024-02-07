@@ -72,7 +72,7 @@ public class ThrowingArmBehavior : MonoBehaviour
             Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
             Vector2 midpoint = new Vector2(FirePoint.position.x + (distanceVector.x * maxDistance / 2),
                   FirePoint.position.y + (distanceVector.y * maxDistance / 2));
-            float angle = Mathf.Atan2(distanceVector.x, distanceVector.y) * Mathf.Rad2Deg - 90;
+            float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
             BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
             distanceVector, maxDistance, ~layersToIgnore);
         }
@@ -90,7 +90,7 @@ public class ThrowingArmBehavior : MonoBehaviour
         //Debug.DrawLine(FirePoint.position, distanceVector.normalized, Color.green);
         if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
         {
-            float angle = Vector2.Angle(Player.transform.position, aimingArrow.transform.position);
+            float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
             //RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
             RaycastHit2D[] potentialHits = BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
             distanceVector, maxDistance, ~layersToIgnore);
