@@ -18,6 +18,11 @@ public class Throwable : MonoBehaviour
     public bool pickedUp = false;
     public bool killed;
 
+    [SerializeField] private float forceModifier;
+    [SerializeField] private float maxVelocity;
+    private float hiddenModifier = 100;
+
+
 
     private float damageDealt;
     public ObjectStats obStat;
@@ -94,10 +99,17 @@ public class Throwable : MonoBehaviour
 
     public void GetThrown(Vector2 arrow)
     {
+        thrown = true;
         PlayerBehavior pbehav = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();
-        pbehav.ResetLasso();
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Rigidbody2D>().AddForce(arrow * 200);
+
+        float angle = Mathf.Atan2(arrow.y, arrow.x) * Mathf.Rad2Deg;
+        float xForce = Mathf.Cos(angle * Mathf.PI / 180) * forceModifier * hiddenModifier;
+        float yForce = Mathf.Sin(angle * Mathf.PI / 180) * forceModifier * hiddenModifier;
+        Vector2 moveForce = Vector2.ClampMagnitude(new Vector2(xForce, yForce), maxVelocity * hiddenModifier);
+
+        GetComponent<Rigidbody2D>().AddForce(moveForce);
+        pbehav.ResetLasso();
         StartCoroutine(KillForce());
         
     }
@@ -111,6 +123,7 @@ public class Throwable : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        //thrown = false;
     }
 
     public void SpawnInRoom(Transform parent)
