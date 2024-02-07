@@ -1203,13 +1203,14 @@ MonoBehaviour:
   ThrowingArm: {fileID: 1439129984}
   FirePoint: {fileID: 537519613}
   hasMaxDistance: 0
-  maxDistance: 3.5
-  lassoHitboxWidth: 0
+  maxDistance: 7
+  lassoHitboxWidth: 2
   cooldownMax: 1.5
   cooldownTimer: 0
   offCooldown: 0
   LassoPoint: {x: 0, y: 0}
   LassoDistanceVector: {x: 0, y: 0}
+  inDebugMode: 1
 --- !u!4 &1439129984
 Transform:
   m_ObjectHideFlags: 0
