@@ -139,7 +139,7 @@ public class PlayerBehavior : MonoBehaviour
         }
         lassoThrown = false;
         Lasso.enabled = false;
-
+        Throwing = false;
         aimingArrow.HideArrow();
         currentlyLassoed = null;
         aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
