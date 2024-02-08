@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class PlaytestMainMenu : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PlaytestMainMenu : MonoBehaviour
 
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject varsMenu;
+    [SerializeField] private GameObject firstButtonMain;
+    [SerializeField] private GameObject firstButtonCredits;
     // Start is called before the first frame update
     void Awake()
     {
@@ -76,12 +79,14 @@ public class PlaytestMainMenu : MonoBehaviour
             inMain = false;
             mainMenu.SetActive(false);
             varsMenu.SetActive(true);
+            GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(firstButtonCredits);
         }
         else
         {
             inMain = true;
             mainMenu.SetActive(true);
             varsMenu.SetActive(false);
+            GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(firstButtonMain);
         }
     }
 

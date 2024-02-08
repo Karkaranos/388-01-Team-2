@@ -106,6 +106,7 @@ public class ThrowingArmBehavior : MonoBehaviour
                 {
                     float hitDistance = Mathf.Sqrt(Mathf.Pow(hit.transform.position.x - FirePoint.transform.position.x, 2) +
                         Mathf.Pow(hit.transform.position.y - FirePoint.transform.position.y, 2));
+                    print(" hit " + hit.transform.gameObject.name);
                     if (hitDistance < closestDistance)
                     {
                         closest = hit;
@@ -147,66 +148,63 @@ public class ThrowingArmBehavior : MonoBehaviour
                     missText.text = "You Missed";
 
                     Vector3 spawnPosition = FirePoint.transform.position;
-                    spawnPosition.x += distanceVector.x * maxDistance / 2;
-                    spawnPosition.y += distanceVector.y * maxDistance / 2;
-
-                    //Vector3 spawnPosition = Vector2.ClampMagnitude(new Vector2(xForce, yForce), maxDistance);
-
+                    if (distanceVector.magnitude < .1f)
+                    {
+                        float vecAngle = aimingArrow.transform.rotation.eulerAngles.z;
+                        spawnPosition.x += Mathf.Cos(vecAngle * Mathf.PI / 180) * maxDistance / 2;
+                        spawnPosition.y += Mathf.Sin(vecAngle * Mathf.PI / 180) * maxDistance / 2;
+                    }
+                    else
+                    {
+                        spawnPosition.x += distanceVector.x * maxDistance / 2;
+                        spawnPosition.y += distanceVector.y * maxDistance / 2;
+                    }
+                    print(spawnPosition);
                     GameObject fakeHit = Instantiate(empty, spawnPosition, Quaternion.identity);
                     PlayerBehav.currentlyLassoed = fakeHit;
+                    PlayerBehav.StartCoroutine(PlayerBehav.ResetMissedLasso(PlayerBehav.currentlyLassoed));
                     PlayerBehav.aimingArrow.HideArrow();
                     LassoPoint = fakeHit.transform.position;
-                    Debug.Log(LassoPoint);
                     LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
 
                     PlayerBehav.lassoThrown = true;
                     offCooldown = false;
-
                     Lasso.Missed = true;
                     Lasso.enabled = true;
                     PlayerBehav.Throwing = false;
-                    /*missText.text = "You Missed";
-                    PlayerBehav.Throwing = false;*/
-                    /* LassoPoint = FirePoint.position + Vector3.forward * maxDistance;
-                     LassoX = LassoPoint.x;
-                     Debug.Log(LassoPoint);
-                     LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
-                     Lasso.Missed = true;
-                     Lasso.enabled = true;*/
                 }
             }
             else
             {
                 missText.text = "You Missed";
 
-                Vector3 spawnPosition = FirePoint.transform.position;
-                spawnPosition.x += distanceVector.x * maxDistance / 2;
-                spawnPosition.y += distanceVector.y * maxDistance / 2;
+                 Vector3 spawnPosition = FirePoint.transform.position;
 
-
-                //Vector3 spawnPosition = Vector2.ClampMagnitude(new Vector2(xForce, yForce), maxDistance);
-
+                if (distanceVector.magnitude < .1f)
+                {
+                    float vecAngle = aimingArrow.transform.rotation.eulerAngles.z;
+                    spawnPosition.x += Mathf.Cos(vecAngle * Mathf.PI / 180) * maxDistance / 2;
+                    spawnPosition.y += Mathf.Sin(vecAngle * Mathf.PI / 180) * maxDistance / 2;
+                }
+                else
+                {
+                    spawnPosition.x += distanceVector.x * maxDistance / 2;
+                    spawnPosition.y += distanceVector.y * maxDistance / 2;
+                }
+                //print(spawnPosition);
                 GameObject fakeHit = Instantiate(empty, spawnPosition, Quaternion.identity);
+                PlayerBehav.currentlyLassoed = fakeHit;
+                PlayerBehav.StartCoroutine(PlayerBehav.ResetMissedLasso(PlayerBehav.currentlyLassoed));
+                PlayerBehav.currentlyLassoed = fakeHit;
                 PlayerBehav.aimingArrow.HideArrow();
                 LassoPoint = fakeHit.transform.position;
-                Debug.Log(LassoPoint);
                 LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
-
 
                 PlayerBehav.lassoThrown = true;
                 offCooldown = false;
                 Lasso.Missed = true;
                 Lasso.enabled = true;
                 PlayerBehav.Throwing = false;
-                //Do something to show miss
-
-
-                /* LassoPoint = FirePoint.position + Vector3.forward * maxDistance;
-                 LassoX = LassoPoint.x;
-                 Debug.Log(LassoPoint);
-                 LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
-                 Lasso.Missed = true;
-                 Lasso.enabled = true;*/
             }
 
 
