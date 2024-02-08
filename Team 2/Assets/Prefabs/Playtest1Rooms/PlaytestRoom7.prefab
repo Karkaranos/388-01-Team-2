@@ -2208,13 +2208,13 @@ MonoBehaviour:
   gridPosition: {x: 0, y: 0}
   EnemiesToSpawn:
   - EnemyToSpawn: {fileID: 2480821822843953289, guid: 121c7df734d51074dbe0e495c0b75dd5, type: 3}
-    SpawnPoint: {x: -4.402521, y: 2.156337}
+    SpawnPoint: {x: -4.07, y: 2.156337}
   - EnemyToSpawn: {fileID: 2480821822843953289, guid: 121c7df734d51074dbe0e495c0b75dd5, type: 3}
-    SpawnPoint: {x: -4.447444, y: -1.617253}
+    SpawnPoint: {x: -4.15, y: -2}
   - EnemyToSpawn: {fileID: 2480821822843953289, guid: 121c7df734d51074dbe0e495c0b75dd5, type: 3}
-    SpawnPoint: {x: 4.896681, y: 2.380955}
+    SpawnPoint: {x: 3.96, y: 2.17}
   - EnemyToSpawn: {fileID: 2480821822843953289, guid: 121c7df734d51074dbe0e495c0b75dd5, type: 3}
-    SpawnPoint: {x: 4.986528, y: -1.527405}
+    SpawnPoint: {x: 4.02, y: -1.99}
   - EnemyToSpawn: {fileID: 1693734548476624956, guid: 49ae89c7d497f4e4a950ca4f93710e60, type: 3}
     SpawnPoint: {x: -2.246184, y: 0.04492369}
   - EnemyToSpawn: {fileID: 1693734548476624956, guid: 49ae89c7d497f4e4a950ca4f93710e60, type: 3}
