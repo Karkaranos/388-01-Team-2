@@ -73,8 +73,8 @@ public class ThrowingArmBehavior : MonoBehaviour
         if (inDebugMode)
         {
             Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
-            Vector2 midpoint = new Vector2(FirePoint.position.x + (distanceVector.x * maxDistance / 2),
-                  FirePoint.position.y + (distanceVector.y * maxDistance / 2));
+            Vector2 midpoint = new Vector2(aimingArrow.position.x + (distanceVector.x * maxDistance / 2),
+                  aimingArrow.position.y + (distanceVector.y * maxDistance / 2));
             float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
             BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
             distanceVector, maxDistance, ~layersToIgnore);
