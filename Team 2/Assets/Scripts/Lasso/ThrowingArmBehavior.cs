@@ -38,6 +38,9 @@ public class ThrowingArmBehavior : MonoBehaviour
     [Header("Debug:")]
     [SerializeField] private bool inDebugMode;
 
+    [Header("Missing")]
+    [SerializeField] private GameObject empty;
+
 
 
     private void Start()
@@ -72,7 +75,7 @@ public class ThrowingArmBehavior : MonoBehaviour
             Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
             Vector2 midpoint = new Vector2(FirePoint.position.x + (distanceVector.x * maxDistance / 2),
                   FirePoint.position.y + (distanceVector.y * maxDistance / 2));
-            float angle = Mathf.Atan2(distanceVector.x, distanceVector.y) * Mathf.Rad2Deg - 90;
+            float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
             BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
             distanceVector, maxDistance, ~layersToIgnore);
         }
@@ -90,7 +93,7 @@ public class ThrowingArmBehavior : MonoBehaviour
         //Debug.DrawLine(FirePoint.position, distanceVector.normalized, Color.green);
         if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
         {
-            float angle = Vector2.Angle(Player.transform.position, aimingArrow.transform.position);
+            float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
             //RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
             RaycastHit2D[] potentialHits = BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
             distanceVector, maxDistance, ~layersToIgnore);
@@ -142,7 +145,28 @@ public class ThrowingArmBehavior : MonoBehaviour
                 else
                 {
                     missText.text = "You Missed";
+
+                    Vector3 spawnPosition = FirePoint.transform.position;
+                    spawnPosition.x += distanceVector.x * maxDistance / 2;
+                    spawnPosition.y += distanceVector.y * maxDistance / 2;
+
+                    //Vector3 spawnPosition = Vector2.ClampMagnitude(new Vector2(xForce, yForce), maxDistance);
+
+                    GameObject fakeHit = Instantiate(empty, spawnPosition, Quaternion.identity);
+                    PlayerBehav.currentlyLassoed = fakeHit;
+                    PlayerBehav.aimingArrow.HideArrow();
+                    LassoPoint = fakeHit.transform.position;
+                    Debug.Log(LassoPoint);
+                    LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
+
+                    PlayerBehav.lassoThrown = true;
+                    offCooldown = false;
+
+                    Lasso.Missed = true;
+                    Lasso.enabled = true;
                     PlayerBehav.Throwing = false;
+                    /*missText.text = "You Missed";
+                    PlayerBehav.Throwing = false;*/
                     /* LassoPoint = FirePoint.position + Vector3.forward * maxDistance;
                      LassoX = LassoPoint.x;
                      Debug.Log(LassoPoint);
@@ -154,7 +178,29 @@ public class ThrowingArmBehavior : MonoBehaviour
             else
             {
                 missText.text = "You Missed";
+
+                Vector3 spawnPosition = FirePoint.transform.position;
+                spawnPosition.x += distanceVector.x * maxDistance / 2;
+                spawnPosition.y += distanceVector.y * maxDistance / 2;
+
+
+                //Vector3 spawnPosition = Vector2.ClampMagnitude(new Vector2(xForce, yForce), maxDistance);
+
+                GameObject fakeHit = Instantiate(empty, spawnPosition, Quaternion.identity);
+                PlayerBehav.aimingArrow.HideArrow();
+                LassoPoint = fakeHit.transform.position;
+                Debug.Log(LassoPoint);
+                LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
+
+
+                PlayerBehav.lassoThrown = true;
+                offCooldown = false;
+                Lasso.Missed = true;
+                Lasso.enabled = true;
                 PlayerBehav.Throwing = false;
+                //Do something to show miss
+
+
                 /* LassoPoint = FirePoint.position + Vector3.forward * maxDistance;
                  LassoX = LassoPoint.x;
                  Debug.Log(LassoPoint);

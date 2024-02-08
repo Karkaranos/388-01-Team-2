@@ -191,7 +191,7 @@ public class EnemyBehavior : Throwable
             StartCoroutine(DamageFlash());
         }
         //If it bounces into an enemy, take bounce damage
-        else if ((isBouncing || thrown || obj.GetComponent<Throwable>().thrown) && obj.tag != "Enemy")
+        else if ((isBouncing || thrown || (obj.GetComponent<Throwable>() != null && obj.GetComponent<Throwable>().thrown)) && obj.tag != "Enemy")
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
             StartCoroutine(DamageFlash());
@@ -228,6 +228,7 @@ public class EnemyBehavior : Throwable
         if (pickedUp)
         {
             pbehav.aimingArrow = pbehav.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
+            print("error 3");
             pbehav.ResetLasso();
         }
         if(killed)

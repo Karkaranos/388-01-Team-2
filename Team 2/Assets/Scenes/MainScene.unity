@@ -1211,6 +1211,7 @@ MonoBehaviour:
   LassoPoint: {x: 0, y: 0}
   LassoDistanceVector: {x: 0, y: 0}
   inDebugMode: 1
+  empty: {fileID: 7029398236494349477, guid: 070ece0403cff1b4f893230e6c2fe7ac, type: 3}
 --- !u!4 &1439129984
 Transform:
   m_ObjectHideFlags: 0
