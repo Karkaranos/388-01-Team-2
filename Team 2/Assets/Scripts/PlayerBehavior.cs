@@ -49,6 +49,7 @@ public class PlayerBehavior : MonoBehaviour
 
     //storing location
     [HideInInspector] public Vector2 roomIAmIn;
+    private bool coroutineStarted = false;
 
     public void Awake()
     {
@@ -98,10 +99,16 @@ public class PlayerBehavior : MonoBehaviour
         if (timer >= 0.1 && !Throwing)
         {
             timer = 0;
-            if (currentlyLassoed != null)
+            if (currentlyLassoed != null && !currentlyLassoed.tag.Equals("Temp"))
             {
+                print("error");
                 currentlyLassoed.GetComponent<Throwable>().GetThrown(aimingVector);
                 
+            }
+            else if (currentlyLassoed != null && currentlyLassoed.tag.Equals("Temp")&&!coroutineStarted)
+            {
+                print("should run");
+                StartCoroutine(ResetMissedLasso(currentlyLassoed));
             }
             else
             {
@@ -116,10 +123,18 @@ public class PlayerBehavior : MonoBehaviour
                 }
                 else
                 {
-                    
-                    
 
+
+
+                    print("Error 2");
+                    if(currentlyLassoed.tag.Equals("Temp"))
+                    {
+                        StartCoroutine(ResetMissedLasso(currentlyLassoed));
+                    }
+                    else
+                    {
                         ResetLasso();
+                    }
 
 
                     
@@ -133,9 +148,13 @@ public class PlayerBehavior : MonoBehaviour
     }
     public void ResetLasso()
     {
+        print("Reset caught lasso");
         if (currentlyLassoed != null)
         {
-            currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
+            if(currentlyLassoed.GetComponent<Throwable>()!=null)
+            {
+                currentlyLassoed.GetComponent<Throwable>().pickedUp = false;
+            }
         }
         lassoThrown = false;
         Lasso.enabled = false;
@@ -145,6 +164,23 @@ public class PlayerBehavior : MonoBehaviour
         aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
         aimingArrow.ShowArrow();
     }
+
+    IEnumerator ResetMissedLasso(GameObject temp)
+    {
+        coroutineStarted = true;
+        print("Reset missed lasso");
+        yield return new WaitForSeconds(.3f);
+        coroutineStarted = false;
+        lassoThrown = false;
+        Lasso.enabled = false;
+        Throwing = false;
+        aimingArrow.HideArrow();
+        currentlyLassoed = null;
+        aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
+        aimingArrow.ShowArrow();
+        Destroy(temp);
+    }
+
     private void OnEnable()
     {
         playerControls.Enable();

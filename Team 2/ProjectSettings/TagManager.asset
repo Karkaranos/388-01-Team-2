@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Enemy
   - Spawn
+  - Temp
   layers:
   - Default
   - TransparentFX
