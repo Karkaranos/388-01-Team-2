@@ -130,7 +130,7 @@ public class PlayerBehavior : MonoBehaviour
 
 
                     print("Error 2");
-                    if(currentlyLassoed.tag.Equals("Temp"))
+                    if(currentlyLassoed != null && currentlyLassoed.tag.Equals("Temp"))
                     {
                         StartCoroutine(ResetMissedLasso(currentlyLassoed));
                     }
