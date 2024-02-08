@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour
 {
@@ -46,6 +47,8 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     private bool _invincible;
     private float timer;
+
+    public Slider HealthBar;
 
     //storing location
     [HideInInspector] public Vector2 roomIAmIn;
@@ -290,6 +293,12 @@ public class PlayerBehavior : MonoBehaviour
             }
         }
     }
+
+    private void FixedUpdate()
+    {
+        HealthBar.value = stats.Health;
+    }
+
 
     /// <summary>
     /// Temporarily makes the player invincible
