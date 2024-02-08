@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("CurrentScore", 0);
         }
     }
-
+    
     public void enemyDefeated()
     {
         enemiesDefeated++;

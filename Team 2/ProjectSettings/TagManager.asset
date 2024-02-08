@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - Spawn
   - Temp
+  - Throwable
   layers:
   - Default
   - TransparentFX
@@ -22,8 +23,8 @@ TagManager:
   - Throwable
   - Door
   - Spawn
-  - 
-  - 
+  - Walls
+  - SpawnTests
   - 
   - 
   - 
@@ -45,6 +46,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2408776675
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

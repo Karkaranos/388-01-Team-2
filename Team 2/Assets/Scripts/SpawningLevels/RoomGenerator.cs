@@ -11,14 +11,14 @@ using UnityEngine;
 public class RoomGenerator : MonoBehaviour
 {
     [Header("Grid Settings:")]
-    [SerializeField] private Vector2 gridSize;
+    [SerializeField] public Vector2 gridSize;
     [SerializeField] private int startPos = 0;
     [SerializeField] private List<Cell> board;
     public static bool GridStyle;
 
     [Header("Room Settings:")]
-    [SerializeField] private GameObject startRoom;
     [SerializeField] private List<RoomList> rooms;
+    [SerializeField] private List<FixedRoomSpawns> setSpawns;
 
     [Header("Debug Information:")]
     public Vector2 offset;
@@ -68,9 +68,13 @@ public class RoomGenerator : MonoBehaviour
 
 
                     GameObject tempRoom = PickRandomRoom();
-                    if (i == 0 && j == 0)
+                    
+                    foreach (FixedRoomSpawns r in setSpawns)
                     {
-                        tempRoom = startRoom;
+                        if (r.GridPosition.x == i &&  r.GridPosition.y == j)
+                        {
+                            tempRoom = r.room;
+                        }
                     }
                     if (tempRoom != null)
                     {
@@ -101,9 +105,13 @@ public class RoomGenerator : MonoBehaviour
                             }
                         }*/
                         roomBehav.overallStatus = currentCell.status;
-                            roomBehav.UpdateRooms(currentCell.status);
-                            roomBehav.gridPosition = new Vector2(i, j);
-                            newRoom.name += " " + i + "-" + j;
+                        roomBehav.UpdateRooms(currentCell.status);
+                        roomBehav.gridPosition = new Vector2(i, j);
+                        newRoom.name += " " + i + "-" + j;
+                        if (roomBehav.gridPosition == new Vector2(0, 0))
+                        {
+                            roomBehav.VisitRoom();
+                        }
                         
                     }
                     else

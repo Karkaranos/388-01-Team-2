@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CameraBehavior : MonoBehaviour
 {
-    [SerializeField] private RoomGenerator generator;
+    [SerializeField] RoomGenerator rg;
     private Vector2 posOffset;
     private void Start()
     {
-        posOffset = generator.offset;
+        posOffset = rg.offset;
     }
     public void UpdateLocation(Vector2 gridPos)
     {

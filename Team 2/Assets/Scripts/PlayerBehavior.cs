@@ -81,7 +81,9 @@ public class PlayerBehavior : MonoBehaviour
 
     private void Aim_performed(InputAction.CallbackContext obj)
     {
-        aimingVector = obj.ReadValue<Vector2>();
+        if (obj.ReadValue<Vector2>() != new Vector2 (0, 0)) {
+            aimingVector = obj.ReadValue<Vector2>();
+        }
     }
 
     private void Move_performed(InputAction.CallbackContext obj)
@@ -238,17 +240,17 @@ public class PlayerBehavior : MonoBehaviour
         if (collision.GetComponentInParent<RoomBehavior>() != null)
         {
             RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
+            roomIAmIn = roomBehav.gridPosition;
             if (collision.tag == "Door")
             {
-
-                roomIAmIn = roomBehav.gridPosition;
-                cameraBehav.UpdateLocation(roomIAmIn);
-
-                if (roomIAmIn == roomGenerator.bottomRightRoom)
+                if (!roomBehav.hasBeenVisited)
                 {
-                    transform.SetParent(collision.transform);
-                    roomGenerator.ReachedTheEnd();
+                    roomBehav.VisitRoom();
                 }
+                
+                cameraBehav.UpdateLocation(roomIAmIn);
+                ResetLasso();
+                
 
             }
             if (collision.tag == "Spawn")
@@ -257,6 +259,11 @@ public class PlayerBehavior : MonoBehaviour
                 if (!roomBehav.hasBeenVisited && roomBehav.gridPosition != new Vector2(0, 0))
                 {
                     roomBehav.SpawnEnemies();
+                }
+                if (roomIAmIn == roomGenerator.bottomRightRoom)
+                {
+                    transform.SetParent(collision.transform);
+                    roomGenerator.ReachedTheEnd();
                 }
             }
         }
