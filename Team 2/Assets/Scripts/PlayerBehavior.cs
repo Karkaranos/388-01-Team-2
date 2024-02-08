@@ -111,7 +111,7 @@ public class PlayerBehavior : MonoBehaviour
             else if (currentlyLassoed != null && currentlyLassoed.tag.Equals("Temp")&&!coroutineStarted)
             {
                 print("should run");
-                StartCoroutine(ResetMissedLasso(currentlyLassoed));
+                //StartCoroutine(ResetMissedLasso(currentlyLassoed));
             }
             else
             {
@@ -132,7 +132,7 @@ public class PlayerBehavior : MonoBehaviour
                     print("Error 2");
                     if(currentlyLassoed != null && currentlyLassoed.tag.Equals("Temp"))
                     {
-                        StartCoroutine(ResetMissedLasso(currentlyLassoed));
+                        //StartCoroutine(ResetMissedLasso(currentlyLassoed));
                     }
                     else
                     {
@@ -168,11 +168,11 @@ public class PlayerBehavior : MonoBehaviour
         aimingArrow.ShowArrow();
     }
 
-    IEnumerator ResetMissedLasso(GameObject temp)
+    public IEnumerator ResetMissedLasso(GameObject temp)
     {
         coroutineStarted = true;
         print("Reset missed lasso");
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.5f);
         coroutineStarted = false;
         lassoThrown = false;
         Lasso.enabled = false;
@@ -181,6 +181,7 @@ public class PlayerBehavior : MonoBehaviour
         currentlyLassoed = null;
         aimingArrow = GetComponentInChildren<UIAimArrowBehavior>();
         aimingArrow.ShowArrow();
+        print("destroyed");
         Destroy(temp);
     }
 
