@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using TMPro;
 using UnityEngine;
-using UnityEngineInternal;
 
 public class ThrowingArmBehavior : MonoBehaviour
 {
@@ -27,8 +26,7 @@ public class ThrowingArmBehavior : MonoBehaviour
     [Header("Distance & Width:")]
     [SerializeField] private bool hasMaxDistance = false;
     [SerializeField] private float maxDistance = 20;
-    [SerializeField] private float lassoWidth = 1;
-    
+    [SerializeField] private float lassoHitboxWidth;
 
     [Header("Cooldown Specs")]
     [SerializeField] private float cooldownMax;
@@ -36,8 +34,11 @@ public class ThrowingArmBehavior : MonoBehaviour
     public bool offCooldown;
     [HideInInspector] public Vector2 LassoPoint;
     [HideInInspector] public Vector2 LassoDistanceVector;
-    
-    
+
+    [Header("Debug:")]
+    [SerializeField] private bool inDebugMode;
+
+
 
     private void Start()
     {
@@ -66,53 +67,78 @@ public class ThrowingArmBehavior : MonoBehaviour
                 cooldownTimer = cooldownMax;
             }
         }
+        if (inDebugMode)
+        {
+            Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
+            Vector2 midpoint = new Vector2(FirePoint.position.x + (distanceVector.x * maxDistance / 2),
+                  FirePoint.position.y + (distanceVector.y * maxDistance / 2));
+            float angle = Mathf.Atan2(distanceVector.x, distanceVector.y) * Mathf.Rad2Deg - 90;
+            BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
+            distanceVector, maxDistance, ~layersToIgnore);
+        }
     }
 
-    
+
 
     public void SetLassoPoint()
     {
         Debug.Log("Throwing Lasso");
         PlayerBehav.Throwing = true;
-        Vector2 distanceVector = new Vector2(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y);
-        Debug.Log(distanceVector);
-        
-            if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
+        Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
+        Vector2 midpoint = new Vector2(FirePoint.position.x + (distanceVector.x * maxDistance / 2),
+              FirePoint.position.y + (distanceVector.y * maxDistance / 2));
+        //Debug.DrawLine(FirePoint.position, distanceVector.normalized, Color.green);
+        if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
+        {
+            float angle = Vector2.Angle(Player.transform.position, aimingArrow.transform.position);
+            //RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
+            RaycastHit2D[] potentialHits = BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
+            distanceVector, maxDistance, ~layersToIgnore);
+            
+            if (potentialHits.Length > 0)
             {
-                RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
-                if (_hit)
+                RaycastHit2D closest = potentialHits[0];
+                float closestDistance = 100000;
+                foreach (RaycastHit2D hit in potentialHits)
                 {
-                    if (_hit.transform.gameObject.layer == throwableLayerNumber || attachToAll)
+                    float hitDistance = Mathf.Sqrt(Mathf.Pow(hit.transform.position.x - FirePoint.transform.position.x, 2) +
+                        Mathf.Pow(hit.transform.position.y - FirePoint.transform.position.y, 2));
+                    if (hitDistance < closestDistance)
                     {
-                        if (Vector2.Distance(_hit.point, FirePoint.position) <= maxDistance || !hasMaxDistance)
-                        {
-                            if (offCooldown)
-                            {
-                            
-                                if(!missText.IsActive())
-                                {
-                                    missText.gameObject.SetActive(true);
-                                }
-                                missText.text = "You Hit " + _hit.transform.gameObject.name;
-                                PlayerBehav.lassoThrown = true;
-                                offCooldown = false;
-                                PlayerBehav.currentlyLassoed = _hit.transform.gameObject;
-                                PlayerBehav.currentlyLassoed.GetComponent<Throwable>().pickedUp = true;
-                                PlayerBehav.aimingArrow.HideArrow();
-                                PlayerBehav.aimingArrow = _hit.transform.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
-                                PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                                PlayerBehav.aimingArrow.ShowArrow();
-                                PlayerBehav.currentlyLassoed.GetComponent<Throwable>().bouncedWith.Clear();
-                                LassoPoint = _hit.transform.position;
-                                Debug.Log(LassoPoint);
-                                LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
-                            
-                                Lasso.Missed = false;
-                                Lasso.enabled = true;
-                            }
-                        
-                        }
+                        closest = hit;
+                        closestDistance = hitDistance;
                     }
+                }
+                if (closest.transform.gameObject.layer == throwableLayerNumber || attachToAll)
+                {
+                    if (Vector2.Distance(closest.point, FirePoint.position) <= maxDistance || !hasMaxDistance)
+                    {
+                        if (offCooldown)
+                        {
+                            if (!missText.IsActive())
+                            {
+                                missText.gameObject.SetActive(true);
+                            }
+                            missText.text = "You Hit " + closest.transform.gameObject.name;
+                            PlayerBehav.lassoThrown = true;
+                            offCooldown = false;
+                            PlayerBehav.currentlyLassoed = closest.transform.gameObject;
+                            PlayerBehav.currentlyLassoed.GetComponent<Throwable>().pickedUp = true;
+                            PlayerBehav.aimingArrow.HideArrow();
+                            PlayerBehav.aimingArrow = closest.transform.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
+                            PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                            PlayerBehav.aimingArrow.ShowArrow();
+                            PlayerBehav.currentlyLassoed.GetComponent<Throwable>().bouncedWith.Clear();
+                            LassoPoint = closest.transform.position;
+                            Debug.Log(LassoPoint);
+                            LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
+
+                            Lasso.Missed = false;
+                            Lasso.enabled = true;
+                        }
+
+                    }
+                }
                 else
                 {
                     missText.text = "You Missed";
@@ -140,15 +166,9 @@ public class ThrowingArmBehavior : MonoBehaviour
 
 
         }
-        
+
     }
 
-   
-    public void DrawBox()
-    {
-        Vector2 distanceVector = new Vector2(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y);
-        Physics2D.BoxCast(FirePoint.position, new Vector2(maxDistance, lassoWidth), Vector2.Angle(Vector2.zero, distanceVector), distanceVector.normalized);
-    }
 
 
     private void OnDrawGizmosSelected()

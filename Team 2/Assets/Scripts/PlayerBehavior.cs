@@ -247,7 +247,7 @@ public class PlayerBehavior : MonoBehaviour
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
 
             //If the enemy was not thrown
-            if (!collidedWith.thrown && !_invincible)
+            if (!collidedWith.thrown && !_invincible && collidedWith.GetComponent<EnemyBehavior>())
             {
                 print("Player attacked by Enemy");
                 stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_PLAYER));

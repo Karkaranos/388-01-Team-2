@@ -9,14 +9,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 public class EnemyBehavior : Throwable
 {
     #region Variables
     [SerializeField]
     private CharacterStats stats;
+    private GameObject player;
     private PlayerBehavior pbehav;
     public BoxCollider2D bc2D;
     [SerializeField][Range(0,2)]
@@ -28,33 +27,10 @@ public class EnemyBehavior : Throwable
 
     public RoomBehavior roomSpawnedIn;
 
-    [Header("Pathfinding")]
-    [SerializeField]private Transform target;
-    [SerializeField] private GameObject player;
-    NavMeshAgent agent;
-    private bool pathfindingActivated = false;
-    [SerializeField]
-    private float detectionRadius;
-    [SerializeField]
-    private float radiusActive;
-    [SerializeField]
-    private float maxRaycastDistance;
-
-    [Header("Layers Settings:")]
-    [SerializeField] private bool attachToAll = false;
-    [SerializeField] private int playerLayerNumber = 3;
-    [SerializeField] private int obstacleLayerNumber = 7;
-    [SerializeField] private LayerMask layersToIgnore = new LayerMask();
-    [SerializeField] private LayerMask layersToIgnoreForObs = new LayerMask();
-    private float defaultRaycastDistance = 1000f;
-
-
-    private bool searching;
 
     public CharacterStats Stats { get => stats; set => stats = value; }
 
     private bool canMove = true;
-    private bool usingNavMesh;
 
     #endregion
 
@@ -66,9 +42,7 @@ public class EnemyBehavior : Throwable
     /// </summary>
     private void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+
         //base.DamageDealt = stats.DamageDealt;
         obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
@@ -78,16 +52,11 @@ public class EnemyBehavior : Throwable
 
         
         //If the player can be found, track them.
-        
         try
         {
-            target = FindObjectOfType<PlayerBehavior>().gameObject.transform;
-            pbehav = target.gameObject.GetComponent<PlayerBehavior>();
-            /*if(SceneManager.GetActiveScene().name.Equals("MainScene"))
-            {
-                StartCoroutine(TrackPlayer());
-            }*/
-
+            player = FindObjectOfType<PlayerBehavior>().gameObject;
+            pbehav = player.GetComponent<PlayerBehavior>();
+            StartCoroutine(TrackPlayer());
         }
         catch
         {
@@ -97,120 +66,12 @@ public class EnemyBehavior : Throwable
 
     }
 
-    private void Update()
-    {
-        
-        if (canMove &&!pathfindingActivated&&target!=null)        
-        {
-            CheckPath();
-
-            //player = null;
-            usingNavMesh = true;
-        }
-
-        if(player == null && !searching&&!usingNavMesh )
-        {
-            StartCoroutine(SearchForTarget());
-        }
-        /*
-        else if (!pathfindingActivated && player !=null&&!usingNavMesh)
-        {
-            //StartCoroutine(TrackPlayer());
-        }*/
-    }
-
-
-    private void CheckPath()
-    {
-        Vector2 targetPos = target.transform.position;
-        Vector2 difference;
-
-        difference.x = targetPos.x - transform.position.x;
-        difference.y = targetPos.y - transform.position.y;
-        RaycastHit2D _hit = Physics2D.CircleCast(transform.position, detectionRadius/2, difference, detectionRadius/2, ~layersToIgnoreForObs);
-        if (_hit)
-        {
-            print("Enemy has located " + _hit.transform.gameObject);
-            if (_hit.transform.gameObject.tag.Equals("Throwable")||_hit.transform.gameObject.tag.Equals("Enemy"))
-            {
-                print("should not be on player");
-                agent.SetDestination(ObstacleManuvering(_hit.transform));
-            }
-            else if (_hit.transform.gameObject.tag.Equals("Player"))
-            {
-                print("tracking player");
-                agent.SetDestination(target.position);
-            }
-        }
-    }
-
-    private Vector3 ObstacleManuvering(Transform obPos)
-    {
-        Vector3 obstacleToPlayer;
-        //Look into a*
-        Vector3 newPos = obPos.position;
-        obstacleToPlayer = target.transform.position - obPos.position;
-
-        //Change this to check current position against the target position
-        if(Mathf.Abs(obstacleToPlayer.y) <.5f && Mathf.Abs(obstacleToPlayer.x) >= .5f)
-        {
-            newPos.x += obstacleToPlayer.x % 2;
-        }
-        else if (Mathf.Abs(obstacleToPlayer.y) >= .5f && Mathf.Abs(obstacleToPlayer.x) < .5f)
-        {
-            newPos.y += obstacleToPlayer.y % 2;
-        }
-        else
-        {
-            newPos.x += obstacleToPlayer.x % 2;
-            newPos.y += obstacleToPlayer.y % 2;
-        }
-
-        print("new target: " + newPos);
-        return newPos;
-
-    }
-
-    IEnumerator SearchForTarget()
-    {
-        searching = true;
-
-        if (Physics2D.CircleCast(transform.position, 10, Vector2.zero, 10, ~layersToIgnore))
-        {
-            Debug.DrawLine(transform.position, new Vector3(0, detectionRadius, 0), Color.green);
-            RaycastHit2D _hit = Physics2D.CircleCast(transform.position, detectionRadius, Vector2.zero, detectionRadius, ~layersToIgnore);
-            if (_hit)
-            {
-                if (_hit.transform.gameObject.layer == playerLayerNumber)
-                {
-                    Vector2 dir = new Vector2(_hit.transform.position.x - transform.position.x, _hit.transform.position.y - transform.position.y);
-
-                    Debug.DrawLine(transform.position, dir, Color.red);
-                    RaycastHit2D _LOS = Physics2D.Raycast(transform.position, dir, maxRaycastDistance, ~layersToIgnore);
-                    if(_LOS)
-                    {
-                        if(_LOS.transform.gameObject.layer == playerLayerNumber)
-                        {
-                            player = _LOS.transform.gameObject;
-                            target = _LOS.transform;
-                            print("Target  of " + player.name + " aquired");
-                        }
-                    }
-                }
-            }
-        }
-        yield return new WaitForSeconds(.5f);
-        searching = false;
-    }
-
-
     /// <summary>
     /// Handles collisions with objects
     /// </summary>
     /// <param name="collision">The object collided with</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //print("Hit " + collision.gameObject.name);
         CheckBounce(collision.gameObject);
         //If the object collided with is a throwable
         if (collision.gameObject.GetComponent<Throwable>()!=null)
@@ -218,7 +79,7 @@ public class EnemyBehavior : Throwable
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
             
             //If the enemy collided with an enemy or was thrown
-            if (collidedWith.thrown || thrown)
+            if ((collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
             {
                 Stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_ENEMY));
                 print("New health: " + Stats.Health);
@@ -244,13 +105,11 @@ public class EnemyBehavior : Throwable
     /// <returns>Time between adjustments</returns>
     IEnumerator TrackPlayer()
     {
-        pathfindingActivated = true;
-        print("other movement loaded");
         for(; ; )
         {
-            if(!pickedUp && canMove && !usingNavMesh)
+            if(!pickedUp && canMove)
             {
-                Vector2 targetPos = target.transform.position;
+                Vector2 targetPos = player.transform.position;
                 Vector2 difference;
                 Vector2 moveForce = Vector2.zero;
 
@@ -297,7 +156,6 @@ public class EnemyBehavior : Throwable
     {
         if(!isFlashing)
         {
-            StartCoroutine(Freeze());
             isFlashing = true;
             float flashedFor = 0;
             while (flashedFor < flashTime)
@@ -327,13 +185,13 @@ public class EnemyBehavior : Throwable
     protected override PhysicsMaterial2D CheckBounce(GameObject obj)
     {
         //If it hits or bounces with the wall, take wall damage
-        if (obj.tag == "Wall"&&(isBouncing)&&thrown)
+        if ((thrown||isBouncing) && obj.tag == "Wall"/*&&(isBouncing||!bouncedWith.Contains(obj))*/)
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.FROM_WALL));
             StartCoroutine(DamageFlash());
         }
         //If it bounces into an enemy, take bounce damage
-        else if (thrown &&(isBouncing && obj.tag != "Enemy" && obj.name != "Tilemap" && !obj.name.Contains("Wall") && !obj.name.Contains("Door")))
+        else if ((isBouncing || thrown || obj.GetComponent<Throwable>().thrown) && obj.tag != "Enemy")
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
             StartCoroutine(DamageFlash());
@@ -348,7 +206,7 @@ public class EnemyBehavior : Throwable
         }
 
         //If the object hasn't been bounced with previously, add it
-        if (!bouncedWith.Contains(obj)&&obj.tag != "Wall" && obj.tag != "Rooms")
+        if (!bouncedWith.Contains(obj))
         {
             isBouncing = true;
             bouncedWith.Add(obj);
