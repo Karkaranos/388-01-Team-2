@@ -9,6 +9,12 @@ using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    [Header("Oasis")]
+    [SerializeField]
+    private float healPercent;
+    [SerializeField]
+    private bool oasesGiveManyHeal;
+
     [Header("Refrences:")]
     [SerializeField] private LassoBehavior Lasso;
     [SerializeField] private ThrowingArmBehavior ThrowingArm;
@@ -263,6 +269,16 @@ public class PlayerBehavior : MonoBehaviour
                     roomBehav.SpawnEnemies();
                 }
             }
+            if (collision.gameObject.tag.Equals("Oasis"))
+            {
+                stats.Heal(healPercent, false, 1);
+                if(!oasesGiveManyHeal)
+                {
+                    
+                    Destroy(collision.gameObject.GetComponentInChildren<ParticleSystem>().gameObject);
+                    Destroy(collision.gameObject.GetComponent<Collider2D>());
+                }
+            }
         }
         
     }
@@ -308,9 +324,9 @@ public class PlayerBehavior : MonoBehaviour
     IEnumerator Invincible()
     {
         _invincible = true;
-        GetComponent<SpriteRenderer>().color = Color.cyan;
+        GetComponent<SpriteRenderer>().color = new Color(0,1,1, .1f);
         yield return new WaitForSeconds(stats.InvincibilityTime);
-        GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<SpriteRenderer>().color = new Color(0,0,0,0);
         _invincible = false;
     }
 

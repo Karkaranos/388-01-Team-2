@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - Spawn
   - Temp
+  - Oasis
   layers:
   - Default
   - TransparentFX
