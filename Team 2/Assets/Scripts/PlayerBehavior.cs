@@ -9,6 +9,10 @@ using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    [Header("Stat Adjustments")]
+    [SerializeField]
+    private float healPercent;
+
     [Header("Refrences:")]
     [SerializeField] private LassoBehavior Lasso;
     [SerializeField] private ThrowingArmBehavior ThrowingArm;
@@ -263,6 +267,10 @@ public class PlayerBehavior : MonoBehaviour
                     roomBehav.SpawnEnemies();
                 }
             }
+        }
+        else if(collision.gameObject.tag.Equals("Oasis"))
+        {
+            stats.Heal(healPercent, false, 1);
         }
         
     }

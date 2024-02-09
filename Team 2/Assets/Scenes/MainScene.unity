@@ -603,6 +603,14 @@ MonoBehaviour:
     weight: 1
   - room: {fileID: 6497075458879617804, guid: ed57a99f8db657948bebc9cfb6c00d37, type: 3}
     weight: 1
+  - room: {fileID: 193635408673151124, guid: 7efe84465b2f15c41bf37c02fd6ff3c7, type: 3}
+    weight: 1
+  - room: {fileID: 8196678122988771499, guid: fc6f96823f850524e8bd3e1a48f74236, type: 3}
+    weight: 1
+  - room: {fileID: 1454641980523459440, guid: 1595d077042351346929f6cdda16fa8b, type: 3}
+    weight: 1
+  - room: {fileID: 7893075268161559105, guid: c386c758b90e9604c854a6e4a44742f4, type: 3}
+    weight: 1
   offset: {x: 17.2, y: 8.8}
   bottomRightRoom: {x: 0, y: 0}
   mainCamera: {fileID: 757713683}
@@ -1003,6 +1011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161d6507a8276aa4394dcd9d4e28386f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healPercent: 30
   Lasso: {fileID: 1866331295}
   ThrowingArm: {fileID: 1439129983}
   cameraBehav: {fileID: 757713683}

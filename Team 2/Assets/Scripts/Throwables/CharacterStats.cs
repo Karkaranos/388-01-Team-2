@@ -71,7 +71,7 @@ public class CharacterStats : ObjectStats
             buffAmount = 1;
         }
 
-        Health += amountHealed;
+        Health *= (1 + amountHealed);
 
         if(Health > _maxHealth * buffAmount)
         {
