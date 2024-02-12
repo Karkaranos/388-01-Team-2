@@ -113,7 +113,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void ThrowLasso_started(InputAction.CallbackContext obj)
     {
-        if (timer >= 0.1 && !Throwing)
+        if (timer >= 0.1 && !Throwing && !FindObjectOfType<GameMenuController>().isPaused)
         {
             timer = 0;
             if (currentlyLassoed != null && !currentlyLassoed.tag.Equals("Temp"))
@@ -223,7 +223,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (canMoveWhileLassoing || !Lasso.enabled)
+        if ((canMoveWhileLassoing || !Lasso.enabled) && !FindObjectOfType<GameMenuController>().isPaused)
         {
             rb2D.velocity = movementVector * MovementSpeed;
         }
@@ -236,7 +236,10 @@ public class PlayerBehavior : MonoBehaviour
 
     private void HandleRotation()
     {
-        aimingArrow.Aim(aimingVector, controllerDeadzone, controllerRotateSmoothing);
+        if(!FindObjectOfType<GameMenuController>().isPaused)
+        {
+            aimingArrow.Aim(aimingVector, controllerDeadzone, controllerRotateSmoothing);
+        }
         
             /*if ((Mathf.Abs(aimingVector.x) > controllerDeadzone || Mathf.Abs(aimingVector.y) > controllerDeadzone))
             {

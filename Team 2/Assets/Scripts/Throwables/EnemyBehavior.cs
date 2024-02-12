@@ -107,7 +107,7 @@ public class EnemyBehavior : Throwable
     {
         for(; ; )
         {
-            if(!pickedUp && canMove)
+            if(!pickedUp && canMove&&!FindObjectOfType<GameMenuController>().isPaused)
             {
                 Vector2 targetPos = player.transform.position;
                 Vector2 difference;
