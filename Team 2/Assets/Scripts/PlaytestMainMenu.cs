@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using System;
 
 public class PlaytestMainMenu : MonoBehaviour
 {
@@ -13,14 +14,17 @@ public class PlaytestMainMenu : MonoBehaviour
     public TMP_Text moveLassoText;
     [SerializeField] private bool inMain = true;
 
+    /*
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject varsMenu;
     [SerializeField] private GameObject firstButtonMain;
     [SerializeField] private GameObject firstButtonCredits;
+    */
+    [SerializeField]
+    private CanvasInfo[] canvases;
     // Start is called before the first frame update
     void Awake()
     {
-        
     }
 
     public void SetGridStyle()
@@ -72,7 +76,7 @@ public class PlaytestMainMenu : MonoBehaviour
     }
 
 
-    public void SwitchMenus()
+    /*public void SwitchMenus()
     {
         if (inMain)
         {
@@ -88,7 +92,47 @@ public class PlaytestMainMenu : MonoBehaviour
             varsMenu.SetActive(false);
             GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(firstButtonMain);
         }
+    }*/
+
+    private void SwitchCanvas(string newCanvas)
+    {
+        CanvasInfo canvas = Array.Find(canvases, CanvasInfo => CanvasInfo.canvasName == newCanvas);
+        foreach(CanvasInfo c in canvases)
+        {
+            c.Canvas.SetActive(false);
+        }
+        if (canvas != null)
+        {
+            canvas.Canvas.SetActive(true);
+            GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(canvas.firstSelected);
+
+        }
+        else
+        {
+            print("No matching canvas found");
+        }
     }
+
+    public void OpenCredits()
+    {
+        SwitchCanvas("Credits");
+    }
+
+    public void QuitMenu()
+    {
+        SwitchCanvas("Quit");
+    }
+
+    public void Back()
+    {
+        SwitchCanvas("MainMenu");
+    }
+
+    public void HowToPlay()
+    {
+        SwitchCanvas("HowToPlay");
+    }
+
 
     public void Quit()
     {
