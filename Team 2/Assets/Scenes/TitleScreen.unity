@@ -2935,10 +2935,6 @@ MonoBehaviour:
   gridText: {fileID: 0}
   moveLassoText: {fileID: 0}
   inMain: 1
-  mainMenu: {fileID: 1515464142}
-  varsMenu: {fileID: 294301345}
-  firstButtonMain: {fileID: 1188526170}
-  firstButtonCredits: {fileID: 962142910}
   canvases:
   - canvasName: MainMenu
     Canvas: {fileID: 1515464142}
@@ -5236,7 +5232,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ae73a49b033af4bb21ef281c76a607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sounds: []
+  Sounds:
+  - name: Heal1
+    audClip: {fileID: 8300000, guid: 0ab456e553c9f2f4e89a28e8c33fa6c5, type: 3}
+    clipVolume: 1
+    clipPitch: 1
+    canLoop: 0
+    panStereo: 0
+    spacialBlend: 0
+    minSoundDistance: 0
+    maxSoundDistance: 0
+    source: {fileID: 0}
+    isMusic: 0
+  - name: Heal2
+    audClip: {fileID: 8300000, guid: d24243ca12b76204ea9a70b8a3f85429, type: 3}
+    clipVolume: 1
+    clipPitch: 1
+    canLoop: 0
+    panStereo: 0
+    spacialBlend: 0
+    minSoundDistance: 0
+    maxSoundDistance: 0
+    source: {fileID: 0}
+    isMusic: 0
+  - name: Bounce
+    audClip: {fileID: 8300000, guid: 55a0ad7813f99cc41a202f73d14f4009, type: 3}
+    clipVolume: 1
+    clipPitch: 1
+    canLoop: 0
+    panStereo: 0
+    spacialBlend: 0
+    minSoundDistance: 0
+    maxSoundDistance: 0
+    source: {fileID: 0}
+    isMusic: 0
+  - name: Damage
+    audClip: {fileID: 8300000, guid: 5c08d90c5f70f804bbe49ace1ea597d2, type: 3}
+    clipVolume: 1
+    clipPitch: 1
+    canLoop: 0
+    panStereo: 0
+    spacialBlend: 0
+    minSoundDistance: 0
+    maxSoundDistance: 0
+    source: {fileID: 0}
+    isMusic: 0
+  - name: Whip
+    audClip: {fileID: 8300000, guid: 1ffedbcca34891f409d4ca4e9e5155f6, type: 3}
+    clipVolume: 1
+    clipPitch: 1
+    canLoop: 0
+    panStereo: 0
+    spacialBlend: 0
+    minSoundDistance: 0
+    maxSoundDistance: 0
+    source: {fileID: 0}
+    isMusic: 0
+  - name: Whoosh
+    audClip: {fileID: 8300000, guid: 4a355e7141e898b46bdb350ae6ef83dd, type: 3}
+    clipVolume: 1
+    clipPitch: 1
+    canLoop: 0
+    panStereo: 0
+    spacialBlend: 0
+    minSoundDistance: 0
+    maxSoundDistance: 0
+    source: {fileID: 0}
+    isMusic: 0
   masterMixer: {fileID: 0}
   musicVolume: 0
 --- !u!4 &2025313774

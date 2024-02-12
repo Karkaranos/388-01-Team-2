@@ -85,6 +85,8 @@ public class ThrowingArmBehavior : MonoBehaviour
 
     public void SetLassoPoint()
     {
+        AudioManager am = FindObjectOfType<AudioManager>();
+
         Debug.Log("Throwing Lasso");
         PlayerBehav.Throwing = true;
         Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
@@ -139,6 +141,10 @@ public class ThrowingArmBehavior : MonoBehaviour
 
                             Lasso.Missed = false;
                             Lasso.enabled = true;
+                            if (am != null)
+                            {
+                                am.PlayWhipCrack();
+                            }
                         }
 
                     }
@@ -172,6 +178,10 @@ public class ThrowingArmBehavior : MonoBehaviour
                     Lasso.Missed = true;
                     Lasso.enabled = true;
                     PlayerBehav.Throwing = false;
+                    if (am != null)
+                    {
+                        am.PlayWhoosh();
+                    }
                 }
             }
             else
@@ -205,6 +215,11 @@ public class ThrowingArmBehavior : MonoBehaviour
                 Lasso.Missed = true;
                 Lasso.enabled = true;
                 PlayerBehav.Throwing = false;
+                if (am != null)
+                {
+                    am.PlayWhoosh();
+                }
+
             }
 
 

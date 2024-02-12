@@ -184,6 +184,11 @@ public class EnemyBehavior : Throwable
     /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
     protected override PhysicsMaterial2D CheckBounce(GameObject obj)
     {
+        AudioManager am = FindObjectOfType<AudioManager>();
+        if(am!=null)
+        {
+            am.PlayBounce();
+        }
         //If it hits or bounces with the wall, take wall damage
         if ((thrown||isBouncing) && obj.tag == "Wall"/*&&(isBouncing||!bouncedWith.Contains(obj))*/)
         {
