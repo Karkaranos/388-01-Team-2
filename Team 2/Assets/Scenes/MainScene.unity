@@ -314,7 +314,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1983619253}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameMenuController, Assembly-CSharp
         m_MethodName: Resume
         m_Mode: 1
@@ -1159,7 +1159,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1983619253}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameMenuController, Assembly-CSharp
         m_MethodName: Back
         m_Mode: 1
@@ -2333,7 +2333,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1983619253}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameMenuController, Assembly-CSharp
         m_MethodName: QuitMenu
         m_Mode: 1
@@ -2947,7 +2947,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1983619253}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameMenuController, Assembly-CSharp
         m_MethodName: Quit
         m_Mode: 1
@@ -2997,58 +2997,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1973313618}
   m_CullTransparentMesh: 1
---- !u!1 &1983619251
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1983619252}
-  - component: {fileID: 1983619253}
-  m_Layer: 0
-  m_Name: GameUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1983619252
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983619251}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 387.6158, y: 237.59239, z: -16.669773}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1983619253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983619251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 115b373b0a687a34f9aa10d3d96663bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvases:
-  - canvasName: PauseMenu
-    Canvas: {fileID: 357189479}
-    firstSelected: {fileID: 198931255}
-  - canvasName: Quit
-    Canvas: {fileID: 1870310313}
-    firstSelected: {fileID: 834851281}
-  isPaused: 0
 --- !u!1 &1995755799
 GameObject:
   m_ObjectHideFlags: 0
