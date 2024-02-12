@@ -11,7 +11,6 @@ audio source to each of them. Can call sound by using the name of the audio in t
 inspector
 *****************************************************************************/
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -195,7 +194,31 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-   //Create functions that play sounds
+    public void PlayHeal()
+    {
+        int playMe = (int)UnityEngine.Random.Range(1, 2);
+        Play("Heal" + playMe);
+    }
+
+    public void PlayWhipCrack()
+    {
+        Play("Whip");
+    }
+
+    public void PlayBounce()
+    {
+        Play("Bounce");
+    }
+
+    public void PlayPlayerDamage()
+    {
+        Play("Damage");
+    }
+
+    public void PlayWhoosh()
+    {
+        Play("Whoosh");
+    }
 
     #endregion
 }

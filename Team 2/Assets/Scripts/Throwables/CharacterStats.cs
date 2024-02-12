@@ -66,7 +66,7 @@ public class CharacterStats : ObjectStats
     /// <returns>The new health</returns>
     public float Heal(float amountHealed, bool healthBuffed, float buffAmount)
     {
-        if(buffAmount < 1 || !healthBuffed)
+        if (buffAmount < 1 || !healthBuffed)
         {
             buffAmount = 1;
         }

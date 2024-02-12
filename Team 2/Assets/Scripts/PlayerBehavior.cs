@@ -282,6 +282,11 @@ public class PlayerBehavior : MonoBehaviour
             }
             if (collision.gameObject.tag.Equals("Oasis"))
             {
+                AudioManager am = FindObjectOfType<AudioManager>();
+                if(am!=null)
+                {
+                    am.PlayHeal();
+                }
                 stats.Heal(healPercent, false, 1);
                 if(!oasesGiveManyHeal)
                 {
@@ -312,8 +317,13 @@ public class PlayerBehavior : MonoBehaviour
                 print("Player attacked by Enemy");
                 stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_PLAYER));
                 print("New health: " + stats.Health);
+                AudioManager am = FindObjectOfType<AudioManager>();
+                if (am != null)
+                {
+                    am.PlayPlayerDamage();
+                }
 
-                if(stats.Health <= 0)
+                if (stats.Health <= 0)
                 {
                     StartCoroutine(GameEnd());
                 }
