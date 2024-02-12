@@ -14,11 +14,12 @@ public class PlaytestMainMenu : MonoBehaviour
     public TMP_Text moveLassoText;
     [SerializeField] private bool inMain = true;
 
+    /*
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject varsMenu;
     [SerializeField] private GameObject firstButtonMain;
     [SerializeField] private GameObject firstButtonCredits;
-
+    */
     [SerializeField]
     private CanvasInfo[] canvases;
     // Start is called before the first frame update
@@ -75,7 +76,7 @@ public class PlaytestMainMenu : MonoBehaviour
     }
 
 
-    public void SwitchMenus()
+    /*public void SwitchMenus()
     {
         if (inMain)
         {
@@ -91,7 +92,7 @@ public class PlaytestMainMenu : MonoBehaviour
             varsMenu.SetActive(false);
             GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(firstButtonMain);
         }
-    }
+    }*/
 
     private void SwitchCanvas(string newCanvas)
     {
