@@ -46,7 +46,7 @@ public class PlayerBehavior : MonoBehaviour
     private InputAction move;
     private InputAction aim;
     private InputAction throwLasso;
-    private InputAction pause;
+    private InputAction quit;
 
     [Header("Player Information:")]
     [SerializeField] private CharacterStats stats;
@@ -69,17 +69,9 @@ public class PlayerBehavior : MonoBehaviour
         move = pInput.actions.FindAction("Movement");
         aim = pInput.actions.FindAction("AimLasso");
         throwLasso = pInput.actions.FindAction("Throw");
-        pause = pInput.actions.FindAction("Pause");
+        quit = pInput.actions.FindAction("Quit");
 
-        if(pause == null)
-        {
-            print("Pause not found");
-        }
-        else
-        {
-
-            pause.performed += Pause_performed;
-        }
+        quit.started += Quit_started;
         move.performed += Move_performed;
 
 
@@ -91,9 +83,9 @@ public class PlayerBehavior : MonoBehaviour
         PlayerPrefs.SetInt("CurrentScore", 0);
     }
 
-    private void Pause_performed(InputAction.CallbackContext obj)
+    private void Quit_started(InputAction.CallbackContext obj)
     {
-        FindObjectOfType<GameMenuController>().Pause();
+        GM.Quit();
     }
 
     private void Aim_performed(InputAction.CallbackContext obj)

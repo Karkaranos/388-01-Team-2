@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
+                    "name": "Quit",
                     "type": "Button",
                     "id": "49e71932-b5b0-46d6-adae-13c81e5fa8a3",
                     "expectedControlType": "Button",
@@ -167,11 +167,11 @@
                 {
                     "name": "",
                     "id": "e1d32a7c-7b16-4b41-ac29-632fe1cc7dbe",
-                    "path": "<Keyboard>/p",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pause",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -182,7 +182,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pause",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

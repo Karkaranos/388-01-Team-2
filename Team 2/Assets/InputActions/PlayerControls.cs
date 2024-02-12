@@ -55,7 +55,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Pause"",
+                    ""name"": ""Quit"",
                     ""type"": ""Button"",
                     ""id"": ""49e71932-b5b0-46d6-adae-13c81e5fa8a3"",
                     ""expectedControlType"": ""Button"",
@@ -189,11 +189,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e1d32a7c-7b16-4b41-ac29-632fe1cc7dbe"",
-                    ""path"": ""<Keyboard>/p"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause"",
+                    ""action"": ""Quit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -204,7 +204,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause"",
+                    ""action"": ""Quit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -218,7 +218,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Controls_Movement = m_Controls.FindAction("Movement", throwIfNotFound: true);
         m_Controls_Throw = m_Controls.FindAction("Throw", throwIfNotFound: true);
         m_Controls_AimLasso = m_Controls.FindAction("AimLasso", throwIfNotFound: true);
-        m_Controls_Pause = m_Controls.FindAction("Pause", throwIfNotFound: true);
+        m_Controls_Quit = m_Controls.FindAction("Quit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -283,7 +283,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Controls_Movement;
     private readonly InputAction m_Controls_Throw;
     private readonly InputAction m_Controls_AimLasso;
-    private readonly InputAction m_Controls_Pause;
+    private readonly InputAction m_Controls_Quit;
     public struct ControlsActions
     {
         private @PlayerControls m_Wrapper;
@@ -291,7 +291,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Controls_Movement;
         public InputAction @Throw => m_Wrapper.m_Controls_Throw;
         public InputAction @AimLasso => m_Wrapper.m_Controls_AimLasso;
-        public InputAction @Pause => m_Wrapper.m_Controls_Pause;
+        public InputAction @Quit => m_Wrapper.m_Controls_Quit;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,9 +310,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AimLasso.started += instance.OnAimLasso;
             @AimLasso.performed += instance.OnAimLasso;
             @AimLasso.canceled += instance.OnAimLasso;
-            @Pause.started += instance.OnPause;
-            @Pause.performed += instance.OnPause;
-            @Pause.canceled += instance.OnPause;
+            @Quit.started += instance.OnQuit;
+            @Quit.performed += instance.OnQuit;
+            @Quit.canceled += instance.OnQuit;
         }
 
         private void UnregisterCallbacks(IControlsActions instance)
@@ -326,9 +326,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @AimLasso.started -= instance.OnAimLasso;
             @AimLasso.performed -= instance.OnAimLasso;
             @AimLasso.canceled -= instance.OnAimLasso;
-            @Pause.started -= instance.OnPause;
-            @Pause.performed -= instance.OnPause;
-            @Pause.canceled -= instance.OnPause;
+            @Quit.started -= instance.OnQuit;
+            @Quit.performed -= instance.OnQuit;
+            @Quit.canceled -= instance.OnQuit;
         }
 
         public void RemoveCallbacks(IControlsActions instance)
@@ -351,6 +351,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
         void OnAimLasso(InputAction.CallbackContext context);
-        void OnPause(InputAction.CallbackContext context);
+        void OnQuit(InputAction.CallbackContext context);
     }
 }

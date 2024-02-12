@@ -101,7 +101,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Paused",
+                    "name": "Quit",
                     "type": "Button",
                     "id": "ed57fbcb-a7fb-46b3-806e-6046ddacd668",
                     "expectedControlType": "Button",
@@ -147,22 +147,11 @@
                 {
                     "name": "",
                     "id": "aeefebb3-b448-4ac0-a01e-eed1d78659c9",
-                    "path": "<Gamepad>/start",
+                    "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",
-                    "action": "Paused",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f64f0954-fb21-4649-84d7-deb4d4f66d82",
-                    "path": "<Keyboard>/p",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Paused",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
