@@ -30,28 +30,6 @@ public class ObjectBehavior : Throwable
         bc2D.sharedMaterial = base.Bouncy;
     }
 
-    public override void GetThrown(Vector2 arrow)
-    {
-        if(!hasBounceCap)
-        {
-            thrown = true;
-            PlayerBehavior pbehav = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-
-            float angle = Mathf.Atan2(arrow.y, arrow.x) * Mathf.Rad2Deg;
-            float xForce = Mathf.Cos(angle * Mathf.PI / 180) * forceModifier * hiddenModifier;
-            float yForce = Mathf.Sin(angle * Mathf.PI / 180) * forceModifier * hiddenModifier;
-            Vector2 moveForce = Vector2.ClampMagnitude(new Vector2(xForce, yForce), maxVelocity * hiddenModifier);
-
-            GetComponent<Rigidbody2D>().AddForce(moveForce);
-            pbehav.ResetLasso();
-        }
-        else
-        {
-
-        }
-        base.GetThrown(arrow);
-    }
 
     /// <summary>
     /// Handles collisions with objects

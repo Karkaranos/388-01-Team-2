@@ -97,7 +97,7 @@ public class Throwable : MonoBehaviour
         }
     }
 
-    public virtual void GetThrown(Vector2 arrow)
+    public void GetThrown(Vector2 arrow)
     {
         thrown = true;
         PlayerBehavior pbehav = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();

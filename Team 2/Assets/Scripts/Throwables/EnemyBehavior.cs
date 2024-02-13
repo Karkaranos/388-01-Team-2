@@ -78,7 +78,7 @@ public class EnemyBehavior : Throwable
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
             
             //If the enemy collided with an enemy or was thrown
-            if ((collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>() != null))
+            if ((collidedWith.thrown || collision.gameObject.GetComponent<EnemyBehavior>().thrown))
             {
                 Stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_ENEMY));
                 print("New health: " + Stats.Health);
