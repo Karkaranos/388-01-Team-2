@@ -1262,7 +1262,7 @@ MonoBehaviour:
   - room: {fileID: 7893075268161559105, guid: c386c758b90e9604c854a6e4a44742f4, type: 3}
     weight: 1
   setSpawns:
-  - room: {fileID: 7893075268161559105, guid: c386c758b90e9604c854a6e4a44742f4, type: 3}
+  - room: {fileID: 7227700253671823979, guid: 710a7dc6f66891e47b7e1cab130bded2, type: 3}
     GridPosition: {x: 0, y: 0}
   - room: {fileID: 7583513144975352560, guid: ee1f83d46d2f1b24aafde2a27ad67430, type: 3}
     GridPosition: {x: 4, y: 4}
