@@ -2840,7 +2840,7 @@ MonoBehaviour:
   FirePoint: {fileID: 537519613}
   hasMaxDistance: 0
   maxDistance: 7
-  lassoHitboxWidth: 0
+  lassoHitboxWidth: 1
   cooldownMax: 1.5
   cooldownTimer: 0
   offCooldown: 0
