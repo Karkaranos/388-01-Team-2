@@ -242,6 +242,7 @@ MonoBehaviour:
     _bounceDamage: 20
     _dmgToEnemy: 50
   bc2D: {fileID: 0}
+  hasBounceCap: 1
 --- !u!1 &5367701387300597580
 GameObject:
   m_ObjectHideFlags: 0
