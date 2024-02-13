@@ -2,6 +2,7 @@ using System.Linq;
 using System.Net;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ThrowingArmBehavior : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class ThrowingArmBehavior : MonoBehaviour
 
     [Header("Missing")]
     [SerializeField] private GameObject empty;
+
+    public Slider LassoBar;
 
 
 
@@ -81,7 +84,10 @@ public class ThrowingArmBehavior : MonoBehaviour
         }
     }
 
-
+    private void FixedUpdate()
+    {
+        LassoBar.value = cooldownTimer;
+    }
 
     public void SetLassoPoint()
     {
