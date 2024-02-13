@@ -47,7 +47,6 @@ public class EnemyBehavior : Throwable
         obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
         bc2D.sharedMaterial = Bouncy;
-        GetComponent<Renderer>().material.color = Color.red;
 
 
         
