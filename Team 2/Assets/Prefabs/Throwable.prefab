@@ -222,7 +222,7 @@ MonoBehaviour:
   pickedUp: 0
   killed: 0
   forceModifier: 5
-  maxVelocity: 10
+  maxVelocity: 20
   obStat:
     _baseDmgDealt: 0
     _dmgCap: 0
