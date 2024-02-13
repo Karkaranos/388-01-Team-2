@@ -46,7 +46,7 @@ public class PlayerBehavior : MonoBehaviour
     private InputAction move;
     private InputAction aim;
     private InputAction throwLasso;
-    private InputAction quit;
+    private InputAction pause;
 
     [Header("Player Information:")]
     [SerializeField] private CharacterStats stats;
@@ -69,9 +69,17 @@ public class PlayerBehavior : MonoBehaviour
         move = pInput.actions.FindAction("Movement");
         aim = pInput.actions.FindAction("AimLasso");
         throwLasso = pInput.actions.FindAction("Throw");
-        quit = pInput.actions.FindAction("Quit");
+        pause = pInput.actions.FindAction("Pause");
 
-        quit.started += Quit_started;
+        if(pause == null)
+        {
+            print("Pause not found");
+        }
+        else
+        {
+
+            pause.performed += Pause_performed;
+        }
         move.performed += Move_performed;
 
 
@@ -83,9 +91,9 @@ public class PlayerBehavior : MonoBehaviour
         PlayerPrefs.SetInt("CurrentScore", 0);
     }
 
-    private void Quit_started(InputAction.CallbackContext obj)
+    private void Pause_performed(InputAction.CallbackContext obj)
     {
-        GM.Quit();
+        FindObjectOfType<GameMenuController>().Pause();
     }
 
     private void Aim_performed(InputAction.CallbackContext obj)
@@ -105,7 +113,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void ThrowLasso_started(InputAction.CallbackContext obj)
     {
-        if (timer >= 0.1 && !Throwing)
+        if (timer >= 0.1 && !Throwing && !FindObjectOfType<GameMenuController>().isPaused)
         {
             timer = 0;
             if (currentlyLassoed != null && !currentlyLassoed.tag.Equals("Temp"))
@@ -215,7 +223,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (canMoveWhileLassoing || !Lasso.enabled)
+        if ((canMoveWhileLassoing || !Lasso.enabled) && !FindObjectOfType<GameMenuController>().isPaused)
         {
             rb2D.velocity = movementVector * MovementSpeed;
         }
@@ -228,7 +236,10 @@ public class PlayerBehavior : MonoBehaviour
 
     private void HandleRotation()
     {
-        aimingArrow.Aim(aimingVector, controllerDeadzone, controllerRotateSmoothing);
+        if(!FindObjectOfType<GameMenuController>().isPaused)
+        {
+            aimingArrow.Aim(aimingVector, controllerDeadzone, controllerRotateSmoothing);
+        }
         
             /*if ((Mathf.Abs(aimingVector.x) > controllerDeadzone || Mathf.Abs(aimingVector.y) > controllerDeadzone))
             {
@@ -271,6 +282,11 @@ public class PlayerBehavior : MonoBehaviour
             }
             if (collision.gameObject.tag.Equals("Oasis"))
             {
+                AudioManager am = FindObjectOfType<AudioManager>();
+                if(am!=null)
+                {
+                    am.PlayHeal();
+                }
                 stats.Heal(healPercent, false, 1);
                 if(!oasesGiveManyHeal)
                 {
@@ -301,8 +317,13 @@ public class PlayerBehavior : MonoBehaviour
                 print("Player attacked by Enemy");
                 stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_PLAYER));
                 print("New health: " + stats.Health);
+                AudioManager am = FindObjectOfType<AudioManager>();
+                if (am != null)
+                {
+                    am.PlayPlayerDamage();
+                }
 
-                if(stats.Health <= 0)
+                if (stats.Health <= 0)
                 {
                     StartCoroutine(GameEnd());
                 }
