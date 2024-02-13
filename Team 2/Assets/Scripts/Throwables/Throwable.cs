@@ -18,9 +18,9 @@ public class Throwable : MonoBehaviour
     public bool pickedUp = false;
     public bool killed;
 
-    [SerializeField] private float forceModifier;
-    [SerializeField] private float maxVelocity;
-    private float hiddenModifier = 100;
+    [SerializeField] protected float forceModifier;
+    [SerializeField] protected float maxVelocity;
+    protected float hiddenModifier = 100;
 
 
 
@@ -97,7 +97,7 @@ public class Throwable : MonoBehaviour
         }
     }
 
-    public void GetThrown(Vector2 arrow)
+    public virtual void GetThrown(Vector2 arrow)
     {
         thrown = true;
         PlayerBehavior pbehav = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();

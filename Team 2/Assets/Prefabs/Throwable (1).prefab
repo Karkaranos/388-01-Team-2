@@ -306,7 +306,7 @@ MonoBehaviour:
   pickedUp: 0
   killed: 0
   forceModifier: 10
-  maxVelocity: 50
+  maxVelocity: 25
   obStat:
     _baseDmgDealt: 0
     _dmgCap: 0
@@ -315,7 +315,7 @@ MonoBehaviour:
     _dmgToEnemy: 0
   notBouncy: {fileID: 6200000, guid: 7505eb491522b524481bec2c337d2c60, type: 2}
   bouncy: {fileID: 6200000, guid: 87b48b6963ee39044949e6a5631e80b2, type: 2}
-  maxBounceCount: 4
+  maxBounceCount: 10000
   isBouncing: 0
   timeUntilStopping: 5
   bouncedWith: []
@@ -326,3 +326,4 @@ MonoBehaviour:
     _bounceDamage: 20
     _dmgToEnemy: 50
   bc2D: {fileID: 0}
+  hasBounceCap: 0

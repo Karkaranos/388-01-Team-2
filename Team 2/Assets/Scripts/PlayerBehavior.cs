@@ -312,7 +312,7 @@ public class PlayerBehavior : MonoBehaviour
             Throwable collidedWith = collision.gameObject.GetComponent<Throwable>();
 
             //If the enemy was not thrown
-            if (!collidedWith.thrown && !_invincible && collidedWith.GetComponent<EnemyBehavior>())
+            if (/*!collidedWith.thrown &&*/ !_invincible && collidedWith.GetComponent<EnemyBehavior>())
             {
                 print("Player attacked by Enemy");
                 stats.TakeDamage(collidedWith.Damage(ObjectStats.DamageTypes.TO_PLAYER));
@@ -345,7 +345,7 @@ public class PlayerBehavior : MonoBehaviour
     IEnumerator Invincible()
     {
         _invincible = true;
-        GetComponent<SpriteRenderer>().color = new Color(0,1,1, .1f);
+        GetComponent<SpriteRenderer>().color = new Color(0,1,1, .5f);
         yield return new WaitForSeconds(stats.InvincibilityTime);
         GetComponent<SpriteRenderer>().color = new Color(0,0,0,0);
         _invincible = false;

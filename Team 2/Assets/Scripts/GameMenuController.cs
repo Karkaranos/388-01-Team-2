@@ -65,10 +65,13 @@ public class GameMenuController : MonoBehaviour
         }
     }
 
-
-
     public void Quit()
     {
-        Application.Quit();
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+
+    public void ResumeEnd()
+    {
+        SwitchCanvas("End");
     }
 }
