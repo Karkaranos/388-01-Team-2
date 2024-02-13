@@ -102,15 +102,16 @@ public class ThrowingArmBehavior : MonoBehaviour
             
             if (potentialHits.Length > 0)
             {
+                
                 RaycastHit2D closest = potentialHits[0];
-                float closestDistance = Mathf.Sqrt(Mathf.Pow(closest.transform.position.x - FirePoint.transform.position.x, 2) +
-                        Mathf.Pow(closest.transform.position.y - FirePoint.transform.position.y, 2));
+                float closestDistance = 100000;
                 foreach (RaycastHit2D hit in potentialHits)
                 {
+                    Debug.Log(hit.transform.gameObject.name);
                     if (hit.transform.gameObject.layer == 7)
                     {
-                        float hitDistance = Mathf.Sqrt(Mathf.Pow(hit.transform.position.x - FirePoint.transform.position.x, 2) +
-                        Mathf.Pow(hit.transform.position.y - FirePoint.transform.position.y, 2));
+                        float hitDistance = Mathf.Sqrt(Mathf.Pow(hit.transform.position.x - aimingArrow.transform.position.x, 2) +
+                        Mathf.Pow(hit.transform.position.y - aimingArrow.transform.position.y, 2));
                         print(" hit " + hit.transform.gameObject.name);
                         if (hitDistance < closestDistance)
                         {
