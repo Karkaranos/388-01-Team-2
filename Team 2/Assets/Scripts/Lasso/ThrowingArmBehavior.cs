@@ -90,8 +90,8 @@ public class ThrowingArmBehavior : MonoBehaviour
         Debug.Log("Throwing Lasso");
         PlayerBehav.Throwing = true;
         Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
-        Vector2 midpoint = new Vector2(FirePoint.position.x + (distanceVector.x * maxDistance / 2),
-              FirePoint.position.y + (distanceVector.y * maxDistance / 2));
+        Vector2 midpoint = new Vector2(aimingArrow.position.x + (distanceVector.x * maxDistance / 2),
+              aimingArrow.position.y + (distanceVector.y * maxDistance / 2));
         //Debug.DrawLine(FirePoint.position, distanceVector.normalized, Color.green);
         if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
         {
@@ -103,17 +103,22 @@ public class ThrowingArmBehavior : MonoBehaviour
             if (potentialHits.Length > 0)
             {
                 RaycastHit2D closest = potentialHits[0];
-                float closestDistance = 100000;
+                float closestDistance = Mathf.Sqrt(Mathf.Pow(closest.transform.position.x - FirePoint.transform.position.x, 2) +
+                        Mathf.Pow(closest.transform.position.y - FirePoint.transform.position.y, 2));
                 foreach (RaycastHit2D hit in potentialHits)
                 {
-                    float hitDistance = Mathf.Sqrt(Mathf.Pow(hit.transform.position.x - FirePoint.transform.position.x, 2) +
-                        Mathf.Pow(hit.transform.position.y - FirePoint.transform.position.y, 2));
-                    print(" hit " + hit.transform.gameObject.name);
-                    if (hitDistance < closestDistance)
+                    if (hit.transform.gameObject.layer == 7)
                     {
-                        closest = hit;
-                        closestDistance = hitDistance;
+                        float hitDistance = Mathf.Sqrt(Mathf.Pow(hit.transform.position.x - FirePoint.transform.position.x, 2) +
+                        Mathf.Pow(hit.transform.position.y - FirePoint.transform.position.y, 2));
+                        print(" hit " + hit.transform.gameObject.name);
+                        if (hitDistance < closestDistance)
+                        {
+                            closest = hit;
+                            closestDistance = hitDistance;
+                        }
                     }
+                    
                 }
                 if (closest.transform.gameObject.layer == throwableLayerNumber || attachToAll)
                 {
