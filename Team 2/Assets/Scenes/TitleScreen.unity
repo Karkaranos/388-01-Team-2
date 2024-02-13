@@ -6908,7 +6908,7 @@ MonoBehaviour:
     isMusic: 0
   - name: Damage
     audClip: {fileID: 8300000, guid: 5c08d90c5f70f804bbe49ace1ea597d2, type: 3}
-    clipVolume: 1
+    clipVolume: 0.817
     clipPitch: 1
     canLoop: 0
     panStereo: 0
