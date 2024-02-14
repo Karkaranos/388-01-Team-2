@@ -74,19 +74,19 @@ public class Throwable : MonoBehaviour
     /// </summary>
     /// <param name="obj">The object bounced with</param>
     /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
-    protected virtual PhysicsMaterial2D CheckBounce(GameObject obj)
+    protected virtual void CheckBounce(GameObject obj)
     {
         if (!bouncedWith.Contains(obj))
         {
             isBouncing = true;
             bouncedWith.Add(obj);
-            return bouncy;
+            //return bouncy;
         }
         else
         {
             isBouncing = false;
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            return notBouncy;
+            //return notBouncy;
         }
     }
 
@@ -98,6 +98,7 @@ public class Throwable : MonoBehaviour
     {
         //Reset force and grab references
         thrown = true;
+        bouncedWith.Clear();
         PlayerBehavior pbehav = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
@@ -120,12 +121,7 @@ public class Throwable : MonoBehaviour
     /// <returns></returns>
     IEnumerator KillForce()
     {
-        while(GetComponent<Rigidbody2D>().velocity.magnitude > 50)
-        {
-            GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity * .9f;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        yield return new WaitForSeconds(2f);
         thrown = false;
     }
 
