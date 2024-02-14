@@ -24,7 +24,6 @@ public class ObjectBehavior : Throwable
     /// </summary>
     private void Start()
     {
-        //base.DamageDealt = stats.DamageDealt;
         base.obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
         bc2D.sharedMaterial = base.Bouncy;
@@ -37,6 +36,11 @@ public class ObjectBehavior : Throwable
     /// <param name="collision">The object collided with</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        AudioManager am = FindObjectOfType<AudioManager>();
+        if(am!=null)
+        {
+            am.PlayBounce();
+        }
         CheckBounce(collision.gameObject);
     }
 }

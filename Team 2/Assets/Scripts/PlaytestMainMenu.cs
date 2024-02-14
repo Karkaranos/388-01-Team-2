@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlaytestMainMenu : MonoBehaviour
 {
@@ -14,18 +11,9 @@ public class PlaytestMainMenu : MonoBehaviour
     public TMP_Text moveLassoText;
     [SerializeField] private bool inMain = true;
 
-    /*
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject varsMenu;
-    [SerializeField] private GameObject firstButtonMain;
-    [SerializeField] private GameObject firstButtonCredits;
-    */
     [SerializeField]
     private CanvasInfo[] canvases;
-    // Start is called before the first frame update
-    void Awake()
-    {
-    }
+
 
     public void SetGridStyle()
     {
@@ -75,70 +63,71 @@ public class PlaytestMainMenu : MonoBehaviour
         }
     }
 
-
-    /*public void SwitchMenus()
-    {
-        if (inMain)
-        {
-            inMain = false;
-            mainMenu.SetActive(false);
-            varsMenu.SetActive(true);
-            GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(firstButtonCredits);
-        }
-        else
-        {
-            inMain = true;
-            mainMenu.SetActive(true);
-            varsMenu.SetActive(false);
-            GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(firstButtonMain);
-        }
-    }*/
-
+    /// <summary>
+    /// Sets the active canvas based on a provided name
+    /// </summary>
+    /// <param name="newCanvas">The canvas to set active</param>
     private void SwitchCanvas(string newCanvas)
     {
+        //Finds the associated canvas and sets all canvases to inactive
         CanvasInfo canvas = Array.Find(canvases, CanvasInfo => CanvasInfo.canvasName == newCanvas);
         foreach(CanvasInfo c in canvases)
         {
             c.Canvas.SetActive(false);
         }
+
+        //Sets the current canvas and its first selected
         if (canvas != null)
         {
             canvas.Canvas.SetActive(true);
             GameObject.Find("EventSystem").GetComponent<EventSystem>().SetSelectedGameObject(canvas.firstSelected);
 
         }
-        else
-        {
-            print("No matching canvas found");
-        }
     }
 
+    /// <summary>
+    /// Opens the credit canvas
+    /// </summary>
     public void OpenCredits()
     {
         SwitchCanvas("Credits");
     }
 
+    /// <summary>
+    /// Opens the quit canvas
+    /// </summary>
     public void QuitMenu()
     {
         SwitchCanvas("Quit");
     }
 
+    /// <summary>
+    /// Closes any non-menu canvases
+    /// </summary>
     public void Back()
     {
         SwitchCanvas("MainMenu");
     }
 
+    /// <summary>
+    /// Opens the how to play canvas
+    /// </summary>
     public void HowToPlay()
     {
         SwitchCanvas("HowToPlay");
     }
 
-
+    /// <summary>
+    /// Quits the application
+    /// </summary>
     public void Quit()
     {
         Application.Quit();
     }
 
+    /// <summary>
+    /// Loads the game scene
+    /// </summary>
     public void StartGame()
     {
         SceneManager.LoadScene(1);

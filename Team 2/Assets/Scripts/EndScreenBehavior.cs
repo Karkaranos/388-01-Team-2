@@ -6,11 +6,8 @@
 // Brief Description : Displays the player's score
 
 *****************************************************************************/
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class EndScreenBehavior : MonoBehaviour
 {
@@ -24,13 +21,4 @@ public class EndScreenBehavior : MonoBehaviour
         highScore.text = "Your High Score:\n" + PlayerPrefs.GetInt("HighScore");
         recentScore.text = "Your Recent Score:\n" + GameManager.enemiesDefeated;
     }
-
-    public void Restart()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-
-
-
 }

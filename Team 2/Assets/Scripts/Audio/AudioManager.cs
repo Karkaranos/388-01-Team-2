@@ -20,14 +20,6 @@ public class AudioManager : MonoBehaviour
     public AudioMixerGroup masterMixer;
     public float musicVolume;
 
-    private bool gameStarted = false;
-
-    private string previousTrack;
-
-    //public Texture2D glassTexture;
-    //public CursorMode cursorMode = CursorMode.Auto;
-    //public Vector2 hotSpot = Vector2.zero;
-
     /// <summary>
     /// Start is called before the first frame update. It ensures only one instance
     /// of this script and initializes Sound class
@@ -61,20 +53,17 @@ public class AudioManager : MonoBehaviour
             sound.source.rolloffMode = AudioRolloffMode.Linear;
             sound.source.playOnAwake = false;
         }
-
-        
-
-        //Cursor.SetCursor(glassTexture, hotSpot, cursorMode);
     }
 
 
+    //Private audio functions
     #region Sound Controls
 
     /// <summary>
     /// Gets the name of a sound and plays it at its point
     /// </summary>
     /// <param name="audioName">the sound name to play</param>
-    public void Play(string audioName)
+    private void Play(string audioName)
     {
         //Searches through the Sound array until it finds a sound with the 
         //specified name
@@ -90,7 +79,7 @@ public class AudioManager : MonoBehaviour
     /// Gets the name of a sound and stops it at its point
     /// </summary>
     /// <param name="audioName">the sound name to stop</param>
-    public void Stop(string audioName)
+    private void Stop(string audioName)
     {
         Sound sound = Array.Find(Sounds, sound => sound.name == audioName);
         if (sound != null)
@@ -102,123 +91,51 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Gets the name of a sound and pauses it at its point
-    /// </summary>
-    /// <param name="audioName">the sound name to pause</param>
-    public void Pause(string audioName)
-    {
-        Sound sound = Array.Find(Sounds, sound => sound.name == audioName);
-        if (sound != null)
-        {
-            sound.source.Pause();
-        }
-    }
 
+    #endregion      
 
-    /// <summary>
-    /// Gets the name of a sound and resumes it at its point
-    /// </summary>
-    /// <param name="audioName">the sound name to resume</param>
-    public void UnPause(string audioName)
-    {
-        Sound sound = Array.Find(Sounds, sound => sound.name == audioName);
-        if (sound != null)
-        {
-            sound.source.UnPause();
-        }
-    }
-
-    /// <summary>
-    /// Gets the name of a sound and disables its volume when it starts playing
-    /// </summary>
-    /// <param name="audioName">the sound name to play muted</param>
-    public void PlayMuted(string audioName)
-    {
-        Sound sound = Array.Find(Sounds, sound => sound.name == audioName);
-        if (sound != null)
-        {
-            sound.source.Play();
-            sound.source.volume = 0.0f;
-        }
-    }
-
-    /// <summary>
-    /// Gets the name of a sound and mutes it
-    /// </summary>
-    /// <param name="audioName">the sound name to mute</param>
-    public void Mute(string audioName)
-    {
-        Sound sound = Array.Find(Sounds, sound => sound.name == audioName);
-        if (sound != null)
-        {
-            sound.source.volume = 0.0f;
-        }
-    }
-
-    /// <summary>
-    /// Gets the name of a sound and unmutes it
-    /// </summary>
-    /// <param name="audioName">the sound name to unmute</param>
-    public void Unmute(string audioName)
-    {
-        Sound sound = Array.Find(Sounds, sound => sound.name == audioName);
-        if (sound != null)
-        {
-            sound.source.volume = musicVolume;
-        }
-    }
-
-
-
-    #endregion
-
+    //Public facing audio functions
     #region Play
 
-    public void StopAllSounds()
-    {
-        for (int i = 0; i < Sounds.Length; i++)
-        {
-            Sounds[i].source.Stop();
-        }
-    }
-
-    private void StopAllMusic()
-    {
-        for (int i = 0; i < Sounds.Length; i++)
-        {
-            if (Sounds[i].isMusic)
-            {
-                Stop(Sounds[i].name);
-            }
-        }
-    }
-
+    /// <summary>
+    /// The public facing function to play heal
+    /// </summary>
     public void PlayHeal()
     {
-        int playMe = (int)UnityEngine.Random.Range(1, 2);
-        Play("Heal" + playMe);
+        Play("Heal1");
     }
 
+    /// <summary>
+    /// The public facing function to play a whip crack
+    /// </summary>
     public void PlayWhipCrack()
     {
         Play("Whip");
     }
 
+    /// <summary>
+    /// The public facing function to play a bounce
+    /// </summary>
     public void PlayBounce()
     {
         Play("Bounce");
     }
 
+    /// <summary>
+    /// The public facing function to play player damage
+    /// </summary>
     public void PlayPlayerDamage()
     {
         Play("Damage");
     }
 
+    /// <summary>
+    /// The public facing function to play a whoosh for missed lassoes
+    /// </summary>
     public void PlayWhoosh()
     {
         Play("Whoosh");
     }
 
-    #endregion
+    #endregion      //Contains public-facing audio functions            //Public facing play functions
 }

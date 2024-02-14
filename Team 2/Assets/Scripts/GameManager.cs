@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void enemyDefeated()
+    public void EnemyDefeated()
     {
         enemiesDefeated++;
         if (enemiesDefeated > PlayerPrefs.GetInt("HighScore"))

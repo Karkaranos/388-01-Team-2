@@ -20,7 +20,6 @@ public class CharacterStats : ObjectStats
     private float _maxHealth;
     [SerializeField]
     private float _speed;
-    private float _originalSpeed;
 
 
     [Header("Effects:")]

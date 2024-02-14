@@ -31,12 +31,7 @@ public class Throwable : MonoBehaviour
     [SerializeField] protected PhysicsMaterial2D notBouncy;
     [SerializeField] protected PhysicsMaterial2D bouncy;
     [SerializeField] private int maxBounceCount;
-    private int bounceCount;
     public bool isBouncing;
-
-    [SerializeField]
-    private float timeUntilStopping;
-    private float stopTime;
 
     public List<GameObject> bouncedWith = new List<GameObject>();
 
@@ -83,57 +78,65 @@ public class Throwable : MonoBehaviour
     {
         if (!bouncedWith.Contains(obj))
         {
-            //print("bounced with new object");
             isBouncing = true;
             bouncedWith.Add(obj);
             return bouncy;
         }
         else
         {
-            //print("Hit previously bounced with");
             isBouncing = false;
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             return notBouncy;
         }
     }
 
+    /// <summary>
+    /// Applies force to an object to mimic being thrown
+    /// </summary>
+    /// <param name="arrow">The aiming arrow's position</param>
     public void GetThrown(Vector2 arrow)
     {
+        //Reset force and grab references
         thrown = true;
         PlayerBehavior pbehav = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerBehavior>();
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
+        //Calculate the angle being thrown at based on the arrow's position and add a consistent force
         float angle = Mathf.Atan2(arrow.y, arrow.x) * Mathf.Rad2Deg;
         float xForce = Mathf.Cos(angle * Mathf.PI / 180) * forceModifier * hiddenModifier;
         float yForce = Mathf.Sin(angle * Mathf.PI / 180) * forceModifier * hiddenModifier;
         Vector2 moveForce = Vector2.ClampMagnitude(new Vector2(xForce, yForce), maxVelocity * hiddenModifier);
 
+        //Add force, reset lasso, and start stopping
         GetComponent<Rigidbody2D>().AddForce(moveForce);
         pbehav.ResetLasso();
         StartCoroutine(KillForce());
         
     }
 
+    /// <summary>
+    /// Stops force on all throwables after a minimum velocity is reached
+    /// </summary>
+    /// <returns></returns>
     IEnumerator KillForce()
     {
-        stopTime = timeUntilStopping;
         while(GetComponent<Rigidbody2D>().velocity.magnitude > 50)
         {
-            GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity * .8f;
+            GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity * .9f;
             yield return new WaitForSeconds(Time.deltaTime);
         }
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        //thrown = false;
+        thrown = false;
     }
 
+    /// <summary>
+    /// Sets the parent room for this object
+    /// </summary>
+    /// <param name="parent">The transform of the room spawned in</param>
     public void SpawnInRoom(Transform parent)
     {
         transform.SetParent(parent);
     }
-}
-
-
-
-
 
     #endregion
+}

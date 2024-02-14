@@ -42,14 +42,10 @@ public class EnemyBehavior : Throwable
     /// </summary>
     private void Start()
     {
-
-        //base.DamageDealt = stats.DamageDealt;
         obStat = stats;
         bc2D = GetComponent<BoxCollider2D>();
         bc2D.sharedMaterial = Bouncy;
 
-
-        
         //If the player can be found, track them.
         try
         {
@@ -195,13 +191,12 @@ public class EnemyBehavior : Throwable
             StartCoroutine(DamageFlash());
         }
         //If it bounces into an enemy, take bounce damage
-        else if ((isBouncing || thrown || (obj.GetComponent<Throwable>() != null && obj.GetComponent<Throwable>().thrown)) && obj.tag != "Enemy")
+        /*else if ((isBouncing || thrown || (obj.GetComponent<Throwable>() != null && obj.GetComponent<Throwable>().thrown)) && obj.tag != "Enemy")
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.ON_BOUNCE));
             StartCoroutine(DamageFlash());
-        }
+        }*/
 
-        print("New health: " + Stats.Health);
         if (Stats.Health == 0)
         {
             killed = true;
@@ -225,10 +220,12 @@ public class EnemyBehavior : Throwable
             return notBouncy;
         }
     }
+
+    /// <summary>
+    /// Resets any values when destroyed to avoid errors
+    /// </summary>
     private void OnDestroy()
     {
-        
-        
         if (pickedUp)
         {
             pbehav.aimingArrow = pbehav.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
@@ -237,7 +234,7 @@ public class EnemyBehavior : Throwable
         }
         if(killed)
         {
-            GameObject.FindObjectOfType<GameManager>().enemyDefeated();
+            GameObject.FindObjectOfType<GameManager>().EnemyDefeated();
         }
     }
     #endregion
