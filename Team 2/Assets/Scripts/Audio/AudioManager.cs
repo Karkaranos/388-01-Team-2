@@ -75,23 +75,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Gets the name of a sound and stops it at its point
-    /// </summary>
-    /// <param name="audioName">the sound name to stop</param>
-    private void Stop(string audioName)
-    {
-        Sound sound = Array.Find(Sounds, sound => sound.name == audioName);
-        if (sound != null)
-        {
-            sound.source.Stop();
-            //print(audioName + " stopped");
-        }
-
-    }
-
-
-
     #endregion      
 
     //Public facing audio functions
@@ -137,5 +120,5 @@ public class AudioManager : MonoBehaviour
         Play("Whoosh");
     }
 
-    #endregion      //Contains public-facing audio functions            //Public facing play functions
+    #endregion
 }

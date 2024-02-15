@@ -17,12 +17,18 @@ public class MasterVolumeSettings : MonoBehaviour
     [SerializeField] Slider volumeSlider;
     [SerializeField] AudioMixer masterMixer;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start is called before the first frame update. Initializes volume. 
+    /// </summary>
     void Start()
     {
         SetVolume(PlayerPrefs.GetFloat("SavedMasterVolume", 100));
     }
 
+    /// <summary>
+    /// Sets the current volume
+    /// </summary>
+    /// <param name="_value"></param>
     public void SetVolume(float _value)
     {
         if (_value < 1)
@@ -36,11 +42,18 @@ public class MasterVolumeSettings : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Sets the volume based on a volume slider
+    /// </summary>
     public void SetVolumeFromSlider()
     {
         SetVolume(volumeSlider.value);
     }
 
+    /// <summary>
+    /// Updates the slider value
+    /// </summary>
+    /// <param name="_value"></param>
     public void RefreshSlider(float _value)
     {
         volumeSlider.value = _value;

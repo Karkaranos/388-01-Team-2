@@ -178,7 +178,7 @@ public class EnemyBehavior : Throwable
     /// </summary>
     /// <param name="obj">The object bounced with</param>
     /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
-    protected override void CheckBounce(GameObject obj)
+    protected override PhysicsMaterial2D CheckBounce(GameObject obj)
     {
         AudioManager am = FindObjectOfType<AudioManager>();
         if(am!=null)
@@ -204,7 +204,7 @@ public class EnemyBehavior : Throwable
             Destroy(gameObject);
 
         }
-        /*
+        
         //If the object hasn't been bounced with previously, add it
         if (!bouncedWith.Contains(obj))
         {
@@ -217,9 +217,9 @@ public class EnemyBehavior : Throwable
         {
             //print("Hit previously bounced with");
             isBouncing = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            thrown = false;
             return notBouncy;
-        }*/
+        }
     }
 
     /// <summary>

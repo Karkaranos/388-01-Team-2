@@ -18,10 +18,10 @@ public class Throwable : MonoBehaviour
     public bool pickedUp = false;
     public bool killed;
 
+    
     [SerializeField] protected float forceModifier;
     [SerializeField] protected float maxVelocity;
     protected float hiddenModifier = 100;
-
 
 
     private float damageDealt;
@@ -35,7 +35,7 @@ public class Throwable : MonoBehaviour
 
     public List<GameObject> bouncedWith = new List<GameObject>();
 
-    public float DamageDealt { get => damageDealt; set => damageDealt = value; }
+
     public PhysicsMaterial2D Bouncy { get => bouncy; }
 
     #endregion
@@ -74,19 +74,19 @@ public class Throwable : MonoBehaviour
     /// </summary>
     /// <param name="obj">The object bounced with</param>
     /// <returns>A bouncy or not bouncy material, depending on bounce status</returns>
-    protected virtual void CheckBounce(GameObject obj)
+    protected virtual PhysicsMaterial2D CheckBounce(GameObject obj)
     {
         if (!bouncedWith.Contains(obj))
         {
             isBouncing = true;
             bouncedWith.Add(obj);
-            //return bouncy;
+            return bouncy;
         }
         else
         {
             isBouncing = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            //return notBouncy;
+            thrown = false;
+            return notBouncy;
         }
     }
 
@@ -111,7 +111,7 @@ public class Throwable : MonoBehaviour
         //Add force, reset lasso, and start stopping
         GetComponent<Rigidbody2D>().AddForce(moveForce);
         pbehav.ResetLasso();
-        StartCoroutine(KillForce());
+        //StartCoroutine(KillForce());
         
     }
 
