@@ -186,7 +186,7 @@ public class EnemyBehavior : Throwable
             am.PlayBounce();
         }
         //If it hits or bounces with the wall, take wall damage
-        if ((thrown||isBouncing) && obj.tag == "Wall"/*&&(isBouncing||!bouncedWith.Contains(obj))*/)
+        if ((thrown) && obj.tag == "Wall"/*&&(isBouncing||!bouncedWith.Contains(obj))*/)
         {
             Stats.TakeDamage(Damage(ObjectStats.DamageTypes.FROM_WALL));
             StartCoroutine(DamageFlash());
