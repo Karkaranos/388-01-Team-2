@@ -1,17 +1,26 @@
-using System.Linq;
-using System.Net;
+/*****************************************************************************
+// File Name :         ThrowingArmBehavior.cs
+// Author :            Tyler Hayes
+// Creation Date :     January 23, 2024
+//
+// Brief Description : Calculates where to throw the lasso to
+
+*****************************************************************************/
+
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ThrowingArmBehavior : MonoBehaviour
 {
+
+    //refrence the headers for what the variables do
     [Header("Scripts Ref:")]
     public LassoBehavior Lasso;
     public PlayerBehavior PlayerBehav;
-    [SerializeField] private TMP_Text missText;
     [SerializeField] private Transform aimingArrow;
-    [SerializeField] private TMP_Text cooldownText;
 
     [Header("Layers Settings:")]
     [SerializeField] private bool attachToAll = false;
@@ -24,7 +33,7 @@ public class ThrowingArmBehavior : MonoBehaviour
     public Transform ThrowingArm;
     public Transform FirePoint;
 
-    [Header("Distance & Width:")]
+    [Header("Distance & Width of Lasso Hitbox:")]
     [SerializeField] private bool hasMaxDistance = false;
     [SerializeField] private float maxDistance = 20;
     [SerializeField] private float lassoHitboxWidth;
@@ -45,7 +54,9 @@ public class ThrowingArmBehavior : MonoBehaviour
     public Slider LassoBar;
 
 
-
+    /// <summary>
+    /// Sets default settings
+    /// </summary>
     private void Start()
     {
         cooldownTimer = cooldownMax;
@@ -57,22 +68,27 @@ public class ThrowingArmBehavior : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Handles cooldowns and draws the hitbox of the lasso if debug
+    /// mode is enabled
+    /// </summary>
     private void Update()
     {
+        //Handles the lasso's cooldown
         if (!offCooldown)
         {
             if (cooldownTimer > 0)
             {
                 cooldownTimer -= Time.deltaTime;
-                cooldownText.text = "Lasso Cooldown: " + cooldownTimer;
             }
             else
             {
                 offCooldown = true;
-                cooldownText.text = "Lasso Cooldown: 0";
                 cooldownTimer = cooldownMax;
             }
         }
+
+        //in debug mode, draws the boxcast that the lasso uses
         if (inDebugMode)
         {
             Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
@@ -84,41 +100,49 @@ public class ThrowingArmBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// updates the lasso cooldown ui
+    /// </summary>
     private void FixedUpdate()
     {
         LassoBar.value = cooldownTimer;
     }
 
+    /// <summary>
+    /// Handles the throwing of the lasso
+    /// </summary>
     public void SetLassoPoint()
     {
+        
         AudioManager am = FindObjectOfType<AudioManager>();
-
-        Debug.Log("Throwing Lasso");
         PlayerBehav.Throwing = true;
+
+        //sets variables needed to draw the boxcast
         Vector2 distanceVector = new Vector3(PlayerBehav.aimingVector.x, PlayerBehav.aimingVector.y, 0);
         Vector2 midpoint = new Vector2(aimingArrow.position.x + (distanceVector.x * maxDistance / 2),
               aimingArrow.position.y + (distanceVector.y * maxDistance / 2));
-        //Debug.DrawLine(FirePoint.position, distanceVector.normalized, Color.green);
+        float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
+
+        //checks to see if a raycast in that direction would hit anything
         if (Physics2D.Raycast(FirePoint.position, distanceVector.normalized))
         {
-            float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
-            //RaycastHit2D _hit = Physics2D.Raycast(FirePoint.position, distanceVector.normalized, defaultRaycastDistance, ~layersToIgnore);
+            //draws the hitbox and stores everything the hitbox touches
             RaycastHit2D[] potentialHits = BoxCastDrawer.BoxCastAllAndDraw(midpoint, new Vector2(maxDistance, lassoHitboxWidth), angle,
             distanceVector, maxDistance, ~layersToIgnore);
             
+            //checks to see if it hit anything
             if (potentialHits.Length > 0)
             {
-                
                 RaycastHit2D closest = potentialHits[0];
                 float closestDistance = 100000;
+
+                //finds the closest throwable object
                 foreach (RaycastHit2D hit in potentialHits)
                 {
-                    Debug.Log(hit.transform.gameObject.name);
                     if (hit.transform.gameObject.layer == 7)
                     {
                         float hitDistance = Mathf.Sqrt(Mathf.Pow(hit.transform.position.x - aimingArrow.transform.position.x, 2) +
                         Mathf.Pow(hit.transform.position.y - aimingArrow.transform.position.y, 2));
-                        print(" hit " + hit.transform.gameObject.name);
                         if (hitDistance < closestDistance)
                         {
                             closest = hit;
@@ -127,32 +151,46 @@ public class ThrowingArmBehavior : MonoBehaviour
                     }
                     
                 }
+
+                //checks to see if you hit something throwable
                 if (closest.transform.gameObject.layer == throwableLayerNumber || attachToAll)
                 {
+                    //checks to see if the thing you hit is within the max throwing distance
                     if (Vector2.Distance(closest.point, FirePoint.position) <= maxDistance || !hasMaxDistance)
                     {
+                        //checks to see if the lasso is off cooldown
                         if (offCooldown)
                         {
-                            if (!missText.IsActive())
-                            {
-                                missText.gameObject.SetActive(true);
-                            }
-                            missText.text = "You Hit " + closest.transform.gameObject.name;
+                            //throws the lasso
                             PlayerBehav.lassoThrown = true;
                             offCooldown = false;
+
+                            //has the player register what they are holding 
                             PlayerBehav.currentlyLassoed = closest.transform.gameObject;
+
+                            //has the lassoed object register that they got picked up
                             PlayerBehav.currentlyLassoed.GetComponent<Throwable>().pickedUp = true;
+
+                            //moves the arrow to the hit object
                             PlayerBehav.aimingArrow.HideArrow();
                             PlayerBehav.aimingArrow = closest.transform.gameObject.GetComponentInChildren<UIAimArrowBehavior>();
-                            PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                             PlayerBehav.aimingArrow.ShowArrow();
+
+                            //stops the lassoed objects momentum
+                            PlayerBehav.currentlyLassoed.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                            
+                            //clears everything the picked up object has bounced with
                             PlayerBehav.currentlyLassoed.GetComponent<Throwable>().bouncedWith.Clear();
+
+                            //sets where to throw the lasso to
                             LassoPoint = closest.transform.position;
-                            Debug.Log(LassoPoint);
                             LassoDistanceVector = LassoPoint - (Vector2)ThrowingArm.position;
 
+                            //throws lasso
                             Lasso.Missed = false;
                             Lasso.enabled = true;
+
+                            //plays the whip crack sound
                             if (am != null)
                             {
                                 am.PlayWhipCrack();
@@ -163,9 +201,11 @@ public class ThrowingArmBehavior : MonoBehaviour
                 }
                 else
                 {
-                    missText.text = "You Missed";
+                    //player missed
 
                     Vector3 spawnPosition = FirePoint.transform.position;
+
+                    //figures out where to throw the missed lasso tos
                     if (distanceVector.magnitude < .1f)
                     {
                         float vecAngle = aimingArrow.transform.rotation.eulerAngles.z;
@@ -177,7 +217,8 @@ public class ThrowingArmBehavior : MonoBehaviour
                         spawnPosition.x += distanceVector.x * maxDistance / 2;
                         spawnPosition.y += distanceVector.y * maxDistance / 2;
                     }
-                    print(spawnPosition);
+
+                    //makes the object to throw the lasso at and throws lasso
                     GameObject fakeHit = Instantiate(empty, spawnPosition, Quaternion.identity);
                     PlayerBehav.currentlyLassoed = fakeHit;
                     PlayerBehav.StartCoroutine(PlayerBehav.ResetMissedLasso(PlayerBehav.currentlyLassoed));
@@ -198,7 +239,7 @@ public class ThrowingArmBehavior : MonoBehaviour
             }
             else
             {
-                missText.text = "You Missed";
+                //same as above
 
                  Vector3 spawnPosition = FirePoint.transform.position;
 
@@ -241,7 +282,9 @@ public class ThrowingArmBehavior : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// allows the player to see the max distance while in the inspector
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         if (FirePoint != null && hasMaxDistance)

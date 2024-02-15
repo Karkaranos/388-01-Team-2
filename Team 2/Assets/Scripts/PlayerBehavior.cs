@@ -1,3 +1,12 @@
+/*****************************************************************************
+// File Name :         PlayerBehavior.cs
+// Author :            Tyler Hayes, Cade R. Naylor
+// Creation Date :     January 23, 2024
+//
+// Brief Description : Handles the player's behavior
+
+*****************************************************************************/
+
 using Cinemachine;
 using System;
 using System.Collections;
@@ -60,6 +69,9 @@ public class PlayerBehavior : MonoBehaviour
     [HideInInspector] public Vector2 roomIAmIn;
     private bool coroutineStarted = false;
 
+    /// <summary>
+    /// sets variables
+    /// </summary>
     public void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -111,11 +123,17 @@ public class PlayerBehavior : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// throws the lasso or throws the object the player is holding
+    /// </summary>
+    /// <param name="obj"></param>
     private void ThrowLasso_started(InputAction.CallbackContext obj)
     {
+        //if they can throw
         if (timer >= 0.1 && !Throwing && !FindObjectOfType<GameMenuController>().isPaused)
         {
             timer = 0;
+            //throw something if they are holding it
             if (currentlyLassoed != null && !currentlyLassoed.tag.Equals("Temp"))
             {
                 print("error");
@@ -129,6 +147,7 @@ public class PlayerBehavior : MonoBehaviour
             }
             else
             {
+                //throws the lasso
                 if (!lassoThrown)
                 {
 
@@ -140,22 +159,8 @@ public class PlayerBehavior : MonoBehaviour
                 }
                 else
                 {
-
-
-
-                    print("Error 2");
-                    if(currentlyLassoed != null && currentlyLassoed.tag.Equals("Temp"))
-                    {
-                        //StartCoroutine(ResetMissedLasso(currentlyLassoed));
-                    }
-                    else
-                    {
-                        ResetLasso();
-                    }
-
-
-                    
-
+                    //resets the lasso
+                    ResetLasso();
                 }
             }
             
@@ -163,6 +168,10 @@ public class PlayerBehavior : MonoBehaviour
         }
         
     }
+
+    /// <summary>
+    /// resets all variables related to the lasso
+    /// </summary>
     public void ResetLasso()
     {
         print("Reset caught lasso");
@@ -182,6 +191,11 @@ public class PlayerBehavior : MonoBehaviour
         aimingArrow.ShowArrow();
     }
 
+    /// <summary>
+    /// resets the missed lasso
+    /// </summary>
+    /// <param name="temp"></param>
+    /// <returns></returns>
     public IEnumerator ResetMissedLasso(GameObject temp)
     {
         coroutineStarted = true;
@@ -199,28 +213,35 @@ public class PlayerBehavior : MonoBehaviour
         Destroy(temp);
     }
 
+    /// <summary>
+    /// enables the controls
+    /// </summary>
     private void OnEnable()
     {
         playerControls.Enable();
     }
 
+    /// <summary>
+    /// disables the controls
+    /// </summary>
     private void OnDisable()
     {
         playerControls.Disable();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// moves and rotates if the player is inputting
+    /// </summary>
     void Update()
     {
-        timer += Time.deltaTime;   
-            HandleMovement();
-        
-        
-            HandleRotation();
-        
-        
+        timer += Time.deltaTime;
+        HandleMovement();
+        HandleRotation();
     }
 
+    /// <summary>
+    /// moves the player
+    /// </summary>
     private void HandleMovement()
     {
         if ((canMoveWhileLassoing || !Lasso.enabled) && !FindObjectOfType<GameMenuController>().isPaused)
@@ -231,37 +252,33 @@ public class PlayerBehavior : MonoBehaviour
         {
             rb2D.velocity = Vector2.zero;
         }
-        
     }
 
+    /// <summary>
+    /// rotates the arrow around the player
+    /// </summary>
     private void HandleRotation()
     {
-        if(!FindObjectOfType<GameMenuController>().isPaused)
+        if (!FindObjectOfType<GameMenuController>().isPaused)
         {
             aimingArrow.Aim(aimingVector, controllerDeadzone, controllerRotateSmoothing);
         }
-        
-            /*if ((Mathf.Abs(aimingVector.x) > controllerDeadzone || Mathf.Abs(aimingVector.y) > controllerDeadzone))
-            {
-                Vector2 playerDirection = new Vector2(aimingVector.x, aimingVector.y);
-                if (playerDirection.sqrMagnitude > 0.0f)
-                {
-                    Quaternion newRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, newRotation, controllerRotateSmoothing * Time.deltaTime);
-                }
-            }*/
-        
-        
     }
 
+    /// <summary>
+    /// sends to the roombehavior when the player enters the room
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponentInParent<RoomBehavior>() != null)
         {
             RoomBehavior roomBehav = collision.GetComponentInParent<RoomBehavior>();
+
+            //if its the door it moves the camera and checks if the player
+            //has reached the end
             if (collision.tag == "Door")
             {
-
                 roomIAmIn = roomBehav.gridPosition;
                 cameraBehav.UpdateLocation(roomIAmIn);
 
@@ -270,16 +287,18 @@ public class PlayerBehavior : MonoBehaviour
                     transform.SetParent(collision.transform);
                     roomGenerator.ReachedTheEnd();
                 }
-
             }
+
+            //spawns enemies when the player enters the spawn hitbox
             if (collision.tag == "Spawn")
             {
-
                 if (!roomBehav.hasBeenVisited && roomBehav.gridPosition != new Vector2(0, 0))
                 {
                     roomBehav.SpawnEnemies();
                 }
             }
+
+            //heals the player when they reach the oasis
             if (collision.gameObject.tag.Equals("Oasis"))
             {
                 AudioManager am = FindObjectOfType<AudioManager>();
@@ -288,9 +307,10 @@ public class PlayerBehavior : MonoBehaviour
                     am.PlayHeal();
                 }
                 stats.Heal(healPercent, false, 1);
+
+                //destroys the trigger if the oasis doesnt give multiple heals
                 if(!oasesGiveManyHeal)
                 {
-                    
                     Destroy(collision.gameObject.GetComponentInChildren<ParticleSystem>().gameObject);
                     Destroy(collision.gameObject.GetComponent<Collider2D>());
                 }
@@ -332,6 +352,9 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// updates the health bar
+    /// </summary>
     private void FixedUpdate()
     {
         HealthBar.value = stats.Health;
@@ -351,6 +374,10 @@ public class PlayerBehavior : MonoBehaviour
         _invincible = false;
     }
 
+    /// <summary>
+    /// ends the game
+    /// </summary>
+    /// <returns></returns>
     IEnumerator GameEnd()
     {
         List<GameObject> allEnemies = new List<GameObject>();

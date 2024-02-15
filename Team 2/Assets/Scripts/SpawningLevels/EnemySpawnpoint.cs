@@ -1,3 +1,12 @@
+/*****************************************************************************
+// File Name :         EnemySpawnpoint.cs
+// Author :            Tyler Hayes
+// Creation Date :     January 23, 2024
+//
+// Brief Description : Holds a throwable object and where it spawns
+
+*****************************************************************************/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

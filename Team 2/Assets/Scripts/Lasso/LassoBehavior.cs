@@ -1,9 +1,19 @@
+/*****************************************************************************
+// File Name :         LassoBehavior.cs
+// Author :            Tyler Hayes
+// Creation Date :     January 23, 2024
+//
+// Brief Description : Handles the drawing of the lasso
+
+*****************************************************************************/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LassoBehavior : MonoBehaviour
 {
+    //the headers explain what the variables do/are for
     [Header("General Refernces:")]
     public ThrowingArmBehavior ThrowingArm;
     public LineRenderer m_lineRenderer;
@@ -27,6 +37,9 @@ public class LassoBehavior : MonoBehaviour
     private bool strightLine = true;
 
 
+    /// <summary>
+    /// start moving the lasso immediately when its enabled
+    /// </summary>
     private void OnEnable()
     {
         moveTime = 0;
@@ -39,11 +52,17 @@ public class LassoBehavior : MonoBehaviour
         m_lineRenderer.enabled = true;
     }
 
+    /// <summary>
+    /// disables the line renderer when the game object holding it is disabled
+    /// </summary>
     private void OnDisable()
     {
         m_lineRenderer.enabled = false;
     }
 
+    /// <summary>
+    /// adds a point to the line renderer equal to precision
+    /// </summary>
     private void LinePointsToFirePoint()
     {
         for (int i = 0; i < precision; i++)
@@ -52,16 +71,24 @@ public class LassoBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// updates the rope every frame
+    /// </summary>
     private void Update()
     {
         moveTime += Time.deltaTime;
         DrawRope();
     }
 
+    /// <summary>
+    /// Draws the rope
+    /// </summary>
     void DrawRope()
     {
+        //if it's not straight yet, straightens the rope
         if (!strightLine)
         {
+            //checks if the line is straight, sets it to straight if true
             if ((m_lineRenderer.GetPosition(precision - 1).x >= ThrowingArm.LassoPoint.x && m_lineRenderer.GetPosition(precision - 1).x < ThrowingArm.LassoPoint.x + 0.01f) ||
                 (m_lineRenderer.GetPosition(precision - 1).x <= ThrowingArm.LassoPoint.x && m_lineRenderer.GetPosition(precision - 1).x > ThrowingArm.LassoPoint.x - 0.01f))
             {
@@ -74,6 +101,7 @@ public class LassoBehavior : MonoBehaviour
         }
         else
         {
+            //this keeps the lasso attached to the player if they move
             if (waveSize > 0)
             {
                 waveSize -= Time.deltaTime * straightenLineSpeed;
@@ -90,8 +118,12 @@ public class LassoBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Uses trig to calculate the wave of the rope as it gets straighter
+    /// </summary>
     void DrawRopeWaves()
     {
+        //this calculates each point
         for (int i = 0; i < precision; i++)
         {
             float delta = (float)i / ((float)precision - 1f);
@@ -103,6 +135,9 @@ public class LassoBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// keeps the rope straight
+    /// </summary>
     void DrawRopeNoWaves()
     {
         m_lineRenderer.SetPosition(0, ThrowingArm.FirePoint.position);

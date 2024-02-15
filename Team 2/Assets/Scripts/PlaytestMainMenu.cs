@@ -1,3 +1,12 @@
+/*****************************************************************************
+// File Name :         PlaytestMainMenu.cs
+// Author :            Tyler Hayes
+// Creation Date :     January 23, 2024
+//
+// Brief Description : Handles the buttons on the main menu
+
+*****************************************************************************/
+
 using System;
 using TMPro;
 using UnityEngine;
@@ -6,6 +15,7 @@ using UnityEngine.SceneManagement;
 
 public class PlaytestMainMenu : MonoBehaviour
 {
+    //holds refrences to the texts
     [Header("Refrences:")]
     public TMP_Text gridText;
     public TMP_Text moveLassoText;
@@ -14,7 +24,9 @@ public class PlaytestMainMenu : MonoBehaviour
     [SerializeField]
     private CanvasInfo[] canvases;
 
-
+    /// <summary>
+    /// allows the designers to set the style of generation
+    /// </summary>
     public void SetGridStyle()
     {
         if (RoomGenerator.GridStyle)
@@ -27,12 +39,10 @@ public class PlaytestMainMenu : MonoBehaviour
         }
     }
 
-    public void SetMoveLassoStyle()
-    {
-        
-    }
-
-
+    /// <summary>
+    /// allows the player to change if the player can move while lassoing
+    /// </summary>
+    /// <param name="toggle"></param>
     public void LassoMovement(bool toggle)
     {
         if (toggle)
@@ -45,6 +55,10 @@ public class PlaytestMainMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// also allows the player to set the style of generation
+    /// </summary>
+    /// <param name="i"></param>
     public void DropdownTest(int i)
     {
         Debug.Log(i);

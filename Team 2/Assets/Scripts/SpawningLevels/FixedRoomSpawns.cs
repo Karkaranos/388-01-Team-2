@@ -1,3 +1,12 @@
+/*****************************************************************************
+// File Name :         FixedRoomSpawns.cs
+// Author :            Tyler Hayes
+// Creation Date :     January 23, 2024
+//
+// Brief Description : Stores a room and it's grid position
+
+*****************************************************************************/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
